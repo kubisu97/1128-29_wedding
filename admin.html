@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Guide Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <main class="admin">
+        <header class="admin-header">
+            <div>
+                <p class="admin-kicker">KYOTO FAMILY WEDDING</p>
+                <h1>Content Admin</h1>
+                <p class="admin-lead">原稿と写真をブラウザで更新できます。保存すると公開ページに反映されます。</p>
+            </div>
+            <div class="admin-meta">
+                <span>Supabase + GitHub Pages</span>
+                <span id="saveStatus">未保存</span>
+            </div>
+        </header>
+
+        <section class="card" id="loginSection">
+            <h2>ログイン</h2>
+            <p>Supabase Authに登録したメールアドレスでログインしてください。</p>
+            <div class="form-grid">
+                <label>
+                    メール
+                    <input type="email" id="loginEmail" placeholder="you@example.com">
+                </label>
+                <label>
+                    パスワード
+                    <input type="password" id="loginPassword" placeholder="password">
+                </label>
+            </div>
+            <div class="button-row">
+                <button type="button" id="loginButton">ログイン</button>
+                <button type="button" class="ghost" id="magicLinkButton">マジックリンクを送る</button>
+            </div>
+            <p class="status" id="loginStatus"></p>
+        </section>
+
+        <section class="card" id="editorSection" hidden>
+            <div class="toolbar">
+                <button type="button" id="saveButton">保存して反映</button>
+                <button type="button" class="ghost" id="logoutButton">ログアウト</button>
+            </div>
+
+            <form id="contentForm">
+                <section class="block">
+                    <h2>ヘッダー</h2>
+                    <label>
+                        サブタイトル
+                        <textarea id="mastheadSub" rows="2"></textarea>
+                    </label>
+                </section>
+
+                <section class="block">
+                    <h2>はじめに（導線3ステップ）</h2>
+                    <div class="form-grid">
+                        <label>
+                            タイトル
+                            <input type="text" id="routeTitle">
+                        </label>
+                        <label>
+                            説明文
+                            <input type="text" id="routeCopy">
+                        </label>
+                    </div>
+                    <div class="repeat-list" id="routeStepsList"></div>
+                    <button type="button" class="ghost" data-add="route">+ ステップ追加</button>
+                </section>
+
+                <section class="block">
+                    <h2>カウントダウン表示</h2>
+                    <label>
+                        表示文
+                        <input type="text" id="countdownTarget">
+                    </label>
+                </section>
+
+                <section class="block">
+                    <h2>招待状の原稿</h2>
+                    <div class="form-grid">
+                        <label>
+                            挙式・披露宴
+                            <input type="text" id="invitationCeremony">
+                        </label>
+                        <label>
+                            会場
+                            <input type="text" id="invitationVenue">
+                        </label>
+                        <label>
+                            宿泊
+                            <input type="text" id="invitationHotel">
+                        </label>
+                    </div>
+                    <label>
+                        本文（1行ごとに段落）
+                        <textarea id="invitationParagraphs" rows="5" placeholder="1行目&#10;2行目&#10;3行目"></textarea>
+                    </label>
+                </section>
+
+                <section class="block">
+                    <h2>フォトウォール（6枚）</h2>
+                    <div class="image-grid" id="photoWallGrid"></div>
+                </section>
+
+                <section class="block">
+                    <h2>フォトノート</h2>
+                    <label>
+                        本文（改行で改段落）
+                        <textarea id="photoNoteText" rows="3"></textarea>
+                    </label>
+                    <div class="form-grid">
+                        <label>
+                            ボタン英字
+                            <input type="text" id="photoNoteCtaEn" placeholder="RSVP At The End">
+                        </label>
+                        <label>
+                            ボタン日本語
+                            <input type="text" id="photoNoteCtaJa" placeholder="回答はこちら">
+                        </label>
+                        <label>
+                            ボタンリンク
+                            <input type="text" id="photoNoteCtaUrl" placeholder="#rsvp">
+                        </label>
+                    </div>
+                </section>
+
+                <section class="block">
+                    <h2>ギャラリー（8枚）</h2>
+                    <div class="image-grid" id="galleryGrid"></div>
+                </section>
+
+                <section class="block">
+                    <h2>旅のしおりメモ</h2>
+                    <label>
+                        リード文
+                        <textarea id="guideCopy" rows="3"></textarea>
+                    </label>
+                    <label>
+                        ひとことメモ
+                        <textarea id="guideNote" rows="2"></textarea>
+                    </label>
+                </section>
+
+                <section class="block">
+                    <h2>日程（1日目）</h2>
+                    <div class="repeat-list" id="day1List"></div>
+                    <button type="button" class="ghost" data-add="day1">+ 追加</button>
+                </section>
+
+                <section class="block">
+                    <h2>日程（2日目）</h2>
+                    <div class="repeat-list" id="day2List"></div>
+                    <button type="button" class="ghost" data-add="day2">+ 追加</button>
+                </section>
+
+                <section class="block">
+                    <h2>自由行動マップ</h2>
+                    <label>
+                        説明文
+                        <textarea id="mapSummary" rows="2"></textarea>
+                    </label>
+                    <label>
+                        Google Map 埋め込みURL
+                        <input type="url" id="mapEmbed" placeholder="https://www.google.com/maps?q=...&output=embed">
+                    </label>
+                    <div class="repeat-list" id="mapSpotList"></div>
+                    <button type="button" class="ghost" data-add="spot">+ スポット追加</button>
+                </section>
+
+                <section class="block">
+                    <h2>大事なお知らせ</h2>
+                    <div class="repeat-list" id="infoListAdmin"></div>
+                    <button type="button" class="ghost" data-add="info">+ 追加</button>
+                </section>
+
+                <section class="block">
+                    <h2>宿泊と会場</h2>
+                    <div class="form-grid">
+                        <label>
+                            ホテル名
+                            <input type="text" id="stayName">
+                        </label>
+                        <label>
+                            宿泊説明
+                            <input type="text" id="stayText">
+                        </label>
+                        <label>
+                            式場説明
+                            <input type="text" id="stayVenueText">
+                        </label>
+                        <label>
+                            朝の目安
+                            <input type="text" id="stayMorningText">
+                        </label>
+                    </div>
+                </section>
+
+                <section class="block">
+                    <h2>出欠フォーム案内</h2>
+                    <label>
+                        文章（1行ごとに段落）
+                        <textarea id="rsvpParagraphs" rows="3"></textarea>
+                    </label>
+                </section>
+            </form>
+        </section>
+    </main>
+
+    <template id="repeatItemTemplate">
+        <div class="repeat-item">
+            <div class="repeat-fields"></div>
+            <button type="button" class="ghost remove">削除</button>
+        </div>
+    </template>
+
+    <template id="imageItemTemplate">
+        <div class="image-item">
+            <div class="image-preview"></div>
+            <div class="image-fields">
+                <label>
+                    画像URL
+                    <input type="url" class="image-url" placeholder="https://...">
+                </label>
+                <label>
+                    キャプション（英）
+                    <input type="text" class="image-caption-en">
+                </label>
+                <label>
+                    キャプション（日）
+                    <input type="text" class="image-caption-ja">
+                </label>
+                <label>
+                    代替テキスト
+                    <input type="text" class="image-alt">
+                </label>
+                <label class="upload">
+                    画像アップロード
+                    <input type="file" class="image-file" accept="image/*">
+                </label>
+                <p class="status image-status"></p>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
