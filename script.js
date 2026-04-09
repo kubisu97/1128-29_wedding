@@ -759,3 +759,14 @@
                 });
             });
         }
+
+        document.querySelectorAll('.plan-item').forEach((item) => {
+            const icon = item.querySelector('.plan-icon');
+            if (!icon) {
+                return;
+            }
+            icon.textContent = item.open ? '👇' : '👉';
+            item.addEventListener('toggle', () => {
+                icon.textContent = item.open ? '👇' : '👉';
+            });
+        });
