@@ -692,16 +692,22 @@
                 submittedAt: new Date().toISOString()
             };
 
+            const bodyParams = new URLSearchParams();
+            Object.entries(payload).forEach(([key, value]) => {
+                if (typeof value === 'object') {
+                    bodyParams.append(key, JSON.stringify(value));
+                } else if (value != null) {
+                    bodyParams.append(key, String(value));
+                }
+            });
+
             rsvpStatus.textContent = '送信中です...';
             rsvpStatus.classList.remove('is-success');
 
             try {
                 const response = await fetch(FORM_ENDPOINT, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
+                    body: bodyParams
                 });
 
                 if (!response.ok) {
