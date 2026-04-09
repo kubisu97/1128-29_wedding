@@ -29,6 +29,8 @@
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background:
+                radial-gradient(circle at 15% 20%, rgba(212, 91, 53, 0.08), transparent 20%),
+                radial-gradient(circle at 85% 12%, rgba(127, 167, 216, 0.16), transparent 24%),
                 radial-gradient(circle at top left, rgba(241, 199, 109, 0.28), transparent 30%),
                 radial-gradient(circle at bottom right, rgba(127, 167, 216, 0.24), transparent 32%),
                 linear-gradient(180deg, #f7f3eb 0%, #f3ecdf 100%);
@@ -57,6 +59,26 @@
             background-size: auto, 18px 18px, 23px 23px, 27px 27px;
             mix-blend-mode: multiply;
             z-index: 10;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: -10%;
+            pointer-events: none;
+            opacity: 0.14;
+            background:
+                radial-gradient(circle at 50% 50%, transparent 0 18px, rgba(17, 17, 17, 0.08) 18px 20px, transparent 20px 42px),
+                radial-gradient(circle at 0 100%, transparent 0 18px, rgba(17, 17, 17, 0.06) 18px 20px, transparent 20px 42px),
+                radial-gradient(circle at 100% 100%, transparent 0 18px, rgba(17, 17, 17, 0.06) 18px 20px, transparent 20px 42px);
+            background-size: 84px 42px;
+            animation: kyotoPatternDrift 22s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes kyotoPatternDrift {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(-84px, 42px, 0); }
         }
 
         a {
@@ -654,6 +676,29 @@
             transform: rotate(-1deg);
         }
 
+        .map-summary {
+            max-width: 42rem;
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--muted);
+        }
+
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .map-chip {
+            padding: 8px 12px;
+            border: 2px solid var(--ink);
+            background: rgba(255, 251, 244, 0.88);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+        }
+
         .map-layout {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
@@ -663,10 +708,11 @@
 
         .map-figure {
             position: relative;
-            min-height: 420px;
+            min-height: 480px;
             border: var(--line) solid var(--ink);
             background:
-                linear-gradient(180deg, rgba(127, 167, 216, 0.3), rgba(246, 241, 232, 0.85)),
+                radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.55), transparent 28%),
+                linear-gradient(180deg, rgba(127, 167, 216, 0.25), rgba(246, 241, 232, 0.88)),
                 linear-gradient(90deg, rgba(17, 17, 17, 0.08) 1px, transparent 1px),
                 linear-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
             background-size: auto, 52px 52px, 52px 52px;
@@ -681,6 +727,28 @@
             transform: skewX(-8deg);
             border-left: 3px solid rgba(17, 17, 17, 0.3);
             border-right: 3px solid rgba(17, 17, 17, 0.3);
+        }
+
+        .map-road {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.62);
+            border: 2px solid rgba(17, 17, 17, 0.16);
+        }
+
+        .map-road.road-a {
+            inset: 46% 12% auto 8%;
+            height: 18px;
+        }
+
+        .map-road.road-b {
+            inset: 16% auto 8% 42%;
+            width: 18px;
+        }
+
+        .map-road.road-c {
+            inset: 25% 30% auto 18%;
+            height: 14px;
+            transform: rotate(-18deg);
         }
 
         .map-label {
@@ -719,6 +787,10 @@
             transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
         }
 
+        .map-spot:hover {
+            transform: scale(1.14);
+        }
+
         .map-spot::after {
             content: attr(data-name);
             position: absolute;
@@ -749,6 +821,58 @@
             stroke-width: 4;
             stroke-linecap: round;
             stroke-dasharray: 8 10;
+        }
+
+        .map-card-stack {
+            display: grid;
+            gap: 16px;
+        }
+
+        .map-detail {
+            padding: 18px;
+            border: var(--line) solid var(--ink);
+            background: rgba(255, 251, 244, 0.96);
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .map-detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 14px 0 12px;
+        }
+
+        .map-detail-meta span {
+            padding: 6px 10px;
+            border: 2px solid var(--ink);
+            background: #fff;
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .map-detail-copy {
+            font-size: 0.96rem;
+            line-height: 1.85;
+            color: var(--muted);
+        }
+
+        .map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .map-action {
+            display: inline-block;
+            padding: 10px 14px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
         }
 
         .spot-list {
@@ -784,6 +908,12 @@
             display: block;
             margin-bottom: 6px;
             font-size: 1rem;
+        }
+
+        .spot-card p {
+            font-size: 0.94rem;
+            line-height: 1.7;
+            color: var(--muted);
         }
 
         .spot-card small {
@@ -1384,6 +1514,33 @@
             .map-figure {
                 min-height: 360px;
             }
+
+            .map-trail path {
+                stroke-width: 3;
+            }
+
+            .map-actions {
+                flex-direction: column;
+            }
+
+            .map-action {
+                width: 100%;
+                text-align: center;
+            }
+
+            .spot-card,
+            .map-detail,
+            .member-card,
+            .rsvp-form-card,
+            .rsvp-card,
+            .invitation-card,
+            .guide-title-card,
+            .guide-note,
+            .stay-card,
+            .info-board,
+            .schedule-panel {
+                transform: none;
+            }
         }
     </style>
 </head>
@@ -1578,9 +1735,19 @@
                     <h2 class="section-title-en txt-en">Around IMU</h2>
                     <p class="section-title-ja">自由行動のときに立ち寄りやすい、おすすめスポット。</p>
                 </div>
+                <p class="map-summary">ホテルを起点に、歩きやすさと京都らしさのバランスで選んだスポットです。地図のピンか右のカードを押すと、移動目安や見どころが切り替わります。</p>
+                <div class="map-legend">
+                    <span class="map-chip txt-en">Walkable</span>
+                    <span class="map-chip txt-en">Food</span>
+                    <span class="map-chip txt-en">Scenery</span>
+                    <span class="map-chip txt-en">Photo Spot</span>
+                </div>
                 <div class="map-layout">
                     <div class="map-figure" id="freewalkMap">
                         <div class="map-river"></div>
+                        <div class="map-road road-a"></div>
+                        <div class="map-road road-b"></div>
+                        <div class="map-road road-c"></div>
                         <div class="map-label hotel txt-en">IMU HOTEL</div>
                         <div class="map-label river txt-en">Kamo River</div>
                         <svg class="map-trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1592,32 +1759,48 @@
                         <button type="button" class="map-spot" data-spot="gion" data-name="Gion" style="left:59%; top:26%;"></button>
                         <button type="button" class="map-spot" data-spot="yasaka" data-name="Yasaka" style="left:70%; top:20%;"></button>
                     </div>
-                    <div class="spot-list" id="spotList">
-                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO">
+                    <div class="map-card-stack">
+                        <div class="map-detail" id="mapDetail">
+                            <p class="eyebrow txt-en">Current Spot</p>
+                            <h3 id="mapDetailTitle">IMU HOTEL KYOTO</h3>
+                            <div class="map-detail-meta">
+                                <span id="mapDetailWalk">Walk 0 min</span>
+                                <span id="mapDetailVibe">Base Camp</span>
+                            </div>
+                            <p class="map-detail-copy" id="mapDetailCopy">ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
+                            <div class="map-actions">
+                                <a class="map-action txt-en" id="mapDetailLink" href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer">Open In Google Maps</a>
+                                <a class="map-action txt-en" id="mapRouteLink" href="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer">Route From Hotel</a>
+                            </div>
+                        </div>
+
+                        <div class="spot-list" id="spotList">
+                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" data-route-link="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" data-walk="徒歩 0分" data-vibe="Base Camp">
                             <strong>IMU HOTEL KYOTO</strong>
-                            ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。
+                            <p>ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
                             <small class="txt-en">Base Camp</small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4">
+                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-walk="徒歩 14分" data-vibe="Food Walk">
                             <strong>錦市場</strong>
-                            おやつやちょっとしたお土産探しに。ホテルから歩いて立ち寄りやすい定番です。
+                            <p>おやつやちょっとしたお土産探しに。ホテルから歩いて立ち寄りやすい定番です。</p>
                             <small class="txt-en">Food Walk</small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8">
+                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-walk="徒歩 8分" data-vibe="Cafe & Shops">
                             <strong>四条烏丸まわり</strong>
-                            カフェ休憩や買い物に便利。少し歩くだけでも京都の街の空気を感じられます。
+                            <p>カフェ休憩や買い物に便利。少し歩くだけでも京都の街の空気を感じられます。</p>
                             <small class="txt-en">Cafe & Shops</small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92">
+                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E7%A5%87%E5%9C%92" data-walk="徒歩 24分" data-vibe="Evening Mood">
                             <strong>祇園エリア</strong>
-                            夕方に歩くとぐっと京都らしい雰囲気。写真を撮るにも気持ちのいいエリアです。
+                            <p>夕方に歩くとぐっと京都らしい雰囲気。写真を撮るにも気持ちのいいエリアです。</p>
                             <small class="txt-en">Evening Mood</small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE">
+                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-walk="徒歩 28分" data-vibe="Classic Kyoto">
                             <strong>八坂神社</strong>
-                            高台寺方面とセットで歩く王道コース。希望者は新郎新婦とここを目指しましょう。
+                            <p>高台寺方面とセットで歩く王道コース。希望者は新郎新婦とここを目指しましょう。</p>
                             <small class="txt-en">Classic Kyoto</small>
                         </button>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -1881,6 +2064,12 @@
 
         const spotCards = Array.from(document.querySelectorAll('.spot-card'));
         const mapSpots = Array.from(document.querySelectorAll('.map-spot'));
+        const mapDetailTitle = document.getElementById('mapDetailTitle');
+        const mapDetailWalk = document.getElementById('mapDetailWalk');
+        const mapDetailVibe = document.getElementById('mapDetailVibe');
+        const mapDetailCopy = document.getElementById('mapDetailCopy');
+        const mapDetailLink = document.getElementById('mapDetailLink');
+        const mapRouteLink = document.getElementById('mapRouteLink');
 
         function activateSpot(spotId) {
             spotCards.forEach((card) => {
@@ -1890,6 +2079,18 @@
             mapSpots.forEach((spot) => {
                 spot.classList.toggle('is-active', spot.dataset.spot === spotId);
             });
+
+            const activeCard = spotCards.find((card) => card.dataset.spot === spotId);
+            if (!activeCard) {
+                return;
+            }
+
+            mapDetailTitle.textContent = activeCard.querySelector('strong')?.textContent ?? '';
+            mapDetailWalk.textContent = activeCard.dataset.walk ?? '';
+            mapDetailVibe.textContent = activeCard.dataset.vibe ?? '';
+            mapDetailCopy.textContent = activeCard.querySelector('p')?.textContent ?? '';
+            mapDetailLink.href = activeCard.dataset.mapLink ?? '#';
+            mapRouteLink.href = activeCard.dataset.routeLink ?? '#';
         }
 
         spotCards.forEach((card) => {
