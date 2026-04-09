@@ -39,6 +39,10 @@
             position: relative;
         }
 
+        body.is-locked {
+            overflow: hidden;
+        }
+
         body::before {
             content: '';
             position: fixed;
@@ -103,6 +107,97 @@
             background: rgba(255, 252, 246, 0.9);
             border: var(--line) solid var(--ink);
             box-shadow: var(--shadow);
+        }
+
+        .access-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            background:
+                linear-gradient(rgba(17, 17, 17, 0.45), rgba(17, 17, 17, 0.45)),
+                linear-gradient(180deg, #f7f3eb 0%, #f3ecdf 100%);
+        }
+
+        .access-gate[hidden] {
+            display: none;
+        }
+
+        .gate-card {
+            width: min(100%, 540px);
+            padding: clamp(24px, 4vw, 38px);
+            transform: rotate(-1deg);
+        }
+
+        .gate-title {
+            font-size: clamp(2.2rem, 7vw, 4.6rem);
+            line-height: 0.9;
+            margin: 18px 0 16px;
+        }
+
+        .gate-copy {
+            font-size: 0.98rem;
+            line-height: 1.95;
+            color: var(--muted);
+        }
+
+        .gate-form {
+            display: grid;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .gate-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.18em;
+            font-weight: 900;
+        }
+
+        .gate-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: var(--line) solid var(--ink);
+            background: #fffdf7;
+            font: inherit;
+            font-size: 1rem;
+            border-radius: 0;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .gate-input:focus {
+            outline: none;
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .gate-button {
+            justify-self: start;
+            padding: 16px 26px;
+            border: var(--line) solid var(--ink);
+            background: var(--ink);
+            color: #fff8f0;
+            font: inherit;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transform: rotate(1deg);
+        }
+
+        .gate-button:hover {
+            transform: translate(6px, 6px);
+            box-shadow: none;
+        }
+
+        .gate-error {
+            min-height: 1.5em;
+            color: #a13318;
+            font-size: 0.92rem;
+            font-weight: 900;
         }
 
         .reveal {
@@ -667,7 +762,21 @@
         }
     </style>
 </head>
-<body>
+<body class="is-locked">
+    <div class="access-gate" id="accessGate">
+        <div class="gate-card paper-card">
+            <p class="eyebrow txt-en">Private Preview</p>
+            <h1 class="gate-title">Family<br><span class="txt-en">Access Only</span></h1>
+            <p class="gate-copy">公開前のプレビュー版です。合言葉を入れると、京都ウェディングのしおりが開きます。</p>
+            <form class="gate-form" id="accessForm">
+                <label class="gate-label txt-en" for="sitePassword">Password</label>
+                <input class="gate-input" id="sitePassword" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required>
+                <button class="gate-button txt-en" type="submit">Enter</button>
+                <p class="gate-error" id="gateError" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
     <header class="site-header wrapper reveal" data-tilt="left">
         <div class="masthead">
             <div>
@@ -869,6 +978,45 @@
     </footer>
 
     <script>
+        const ACCESS_STORAGE_KEY = 'wedi-family-access';
+        const PASSWORD_HASH = '6e80596dbc1acf3059007f86ef034859ed10d002b5ad669a63c5e6d3765517e9';
+        const accessGate = document.getElementById('accessGate');
+        const accessForm = document.getElementById('accessForm');
+        const passwordInput = document.getElementById('sitePassword');
+        const gateError = document.getElementById('gateError');
+
+        async function sha256(text) {
+            const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return Array.from(new Uint8Array(buffer)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        function unlockSite() {
+            document.body.classList.remove('is-locked');
+            accessGate.hidden = true;
+        }
+
+        if (localStorage.getItem(ACCESS_STORAGE_KEY) === PASSWORD_HASH) {
+            unlockSite();
+        } else {
+            passwordInput.focus();
+        }
+
+        accessForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            gateError.textContent = '';
+
+            const inputHash = await sha256(passwordInput.value.trim());
+            if (inputHash === PASSWORD_HASH) {
+                localStorage.setItem(ACCESS_STORAGE_KEY, PASSWORD_HASH);
+                unlockSite();
+                accessForm.reset();
+                return;
+            }
+
+            gateError.textContent = 'パスワードが違います。もう一度お試しください。';
+            passwordInput.select();
+        });
+
         const targetDate = new Date('2026-11-29T10:30:00+09:00');
         const countdownRoot = document.getElementById('countdown');
         const units = {
