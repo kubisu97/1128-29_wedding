@@ -104,6 +104,23 @@
             letter-spacing: 0.12em;
         }
 
+        ruby.bilingual {
+            display: inline-block;
+            line-height: 1.02;
+            ruby-align: center;
+        }
+
+        ruby.bilingual rt {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-style: normal;
+            font-weight: 900;
+            font-size: 0.4em;
+            line-height: 1.15;
+            letter-spacing: 0.04em;
+            text-transform: none;
+            opacity: 0.78;
+        }
+
         .txt-bold {
             font-weight: 900;
         }
@@ -111,6 +128,10 @@
         .section-shell {
             position: relative;
             padding: clamp(72px, 10vw, 132px) 0;
+        }
+
+        .section-shell.section-compact {
+            padding: clamp(40px, 7vw, 88px) 0;
         }
 
         .eyebrow {
@@ -129,6 +150,22 @@
             background: rgba(255, 252, 246, 0.9);
             border: var(--line) solid var(--ink);
             box-shadow: var(--shadow);
+        }
+
+        .scroll-meter {
+            position: fixed;
+            inset: 0 auto auto 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(17, 17, 17, 0.08);
+            z-index: 90;
+        }
+
+        .scroll-meter span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: var(--ink);
         }
 
         .access-gate {
@@ -384,6 +421,82 @@
             color: var(--muted);
         }
 
+        .route-board {
+            padding: clamp(22px, 4vw, 34px);
+            display: grid;
+            gap: 18px;
+            background: rgba(255, 251, 244, 0.96);
+            transform: rotate(-0.6deg);
+        }
+
+        .route-title {
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            line-height: 0.95;
+        }
+
+        .route-copy {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--muted);
+        }
+
+        .route-steps {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .route-step {
+            position: relative;
+            display: grid;
+            gap: 10px;
+            padding: 18px 18px 20px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            text-align: left;
+            transform: rotate(-0.8deg);
+        }
+
+        .route-step:nth-child(even) {
+            transform: rotate(0.8deg);
+        }
+
+        .route-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -18px;
+            right: 16px;
+            padding: 6px 10px;
+            border: 2px solid var(--ink);
+            background: var(--accent-soft);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+
+        .route-step strong {
+            font-size: 1.1rem;
+        }
+
+        .route-step span {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .route-step small {
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+        }
+
+        .route-step:hover {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0 rgba(17, 17, 17, 0.88);
+        }
+
         .floating-note {
             position: absolute;
             right: clamp(16px, 3vw, 24px);
@@ -628,6 +741,71 @@
             letter-spacing: 0.12em;
         }
 
+        .photo-gallery .section-heading {
+            margin-bottom: 28px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .gallery-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 220px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            transform: rotate(-0.6deg);
+        }
+
+        .gallery-card:nth-child(even) {
+            transform: rotate(0.6deg);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.92) contrast(1.05);
+            display: block;
+        }
+
+        .gallery-card figcaption {
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
+            padding: 6px 10px;
+            border: 2px solid var(--ink);
+            background: rgba(255, 251, 244, 0.92);
+            font-size: 0.74rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+        }
+
+        .gallery-placeholder {
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--muted);
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(239, 230, 216, 0.95)),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(17, 17, 17, 0.05) 0 12px,
+                    rgba(255, 255, 255, 0.3) 12px 24px
+                );
+            padding: 18px;
+        }
+
+        .gallery-placeholder strong {
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
         .guide-intro {
             display: grid;
             grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -706,6 +884,38 @@
             align-items: start;
         }
 
+        .map-stage {
+            display: grid;
+            gap: 12px;
+        }
+
+        .map-toggle {
+            display: inline-flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .map-toggle-btn {
+            padding: 10px 14px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            box-shadow: 5px 5px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .map-toggle-btn.is-active {
+            background: var(--accent-soft);
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .map-panel[hidden] {
+            display: none;
+        }
+
         .map-figure {
             position: relative;
             min-height: 480px;
@@ -717,6 +927,27 @@
                 linear-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
             background-size: auto, 52px 52px, 52px 52px;
             overflow: hidden;
+        }
+
+        .map-real {
+            border: var(--line) solid var(--ink);
+            background: rgba(255, 251, 244, 0.92);
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            padding: 10px;
+        }
+
+        .map-real iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 360px;
+            border: none;
+        }
+
+        .map-real-note {
+            margin-top: 10px;
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.7;
         }
 
         .map-river {
@@ -919,6 +1150,29 @@
         .spot-card small {
             display: block;
             margin-top: 8px;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+            display: none;
+            gap: 10px;
+            padding: 10px 14px;
+            border: var(--line) solid var(--ink);
+            background: rgba(255, 251, 244, 0.96);
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            z-index: 80;
+        }
+
+        .mobile-nav a {
+            padding: 8px 12px;
+            border: 2px solid var(--ink);
+            background: #fff;
+            font-size: 0.78rem;
             font-weight: 900;
             letter-spacing: 0.12em;
         }
@@ -1405,6 +1659,14 @@
                 grid-template-columns: 1fr;
             }
 
+            .route-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .issue-stamp {
                 justify-self: start;
                 min-width: 124px;
@@ -1424,6 +1686,10 @@
         @media (max-width: 680px) {
             .wrapper {
                 width: min(100% - 20px, 1120px);
+            }
+
+            body {
+                padding-bottom: 90px;
             }
 
             .site-header {
@@ -1515,6 +1781,10 @@
                 min-height: 360px;
             }
 
+            .map-real iframe {
+                min-height: 320px;
+            }
+
             .map-trail path {
                 stroke-width: 3;
             }
@@ -1538,8 +1808,19 @@
             .guide-note,
             .stay-card,
             .info-board,
-            .schedule-panel {
+            .schedule-panel,
+            .route-board,
+            .route-step,
+            .gallery-card {
                 transform: none;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-nav {
+                display: flex;
             }
         }
     </style>
@@ -1547,40 +1828,68 @@
 <body class="is-locked">
     <div class="access-gate" id="accessGate">
         <div class="gate-card paper-card">
-            <p class="eyebrow txt-en">Private Preview</p>
-            <h1 class="gate-title">Family<br><span class="txt-en">Access Only</span></h1>
+            <p class="eyebrow txt-en"><ruby class="bilingual">Private Preview<rt>限定公開</rt></ruby></p>
+            <h1 class="gate-title">Family<br><span class="txt-en"><ruby class="bilingual">Access Only<rt>家族のみ</rt></ruby></span></h1>
             <p class="gate-copy">公開前のプレビュー版です。合言葉を入れると、京都ウェディングのしおりが開きます。</p>
             <form class="gate-form" id="accessForm">
-                <label class="gate-label txt-en" for="sitePassword">Password</label>
-                <input class="gate-input" id="sitePassword" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required>
-                <button class="gate-button txt-en" type="submit">Enter</button>
+                <label class="gate-label txt-en" for="sitePassword"><ruby class="bilingual">Password<rt>合言葉</rt></ruby></label>
+                <input class="gate-input" id="sitePassword" name="password" type="password" autocomplete="current-password" placeholder="合言葉を入力してください" required>
+                <button class="gate-button txt-en" type="submit"><ruby class="bilingual">Enter<rt>入る</rt></ruby></button>
                 <p class="gate-error" id="gateError" aria-live="polite"></p>
             </form>
         </div>
     </div>
+    <div class="scroll-meter" aria-hidden="true"><span id="scrollMeter"></span></div>
 
     <header class="site-header wrapper reveal" data-tilt="left">
         <div class="masthead paper-card">
             <div>
                 <p class="masthead-kicker">KYOTO FAMILY WEDDING JOURNEY</p>
-                <h1 class="masthead-title">Invitation &<br>Travel Guide<br><span class="txt-en">for Family</span></h1>
+                <h1 class="masthead-title"><span class="txt-en"><ruby class="bilingual">Invitation<rt>招待状</rt></ruby></span> &<br><span class="txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></span><br><span class="txt-en"><ruby class="bilingual">for Family<rt>ご家族向け</rt></ruby></span></h1>
                 <p class="masthead-sub">2026年11月28日から29日まで。広島から京都へ、家族みんなで向かう2日間のための招待状兼デジタルしおりです。</p>
             </div>
             <aside class="issue-stamp txt-en">
                 <div>
-                    <small>Issue</small>
+                    <small><ruby class="bilingual">Issue<rt>特別号</rt></ruby></small>
                     <strong>11.29</strong>
-                    <small>Kyoto</small>
+                    <small><ruby class="bilingual">Kyoto<rt>京都</rt></ruby></small>
                 </div>
             </aside>
         </div>
     </header>
 
-    <section class="section-shell">
+    <section class="section-shell section-compact" id="start">
+        <div class="wrapper">
+            <div class="route-board paper-card reveal" data-tilt="right">
+                <p class="eyebrow txt-en"><ruby class="bilingual">Start Here<rt>はじめに</rt></ruby></p>
+                <h2 class="route-title">迷わないための、3ステップ。</h2>
+                <p class="route-copy">初めてでも迷わず進めるように、見る順番をまとめました。ここだけ押さえればOKです。</p>
+                <div class="route-steps">
+                    <a class="route-step" href="#invitation" data-step="01">
+                        <small class="txt-en"><ruby class="bilingual">Invitation<rt>招待状</rt></ruby></small>
+                        <strong>まずは挨拶と概要</strong>
+                        <span>式の日程と場所、今回の旅の雰囲気を確認。</span>
+                    </a>
+                    <a class="route-step" href="#guide" data-step="02">
+                        <small class="txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></small>
+                        <strong>日程と地図をチェック</strong>
+                        <span>バス出発、自由行動、会場までの流れを把握。</span>
+                    </a>
+                    <a class="route-step" href="#rsvp" data-step="03">
+                        <small class="txt-en"><ruby class="bilingual">RSVP<rt>出欠回答</rt></ruby></small>
+                        <strong>最後にフォームを送信</strong>
+                        <span>出欠・アレルギーの確認をまとめて入力。</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-shell" id="invitation">
         <div class="wrapper invitation-grid">
             <article class="invitation-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en">From The Hosts</p>
-                <h2 class="invitation-title">みなさまへ、<br><span class="txt-en">Welcome To Kyoto</span></h2>
+                <p class="eyebrow txt-en"><ruby class="bilingual">From The Hosts<rt>主催者より</rt></ruby></p>
+                <h2 class="invitation-title">みなさまへ、<br><span class="txt-en"><ruby class="bilingual">Welcome To Kyoto<rt>京都へようこそ</rt></ruby></span></h2>
                 <div class="invitation-copy">
                     <p>このたび、私たちは京都で結婚式を挙げることになりました。広島からこうして家族みんなで来てもらえることが、とてもうれしいです。</p>
                     <p>せっかくの機会なので、当日だけでなく前日から少し旅気分で楽しんでもらえたらと思い、招待状と旅のしおりをひとつにまとめました。</p>
@@ -1597,35 +1906,35 @@
             <div class="photo-wall reveal" data-tilt="right">
                 <figure class="photo-piece piece-a">
                     <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80" alt="京都の街並み">
-                    <figcaption class="txt-en">Kyoto Walk</figcaption>
+                    <figcaption class="txt-en"><ruby class="bilingual">Kyoto Walk<rt>京都散歩</rt></ruby></figcaption>
                 </figure>
                 <figure class="photo-piece piece-b">
                     <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=1200&q=80" alt="カフェで過ごす時間">
-                    <figcaption class="txt-en">Cafe Stop</figcaption>
+                    <figcaption class="txt-en"><ruby class="bilingual">Cafe Stop<rt>カフェ休憩</rt></ruby></figcaption>
                 </figure>
                 <figure class="photo-piece piece-c">
                     <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80" alt="花や装花をイメージした写真">
-                    <figcaption class="txt-en">Flowers</figcaption>
+                    <figcaption class="txt-en"><ruby class="bilingual">Flowers<rt>花の景色</rt></ruby></figcaption>
                 </figure>
                 <figure class="photo-piece piece-d">
                     <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80" alt="祝福のイメージ写真">
-                    <figcaption class="txt-en">Together</figcaption>
+                    <figcaption class="txt-en"><ruby class="bilingual">Together<rt>みんなで</rt></ruby></figcaption>
                 </figure>
                 <figure class="photo-piece piece-e photo-placeholder">
                     <div>
                         <strong>ふたりの写真</strong>
-                        <span>Photo Slot 01</span>
+                        <span>写真差し替え 01</span>
                     </div>
                 </figure>
                 <figure class="photo-piece piece-f photo-placeholder">
                     <div>
                         <strong>ふたりの写真</strong>
-                        <span>Photo Slot 02</span>
+                        <span>写真差し替え 02</span>
                     </div>
                 </figure>
                 <div class="photo-note">
                     当日はもちろん、前日から少しずつ旅のムードで。<br>写真は好きなものに差し替えると、もっと自分たちらしくなります。
-                    <a href="#rsvp" class="photo-link txt-en">RSVP At The End</a>
+                    <a href="#rsvp" class="photo-link txt-en"><ruby class="bilingual">RSVP At The End<rt>回答はこちら</rt></ruby></a>
                 </div>
             </div>
         </div>
@@ -1635,40 +1944,88 @@
         <div class="wrapper">
             <div class="countdown-frame reveal" data-tilt="left">
                 <div class="countdown-head">
-                    <p class="countdown-label txt-en">Countdown To The Ceremony</p>
-                    <p class="countdown-target">Target: 2026.11.29 10:30 / アトールテラス鴨川</p>
+                    <p class="countdown-label txt-en"><ruby class="bilingual">Countdown To The Ceremony<rt>挙式まであと</rt></ruby></p>
+                    <p class="countdown-target">挙式日時：2026.11.29 10:30 / アトールテラス鴨川</p>
                 </div>
                 <div class="countdown-timer" id="countdown" aria-live="polite">
                     <div class="countdown-block">
                         <span class="countdown-number" data-unit="days">000</span>
-                        <span class="countdown-unit txt-en">Days</span>
+                        <span class="countdown-unit txt-en"><ruby class="bilingual">Days<rt>日</rt></ruby></span>
                     </div>
                     <div class="countdown-block">
                         <span class="countdown-number" data-unit="hours">00</span>
-                        <span class="countdown-unit txt-en">Hours</span>
+                        <span class="countdown-unit txt-en"><ruby class="bilingual">Hours<rt>時間</rt></ruby></span>
                     </div>
                     <div class="countdown-block">
                         <span class="countdown-number" data-unit="minutes">00</span>
-                        <span class="countdown-unit txt-en">Minutes</span>
+                        <span class="countdown-unit txt-en"><ruby class="bilingual">Minutes<rt>分</rt></ruby></span>
                     </div>
                     <div class="countdown-block">
                         <span class="countdown-number" data-unit="seconds">00</span>
-                        <span class="countdown-unit txt-en">Seconds</span>
+                        <span class="countdown-unit txt-en"><ruby class="bilingual">Seconds<rt>秒</rt></ruby></span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section-shell">
+    <section class="section-shell photo-gallery" id="gallery">
+        <div class="wrapper">
+            <div class="section-heading">
+                <p class="eyebrow txt-en"><ruby class="bilingual">Photo Diary<rt>写真のページ</rt></ruby></p>
+                <h2 class="section-title-en txt-en"><ruby class="bilingual">Kyoto Moodboard<rt>京都ムード</rt></ruby></h2>
+                <p class="section-title-ja">当日の雰囲気イメージ。ふたりの写真に差し替えてOKです。</p>
+            </div>
+            <div class="gallery-grid">
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=900&q=80" alt="京都の寺社と石畳">
+                    <figcaption class="txt-en"><ruby class="bilingual">Temple Walk<rt>寺社散歩</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="町並みの夕方">
+                    <figcaption class="txt-en"><ruby class="bilingual">Evening Glow<rt>夕方の光</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" alt="木々と自然の景色">
+                    <figcaption class="txt-en"><ruby class="bilingual">Quiet Green<rt>静かな緑</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=900&q=80" alt="カフェで過ごす時間">
+                    <figcaption class="txt-en"><ruby class="bilingual">Cafe Time<rt>カフェ時間</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=900&q=80" alt="京都の街の景色">
+                    <figcaption class="txt-en"><ruby class="bilingual">City View<rt>京都の街</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80" alt="ふたりのイメージ">
+                    <figcaption class="txt-en"><ruby class="bilingual">Together<rt>ふたり</rt></ruby></figcaption>
+                </figure>
+                <figure class="gallery-card gallery-placeholder">
+                    <div>
+                        <strong>ふたりの写真</strong>
+                        <span>写真差し替え 03</span>
+                    </div>
+                </figure>
+                <figure class="gallery-card gallery-placeholder">
+                    <div>
+                        <strong>ふたりの写真</strong>
+                        <span>写真差し替え 04</span>
+                    </div>
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-shell" id="guide">
         <div class="wrapper guide-intro">
             <article class="guide-title-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en">Travel Guide</p>
-                <h2 class="guide-title">旅のしおり、<br><span class="txt-en">Start</span></h2>
+                <p class="eyebrow txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></p>
+                <h2 class="guide-title">旅のしおり、<br><span class="txt-en"><ruby class="bilingual">Start<rt>ここから</rt></ruby></span></h2>
                 <p class="guide-copy">ここから先は、広島から来てくれる家族向けの実用パートです。動き方、集合のタイミング、ホテル、会場まわりの情報をまとめています。当日はこのページを開いてもらえれば大丈夫、というつくりにしました。</p>
             </article>
             <aside class="guide-note paper-card reveal" data-tilt="right">
-                <h3 class="txt-en">Quick Note</h3>
+                <h3 class="txt-en"><ruby class="bilingual">Quick Note<rt>ひとことメモ</rt></ruby></h3>
                 <p>11月の京都は朝晩がしっかり冷えます。バス移動や街歩きもあるので、軽い羽織りがあると安心。ホテルは四条烏丸なので、食後に少し散歩したい人にもかなり良い立地です。</p>
             </aside>
         </div>
@@ -1676,10 +2033,10 @@
 
     <section class="section-shell">
         <div class="wrapper">
-            <article class="schedule-panel day-one paper-card reveal" data-tilt="left">
+            <article class="schedule-panel day-one paper-card reveal" data-tilt="left" id="day1">
                 <div class="section-heading">
-                    <p class="eyebrow txt-en">Day 1 / Saturday</p>
-                    <h2 class="section-title-en txt-en">Nov 28</h2>
+                    <p class="eyebrow txt-en"><ruby class="bilingual">Day 1<rt>1日目</rt></ruby> / <ruby class="bilingual">Saturday<rt>土曜日</rt></ruby></p>
+                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Nov 28<rt>11月28日</rt></ruby></h2>
                     <p class="section-title-ja">京都到着。まずは、おいしいランチと街歩き。</p>
                 </div>
 
@@ -1696,7 +2053,7 @@
                         <div>
                             <h3 class="content-title">あたか飯店でランチ</h3>
                             <p class="content-txt">京都南ICを降りてすぐ。老舗中華で長旅の疲れを癒しましょう。3階の大広間を用意しています。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%9F%E3%81%8B%E9%A3%AF%E5%BA%97+%E4%BA%AC%E9%83%BD" class="map-link txt-en" target="_blank" rel="noreferrer">Open Google Map</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%9F%E3%81%8B%E9%A3%AF%E5%BA%97+%E4%BA%AC%E9%83%BD" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
                         </div>
                     </div>
                     <div class="timeline-item reveal" data-tilt="right">
@@ -1704,7 +2061,7 @@
                         <div>
                             <h3 class="content-title">IMU HOTELにチェックイン</h3>
                             <p class="content-txt">バスでホテルへ移動。まずは荷物を預けてリフレッシュ。四条烏丸エリアを歩きやすい、センスの良いモダンなホテルです。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" class="map-link txt-en" target="_blank" rel="noreferrer">Open Google Map</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
                         </div>
                     </div>
                     <div class="timeline-item reveal" data-tilt="left">
@@ -1719,7 +2076,7 @@
                         <div>
                             <h3 class="content-title">夕食会（前夜祭）</h3>
                             <p class="content-txt">場所：〇〇（決定した居酒屋名）<br>現地集合。広島と京都の食材をつまみながら、明日に向けてゆるく前祝いをしましょう。</p>
-                            <a href="#" class="map-link txt-en">Venue To Be Updated</a>
+                            <a href="#" class="map-link txt-en"><ruby class="bilingual">Venue To Be Updated<rt>会場は後日追記</rt></ruby></a>
                         </div>
                     </div>
                 </div>
@@ -1727,78 +2084,88 @@
         </div>
     </section>
 
-    <section class="section-shell">
+    <section class="section-shell" id="freewalk">
         <div class="wrapper">
             <article class="map-board paper-card reveal" data-tilt="left">
                 <div class="section-heading">
-                    <p class="eyebrow txt-en">Free Walk Map</p>
-                    <h2 class="section-title-en txt-en">Around IMU</h2>
+                    <p class="eyebrow txt-en"><ruby class="bilingual">Free Walk Map<rt>自由行動マップ</rt></ruby></p>
+                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Around IMU<rt>ホテル周辺</rt></ruby></h2>
                     <p class="section-title-ja">自由行動のときに立ち寄りやすい、おすすめスポット。</p>
                 </div>
-                <p class="map-summary">ホテルを起点に、歩きやすさと京都らしさのバランスで選んだスポットです。地図のピンか右のカードを押すと、移動目安や見どころが切り替わります。</p>
+                <p class="map-summary">ホテルを起点に、歩きやすさと京都らしさのバランスで選んだスポットです。ピンか右のカードを押すと詳細が切り替わり、上のボタンで地図の種類も変えられます。</p>
                 <div class="map-legend">
-                    <span class="map-chip txt-en">Walkable</span>
-                    <span class="map-chip txt-en">Food</span>
-                    <span class="map-chip txt-en">Scenery</span>
-                    <span class="map-chip txt-en">Photo Spot</span>
+                    <span class="map-chip txt-en"><ruby class="bilingual">Walkable<rt>徒歩圏内</rt></ruby></span>
+                    <span class="map-chip txt-en"><ruby class="bilingual">Food<rt>ごはん</rt></ruby></span>
+                    <span class="map-chip txt-en"><ruby class="bilingual">Scenery<rt>景色</rt></ruby></span>
+                    <span class="map-chip txt-en"><ruby class="bilingual">Photo Spot<rt>写真向き</rt></ruby></span>
                 </div>
                 <div class="map-layout">
-                    <div class="map-figure" id="freewalkMap">
+                    <div class="map-stage">
+                        <div class="map-toggle" role="tablist" aria-label="地図の表示を切り替える">
+                            <button class="map-toggle-btn is-active txt-en" type="button" data-map-target="paper"><ruby class="bilingual">Paper Map<rt>紙の地図</rt></ruby></button>
+                            <button class="map-toggle-btn txt-en" type="button" data-map-target="real"><ruby class="bilingual">Real Map<rt>リアル地図</rt></ruby></button>
+                        </div>
+                        <div class="map-panel map-figure" id="freewalkMap" data-map-panel="paper">
                         <div class="map-river"></div>
                         <div class="map-road road-a"></div>
                         <div class="map-road road-b"></div>
                         <div class="map-road road-c"></div>
-                        <div class="map-label hotel txt-en">IMU HOTEL</div>
-                        <div class="map-label river txt-en">Kamo River</div>
+                        <div class="map-label hotel txt-en"><ruby class="bilingual">IMU HOTEL<rt>ホテル</rt></ruby></div>
+                        <div class="map-label river txt-en"><ruby class="bilingual">Kamo River<rt>鴨川</rt></ruby></div>
                         <svg class="map-trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                             <path d="M17 56 C30 49, 38 39, 50 40 S70 48, 83 27"></path>
                         </svg>
-                        <button type="button" class="map-spot is-active" data-spot="imu" data-name="Hotel" style="left:18%; top:55%;"></button>
-                        <button type="button" class="map-spot" data-spot="nishiki" data-name="Nishiki" style="left:36%; top:38%;"></button>
-                        <button type="button" class="map-spot" data-spot="shijo" data-name="Shijo" style="left:28%; top:60%;"></button>
-                        <button type="button" class="map-spot" data-spot="gion" data-name="Gion" style="left:59%; top:26%;"></button>
-                        <button type="button" class="map-spot" data-spot="yasaka" data-name="Yasaka" style="left:70%; top:20%;"></button>
+                        <button type="button" class="map-spot is-active" data-spot="imu" data-name="ホテル" style="left:18%; top:55%;"></button>
+                        <button type="button" class="map-spot" data-spot="nishiki" data-name="錦市場" style="left:36%; top:38%;"></button>
+                        <button type="button" class="map-spot" data-spot="shijo" data-name="四条烏丸" style="left:28%; top:60%;"></button>
+                        <button type="button" class="map-spot" data-spot="gion" data-name="祇園" style="left:59%; top:26%;"></button>
+                        <button type="button" class="map-spot" data-spot="yasaka" data-name="八坂神社" style="left:70%; top:20%;"></button>
+                        </div>
+                        <div class="map-panel map-real" data-map-panel="real" hidden>
+                            <iframe title="IMU HOTEL KYOTO 周辺地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=IMU+HOTEL+KYOTO&output=embed"></iframe>
+                            <p class="map-real-note">地図の上をタップすると拡大できます。スポットは右のカードか、ボタンの地図アプリからも開けます。</p>
+                        </div>
                     </div>
                     <div class="map-card-stack">
                         <div class="map-detail" id="mapDetail">
-                            <p class="eyebrow txt-en">Current Spot</p>
+                            <p class="eyebrow txt-en"><ruby class="bilingual">Current Spot<rt>いま見ている場所</rt></ruby></p>
                             <h3 id="mapDetailTitle">IMU HOTEL KYOTO</h3>
                             <div class="map-detail-meta">
-                                <span id="mapDetailWalk">Walk 0 min</span>
-                                <span id="mapDetailVibe">Base Camp</span>
+                                <span id="mapDetailWalk">徒歩 0分</span>
+                                <span id="mapDetailVibe">起点</span>
                             </div>
                             <p class="map-detail-copy" id="mapDetailCopy">ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
                             <div class="map-actions">
-                                <a class="map-action txt-en" id="mapDetailLink" href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer">Open In Google Maps</a>
-                                <a class="map-action txt-en" id="mapRouteLink" href="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer">Route From Hotel</a>
+                                <a class="map-action txt-en" id="mapDetailLink" href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer"><ruby class="bilingual">Open In Google Maps<rt>地図アプリで開く</rt></ruby></a>
+                                <a class="map-action txt-en" id="mapRouteLink" href="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer"><ruby class="bilingual">Route From Hotel<rt>ホテルからの経路</rt></ruby></a>
                             </div>
                         </div>
 
                         <div class="spot-list" id="spotList">
-                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" data-route-link="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" data-walk="徒歩 0分" data-vibe="Base Camp">
+                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" data-route-link="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" data-walk="徒歩 0分" data-vibe="起点">
                             <strong>IMU HOTEL KYOTO</strong>
                             <p>ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
-                            <small class="txt-en">Base Camp</small>
+                            <small class="txt-en"><ruby class="bilingual">Base Camp<rt>起点</rt></ruby></small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-walk="徒歩 14分" data-vibe="Food Walk">
+                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-walk="徒歩 14分" data-vibe="食べ歩き">
                             <strong>錦市場</strong>
                             <p>おやつやちょっとしたお土産探しに。ホテルから歩いて立ち寄りやすい定番です。</p>
-                            <small class="txt-en">Food Walk</small>
+                            <small class="txt-en"><ruby class="bilingual">Food Walk<rt>食べ歩き</rt></ruby></small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-walk="徒歩 8分" data-vibe="Cafe & Shops">
+                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-walk="徒歩 8分" data-vibe="カフェと買い物">
                             <strong>四条烏丸まわり</strong>
                             <p>カフェ休憩や買い物に便利。少し歩くだけでも京都の街の空気を感じられます。</p>
-                            <small class="txt-en">Cafe & Shops</small>
+                            <small class="txt-en"><ruby class="bilingual">Cafe & Shops<rt>カフェと買い物</rt></ruby></small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E7%A5%87%E5%9C%92" data-walk="徒歩 24分" data-vibe="Evening Mood">
+                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E7%A5%87%E5%9C%92" data-walk="徒歩 24分" data-vibe="夕方におすすめ">
                             <strong>祇園エリア</strong>
                             <p>夕方に歩くとぐっと京都らしい雰囲気。写真を撮るにも気持ちのいいエリアです。</p>
-                            <small class="txt-en">Evening Mood</small>
+                            <small class="txt-en"><ruby class="bilingual">Evening Mood<rt>夕方におすすめ</rt></ruby></small>
                         </button>
-                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-walk="徒歩 28分" data-vibe="Classic Kyoto">
+                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-walk="徒歩 28分" data-vibe="王道の京都">
                             <strong>八坂神社</strong>
                             <p>高台寺方面とセットで歩く王道コース。希望者は新郎新婦とここを目指しましょう。</p>
-                            <small class="txt-en">Classic Kyoto</small>
+                            <small class="txt-en"><ruby class="bilingual">Classic Kyoto<rt>王道の京都</rt></ruby></small>
                         </button>
                         </div>
                     </div>
@@ -1809,10 +2176,10 @@
 
     <section class="section-shell">
         <div class="wrapper">
-            <article class="schedule-panel day-two paper-card reveal" data-tilt="right">
+            <article class="schedule-panel day-two paper-card reveal" data-tilt="right" id="day2">
                 <div class="section-heading">
-                    <p class="eyebrow txt-en">Day 2 / Sunday</p>
-                    <h2 class="section-title-en txt-en">Nov 29</h2>
+                    <p class="eyebrow txt-en"><ruby class="bilingual">Day 2<rt>2日目</rt></ruby> / <ruby class="bilingual">Sunday<rt>日曜日</rt></ruby></p>
+                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Nov 29<rt>11月29日</rt></ruby></h2>
                     <p class="section-title-ja">いよいよ、結婚式当日。朝は少しだけ早めです。</p>
                 </div>
 
@@ -1829,7 +2196,7 @@
                         <div>
                             <h3 class="content-title">受付開始</h3>
                             <p class="content-txt">アトールテラス鴨川 4Fにて。鴨川の景色を見ながら、少し深呼吸してお待ちください。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" class="map-link txt-en" target="_blank" rel="noreferrer">Open Google Map</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
                         </div>
                     </div>
                     <div class="timeline-item reveal" data-tilt="left">
@@ -1854,7 +2221,7 @@
     <section class="section-shell">
         <div class="wrapper info-wrap">
             <article class="info-board paper-card reveal" data-tilt="left">
-                <h2 class="info-title txt-en">Important Info</h2>
+                <h2 class="info-title txt-en"><ruby class="bilingual">Important Info<rt>大事なお知らせ</rt></ruby></h2>
                 <ul class="info-list">
                     <li data-mark="A"><span class="txt-bold">貸切バスについて：</span> 28日のホテル到着後はバスの運用が終了します。29日の会場への移動、及び帰路は各自での手配となります。</li>
                     <li data-mark="B"><span class="txt-bold">ドレスコード：</span> レストランウエディングですので、平服または準礼装でお気軽にお越しください。少しきれいめ、くらいの気持ちで大丈夫です。</li>
@@ -1862,7 +2229,7 @@
                 </ul>
             </article>
             <aside class="stay-card paper-card reveal" data-tilt="right">
-                <h3 class="txt-en">Stay & Venue</h3>
+                <h3 class="txt-en"><ruby class="bilingual">Stay & Venue<rt>宿泊と会場</rt></ruby></h3>
                 <p class="stay-name">IMU HOTEL KYOTO</p>
                 <div class="stay-meta">
                     <p><span class="txt-bold">宿泊：</span> 四条烏丸。食事も散歩も動きやすい、今回のベースキャンプです。</p>
@@ -1876,64 +2243,64 @@
     <section class="section-shell" id="rsvp">
         <div class="wrapper rsvp-grid">
             <article class="rsvp-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en">RSVP</p>
-                <h2 class="rsvp-title">ご回答を、<br><span class="txt-en">Please</span></h2>
+                <p class="eyebrow txt-en"><ruby class="bilingual">RSVP<rt>出欠回答</rt></ruby></p>
+                <h2 class="rsvp-title">ご回答を、<br><span class="txt-en"><ruby class="bilingual">Please<rt>お願いします</rt></ruby></span></h2>
                 <div class="rsvp-copy">
                     <p>最後に、参加可否とアレルギーの情報を教えてください。回答が集まると、席や料理の調整がしやすくなってとても助かります。</p>
-                    <p>フォームはスプレッドシート連携前提の送信形式にしてあるので、送信先URLを入れれば一覧化できます。</p>
+                    <p>所要時間は2分ほど。ご家族分をまとめて入力していただけると助かります。</p>
                 </div>
                 <div class="rsvp-setup">
-                    <span class="txt-bold">運用メモ：</span> `FORM_ENDPOINT` に Google Apps Script の Web アプリ URL を入れると、そのままスプレッドシートへ保存できます。
+                    <span class="txt-bold">ご案内：</span> ご家族ごとにまとめてご回答ください。出席される方を下の「メンバーを追加」から増やして入力できます。
                 </div>
             </article>
 
             <div class="rsvp-form-card paper-card reveal" data-tilt="right">
                 <form class="rsvp-form" id="rsvpForm">
                     <div class="field-group">
-                        <label class="field-label txt-en" for="householdName">Representative</label>
+                        <label class="field-label txt-en" for="householdName"><ruby class="bilingual">Representative<rt>代表者</rt></ruby></label>
                         <input class="rsvp-input" id="householdName" name="householdName" type="text" placeholder="代表者のお名前" required>
                     </div>
 
                     <div class="field-group">
-                        <label class="field-label txt-en" for="householdContact">Contact</label>
+                        <label class="field-label txt-en" for="householdContact"><ruby class="bilingual">Contact<rt>連絡先</rt></ruby></label>
                         <input class="rsvp-input" id="householdContact" name="contact" type="text" placeholder="電話番号 or メールアドレス">
                     </div>
 
                     <div class="field-group">
                         <div class="members-header">
-                            <span class="field-label txt-en">Members</span>
-                            <button class="member-add txt-en" type="button" id="addMemberButton">+ Add Member</button>
+                            <span class="field-label txt-en"><ruby class="bilingual">Members<rt>参加メンバー</rt></ruby></span>
+                            <button class="member-add txt-en" type="button" id="addMemberButton"><ruby class="bilingual">+ Add Member<rt>メンバーを追加</rt></ruby></button>
                         </div>
                         <div class="member-list" id="memberList"></div>
                     </div>
 
                     <div class="field-group">
-                        <label class="field-label txt-en" for="message">Message / Note</label>
+                        <label class="field-label txt-en" for="message"><ruby class="bilingual">Message / Note<rt>ひとことメモ</rt></ruby></label>
                         <textarea class="rsvp-textarea" id="message" name="message" placeholder="移動面での相談やひとことメッセージなど"></textarea>
                     </div>
 
                     <div class="field-group">
-                        <label class="field-label txt-en" for="householdMemo">Bus / Stay Memo</label>
+                        <label class="field-label txt-en" for="householdMemo"><ruby class="bilingual">Bus / Stay Memo<rt>バス・宿泊メモ</rt></ruby></label>
                         <textarea class="rsvp-textarea" id="householdMemo" name="householdMemo" placeholder="バス利用や宿泊まわりで伝えておきたいこと"></textarea>
                     </div>
 
-                    <button class="rsvp-submit txt-en" type="submit">Send RSVP</button>
+                    <button class="rsvp-submit txt-en" type="submit"><ruby class="bilingual">Send RSVP<rt>回答を送信</rt></ruby></button>
                     <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
                 </form>
 
                 <template id="memberTemplate">
                     <section class="member-card">
                         <div class="member-card-head">
-                            <strong>Member</strong>
-                            <button class="member-remove txt-en" type="button">Remove</button>
+                            <strong>メンバー</strong>
+                            <button class="member-remove txt-en" type="button"><ruby class="bilingual">Remove<rt>削除</rt></ruby></button>
                         </div>
                         <div class="member-grid">
                             <div class="field-group">
-                                <label class="field-label txt-en">Name</label>
+                                <label class="field-label txt-en"><ruby class="bilingual">Name<rt>お名前</rt></ruby></label>
                                 <input class="rsvp-input member-name-input" type="text" placeholder="参加メンバー名" required>
                             </div>
                             <div class="field-group">
-                                <span class="field-label txt-en">Attendance</span>
+                                <span class="field-label txt-en"><ruby class="bilingual">Attendance<rt>出欠</rt></ruby></span>
                                 <div class="radio-row">
                                     <label class="radio-card">
                                         <input class="member-attendance-input" type="radio" value="参加" required>
@@ -1947,7 +2314,7 @@
                             </div>
                         </div>
                         <div class="field-group">
-                            <span class="field-label txt-en">Allergy</span>
+                            <span class="field-label txt-en"><ruby class="bilingual">Allergy<rt>アレルギー</rt></ruby></span>
                             <div class="radio-row">
                                 <label class="radio-card">
                                     <input class="member-allergy-toggle" type="radio" value="なし" required>
@@ -1960,7 +2327,7 @@
                             </div>
                         </div>
                         <div class="field-group allergy-detail" hidden>
-                            <label class="field-label txt-en">Allergy Detail</label>
+                            <label class="field-label txt-en"><ruby class="bilingual">Allergy Detail<rt>内容</rt></ruby></label>
                             <textarea class="rsvp-textarea member-allergy-detail-input" placeholder="例：えび、かに、ナッツ など"></textarea>
                         </div>
                     </section>
@@ -1969,14 +2336,21 @@
         </div>
     </section>
 
+    <nav class="mobile-nav" aria-label="ページ内ナビゲーション">
+        <a href="#day1">日程</a>
+        <a href="#freewalk">地図</a>
+        <a href="#rsvp">回答</a>
+    </nav>
+
     <footer class="wrapper">
-        <p class="txt-en">Kyoto Family Wedding Journey / 2026.11.28-29</p>
+        <p class="txt-en"><ruby class="bilingual">Kyoto Family Wedding Journey<rt>京都家族旅のしおり</rt></ruby> / 2026.11.28-29</p>
         <p>Created with love by 新郎新婦</p>
     </footer>
 
     <script>
         const ACCESS_STORAGE_KEY = 'wedi-family-access';
         const PASSWORD_HASH = '6e80596dbc1acf3059007f86ef034859ed10d002b5ad669a63c5e6d3765517e9';
+        // Google Apps Script の Web アプリ URL を入れると、回答をスプレッドシートへ保存できます。
         const FORM_ENDPOINT = '';
         const accessGate = document.getElementById('accessGate');
         const accessForm = document.getElementById('accessForm');
@@ -1991,6 +2365,17 @@
         function unlockSite() {
             document.body.classList.remove('is-locked');
             accessGate.hidden = true;
+        }
+
+        const scrollMeter = document.getElementById('scrollMeter');
+
+        function updateScrollMeter() {
+            if (!scrollMeter) {
+                return;
+            }
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const ratio = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+            scrollMeter.style.width = `${(ratio * 100).toFixed(2)}%`;
         }
 
         if (localStorage.getItem(ACCESS_STORAGE_KEY) === PASSWORD_HASH) {
@@ -2014,6 +2399,21 @@
             gateError.textContent = 'パスワードが違います。もう一度お試しください。';
             passwordInput.select();
         });
+
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if (scrollTicking) {
+                return;
+            }
+            scrollTicking = true;
+            requestAnimationFrame(() => {
+                updateScrollMeter();
+                scrollTicking = false;
+            });
+        }, { passive: true });
+
+        window.addEventListener('resize', updateScrollMeter);
+        updateScrollMeter();
 
         const targetDate = new Date('2026-11-29T10:30:00+09:00');
         const countdownRoot = document.getElementById('countdown');
@@ -2107,6 +2507,29 @@
             });
         });
 
+        const mapToggleButtons = Array.from(document.querySelectorAll('.map-toggle-btn'));
+        const mapPanels = Array.from(document.querySelectorAll('[data-map-panel]'));
+
+        function setMapPanel(target) {
+            mapToggleButtons.forEach((button) => {
+                button.classList.toggle('is-active', button.dataset.mapTarget === target);
+            });
+
+            mapPanels.forEach((panel) => {
+                panel.hidden = panel.dataset.mapPanel !== target;
+            });
+        }
+
+        mapToggleButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                setMapPanel(button.dataset.mapTarget);
+            });
+        });
+
+        if (mapToggleButtons.length && mapPanels.length) {
+            setMapPanel('paper');
+        }
+
         const rsvpForm = document.getElementById('rsvpForm');
         const rsvpStatus = document.getElementById('rsvpStatus');
         const memberList = document.getElementById('memberList');
@@ -2116,7 +2539,7 @@
         function refreshMemberLabels() {
             Array.from(memberList.children).forEach((memberCard, index) => {
                 const number = index + 1;
-                memberCard.querySelector('.member-card-head strong').textContent = `Member ${number}`;
+                memberCard.querySelector('.member-card-head strong').textContent = `メンバー ${number}`;
 
                 memberCard.querySelectorAll('.member-attendance-input').forEach((input) => {
                     input.name = `memberAttendance${number}`;
@@ -2189,7 +2612,7 @@
             event.preventDefault();
 
             if (!FORM_ENDPOINT) {
-                rsvpStatus.textContent = '送信先URLが未設定です。FORM_ENDPOINT に Apps Script の URL を入れてください。';
+                rsvpStatus.textContent = 'ただいま回答フォームの準備中です。時間をおいてもう一度お試しください。';
                 rsvpStatus.classList.remove('is-success');
                 return;
             }
@@ -2243,7 +2666,7 @@
         });
 
         if (window.matchMedia('(pointer:fine)').matches) {
-            document.querySelectorAll('.photo-piece, .spot-card, .member-card').forEach((card) => {
+            document.querySelectorAll('.photo-piece, .spot-card, .member-card, .gallery-card').forEach((card) => {
                 card.addEventListener('pointermove', (event) => {
                     const rect = card.getBoundingClientRect();
                     const x = (event.clientX - rect.left) / rect.width - 0.5;
