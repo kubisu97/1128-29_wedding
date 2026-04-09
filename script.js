@@ -6,7 +6,7 @@
         const ACCESS_STORAGE_KEY = 'wedi-family-access';
         const PASSWORD_HASH = '6e80596dbc1acf3059007f86ef034859ed10d002b5ad669a63c5e6d3765517e9';
         // Google Apps Script の Web アプリ URL を入れると、回答をスプレッドシートへ保存できます。
-        const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw9YnXvUN_fUVFetgvwwQqelgQA3XfpXQQahADk9SiXsP8lDQ3Uy04p5JY3ei3CnlJa/exec';
+        const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwWr-lQtd48VyqxWFp3y2bjkp7pQMHism7uNjpt4LVIfxi_BSUtWKFfBeAG3EaF0C9r/exec';
         const accessGate = document.getElementById('accessGate');
         const accessForm = document.getElementById('accessForm');
         const passwordInput = document.getElementById('sitePassword');
