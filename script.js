@@ -705,14 +705,11 @@
             rsvpStatus.classList.remove('is-success');
 
             try {
-                const response = await fetch(FORM_ENDPOINT, {
+                await fetch(FORM_ENDPOINT, {
                     method: 'POST',
-                    body: bodyParams
+                    body: bodyParams,
+                    mode: 'no-cors'
                 });
-
-                if (!response.ok) {
-                    throw new Error('Submission failed');
-                }
 
                 rsvpForm.reset();
                 rsvpStatus.textContent = '送信ありがとうございました。内容を受け取りました。';
