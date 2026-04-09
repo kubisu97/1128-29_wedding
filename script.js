@@ -692,24 +692,47 @@
                 submittedAt: new Date().toISOString()
             };
 
-            const bodyParams = new URLSearchParams();
-            Object.entries(payload).forEach(([key, value]) => {
-                if (typeof value === 'object') {
-                    bodyParams.append(key, JSON.stringify(value));
-                } else if (value != null) {
-                    bodyParams.append(key, String(value));
+            function submitHiddenForm(actionUrl, data) {
+                const iframeId = 'gasFormTarget';
+                let iframe = document.getElementById(iframeId);
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = iframeId;
+                    iframe.name = iframeId;
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
                 }
-            });
+
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = actionUrl;
+                form.target = iframeId;
+                form.style.display = 'none';
+
+                Object.entries(data).forEach(([key, value]) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    if (typeof value === 'object') {
+                        input.value = JSON.stringify(value);
+                    } else if (value != null) {
+                        input.value = String(value);
+                    } else {
+                        input.value = '';
+                    }
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
+                form.remove();
+            }
 
             rsvpStatus.textContent = '送信中です...';
             rsvpStatus.classList.remove('is-success');
 
             try {
-                await fetch(FORM_ENDPOINT, {
-                    method: 'POST',
-                    body: bodyParams,
-                    mode: 'no-cors'
-                });
+                submitHiddenForm(FORM_ENDPOINT, payload);
 
                 rsvpForm.reset();
                 rsvpStatus.textContent = '送信ありがとうございました。内容を受け取りました。';
