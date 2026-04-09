@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYOTO FAMILY WEDDING JOURNEY - 11.28-29</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #F9F9F7; /* 紙のようなオフホワイト */
+            color: #1A1A1A;
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+        ul { list-style: none; }
+
+        /* --- UTILITY --- */
+        .wrapper { max-width: 640px; margin: 0 auto; padding: 0 20px; } /* スマホファーストの横幅 */
+        .txt-en { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: 0.1em; }
+        .txt-bold { font-weight: 700; }
+        .txt-link { color: #007bff; text-decoration: underline; } /* リンクはあえてクラシックに */
+        .skew-box { transform: skewX(-10deg); display: inline-block; padding: 5px 15px; }
+
+        /* --- HEADER --- */
+        header {
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 3px solid #1A1A1A; /* 強い黒線 */
+        }
+        .header-title {
+            font-size: 16px;
+            letter-spacing: 0.3em;
+            font-weight: 900;
+        }
+        .header-date {
+            font-size: 56px;
+            line-height: 1;
+            margin-top: 15px;
+        }
+
+        /* --- COUNTDOWN (NEW) --- */
+        .countdown-section {
+            padding: 40px 0;
+            background-color: #1A1A1A; /* 黒背景に白文字 */
+            color: #fff;
+            text-align: center;
+        }
+        .countdown-label {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .countdown-timer {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .countdown-unit { font-size: 20px; font-weight: 400; margin: 0 5px; }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative;
+            height: 80vh; /* 画面の8割 */
+            background-color: #eee; /* 画像がない場合のプレースホルダー */
+            /* 鴨川や二人の、フィルムグレイン風の写真を差し込んでください */
+            background-image: url('https://images.unsplash.com/photo-1605333333333-333333333333?q=80&w=1000&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid #1A1A1A;
+        }
+        .hero-copy {
+            background-color: #fff;
+            padding: 30px;
+            font-size: 32px;
+            font-weight: 900;
+            line-height: 1.2;
+            transform: rotate(-5deg); /* POPEYEらしい大胆な「ハズシ」 */
+            box-shadow: 10px 10px 0 #1A1A1A; /* パキッとした強い影 */
+            max-width: 80%;
+            text-align: center;
+        }
+
+        /* --- LEAD --- */
+        .lead {
+            padding: 80px 0;
+            text-align: center;
+        }
+        .lead-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: 0.1em;
+        }
+        .lead-txt {
+            font-size: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 2.2;
+            font-weight: 400;
+        }
+
+        /* --- SCHEDULE --- */
+        .schedule-section { padding: 100px 0; }
+        .day-label {
+            font-size: 14px;
+            font-weight: 900;
+            color: #fff;
+            background-color: #007bff; /* 青色のアクセント */
+            margin-bottom: 15px;
+        }
+        .section-title-en {
+            font-size: 64px;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+        .section-title-ja {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 60px;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            border-left: 3px solid #1A1A1A;
+            padding-left: 30px;
+            margin-left: 15px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 60px;
+        }
+        .timeline-item::before { /* ドット */
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            background-color: #F9F9F7;
+            border: 3px solid #1A1A1A;
+            border-radius: 50%;
+        }
+        .time {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .content-title {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background-color: #eee;
+            display: inline-block;
+            padding: 5px 10px;
+        }
+        .content-txt {
+            font-size: 16px;
+            color: #333;
+            max-width: 500px;
+        }
+        .map-link {
+            font-size: 14px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        /* --- INFO SECTIONS --- */
+        .info-section {
+            padding: 80px 0;
+            background-color: #1A1A1A;
+            color: #fff;
+            border-top: 3px solid #1A1A1A;
+        }
+        .info-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+        .info-list li {
+            font-size: 16px;
+            margin-bottom: 25px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.8;
+        }
+        .info-list li::before {
+            content: '👉'; /* POPEYEっぽい絵文字使い */
+            position: absolute;
+            left: 0;
+        }
+
+        /* --- FORM --- */
+        .form-section {
+            padding: 120px 0;
+            text-align: center;
+            background-color: #fff;
+            border-top: 3px solid #1A1A1A;
+        }
+        .form-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
+        }
+        .form-btn {
+            display: inline-block;
+            background-color: #1A1A1A;
+            color: #fff;
+            padding: 30px 80px;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            box-shadow: 15px 15px 0 #ccc; /* 強い影 */
+            transition: all 0.3s;
+            transform: rotate(2deg);
+        }
+        .form-btn:hover {
+            box-shadow: 8px 8px 0 #ccc;
+            transform: translate(7px, 7px) rotate(2deg);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            .header-date { font-size: 40px; }
+            .section-title-en { font-size: 48px; }
+            .hero-copy { font-size: 24px; padding: 20px; }
+            .countdown-timer { font-size: 36px; }
+            .form-btn { padding: 20px 50px; font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="wrapper">
+        <p class="header-title">KYOTO FAMILY WEDDING JOURNEY</p>
+        <p class="header-date txt-en">11.28-29</p>
+    </header>
+
+    <section class="countdown-section">
+        <div class="wrapper">
+            <p class="countdown-label txt-en">DAYS TO THE BIG DAY</p>
+            <div class="countdown-timer">
+                365<span class="countdown-unit">DAYS</span>
+                10<span class="countdown-unit">HOURS</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="hero">
+        <div class="wrapper">
+            <h1 class="hero-copy">広島から京都へ。<br>みんなで祝う、<br>特別な2日間。</h1>
+        </div>
+    </div>
+
+    <div class="lead">
+        <div class="wrapper">
+            <h2 class="lead-title txt-en">Hello, Family!</h2>
+            <p class="lead-txt">広島からお越しいただき、本当にありがとうございます！<br>
+            私たちが大好きな京都で、美味しいものを食べて、笑って、素敵な時間を過ごしましょう。<br>
+            このサイトは、そのための小さなガイドです。</p>
+        </div>
+    </div>
+
+    <section class="schedule-section wrapper">
+        <p class="day-label skew-box">DAY 1</p>
+        <h2 class="section-title-en txt-en">Saturday,<br>Nov 28</h2>
+        <p class="section-title-ja">京都到着。まずは、美味しいランチと街歩き。</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="time txt-en">12:30</span>
+                <h3 class="content-title">あたか飯店でランチ</h3>
+                <p class="content-txt">京都南ICを降りてすぐ。老舗中華で長旅の疲れを癒しましょう。3階の大広間を用意しています。</p>
+                <a href="#" class="map-link txt-link txt-en">-> Google Map</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">15:00</span>
+                <h3 class="content-title">IMU HOTELにチェックイン</h3>
+                <p class="content-txt">バスでホテルへ移動。まずは荷物を預けてリフレッシュ。センスの良いモダンなホテルです。</p>
+                <a href="#" class="map-link txt-link txt-en">-> Google Map</a>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">15:30 - 18:30</span>
+                <h3 class="content-title">自由行動（新郎新婦と散歩もOK！）</h3>
+                <p class="content-txt">ホテル周辺を散策したり、錦市場へ行ったり。<br>
+                <span class="txt-bold">★希望者は新郎新婦と一緒に「高台寺〜八坂神社」の王道コースへ！</span><br>11月の夕暮れ、一番京都らしい景色を歩きます。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">19:00</span>
+                <h3 class="content-title">夕食会（前夜祭）</h3>
+                <p class="content-txt">場所：〇〇（決定した居酒屋名）<br>
+                現地集合。広島と京都の食材を使った美味しい料理と、お酒で盛り上がりましょう！</p>
+                <a href="#" class="map-link txt-link txt-en">-> Google Map</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section wrapper" style="background-color: #f2f2f2; border-top: 3px solid #1A1A1A;">
+        <p class="day-label skew-box" style="background-color: #1A1A1A;">DAY 2</p>
+        <h2 class="section-title-en txt-en">Sunday,<br>Nov 29</h2>
+        <p class="section-title-ja">いよいよ、結婚式当日。</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="time txt-en">09:30</span>
+                <h3 class="content-title">各自ホテルを出発</h3>
+                <p class="content-txt">タクシーまたは徒歩にて会場へ。<br>
+                <span class="txt-bold">※タクシーの方は「木屋町の五条を上がってすぐの東側」と伝えるとスムーズです。</span></p>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">10:00</span>
+                <h3 class="content-title">受付開始</h3>
+                <p class="content-txt">アトールテラス鴨川（4F）にて。鴨川の景色を楽しみながらお待ちください。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">10:30</span>
+                <h3 class="content-title">挙式・披露宴</h3>
+                <p class="content-txt">いよいよ本番！みんなで一緒に楽しみましょう。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="time txt-en">14:30</span>
+                <h3 class="content-title">お開き</h3>
+                <p class="content-txt">集合写真撮影、プチギフトお渡し後、自由解散。<br>
+                帰路へつく方、京都観光を続ける方、各自良い時間を！</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section wrapper">
+        <h2 class="info-title txt-en">Important Info</h2>
+        <ul class="info-list">
+            <li><span class="txt-bold">貸切バスについて：</span> 28日のホテル到着後はバスの運用が終了します。29日の会場への移動、及び帰路は各自での手配となります。</li>
+            <li><span class="txt-bold">ドレスコード：</span> レストランウエディングですので、「平服（または準礼装）」でお気軽にお越しください。</li>
+            <li><span class="txt-bold">荷物：</span> 29日、大きな荷物は式場のクロークに預けられます。</li>
+        </ul>
+    </section>
+
+    <section class="form-section wrapper">
+        <h2 class="form-title txt-en">JOIN THE PARTY!</h2>
+        <a href="#" class="form-btn txt-en skew-box">RSVP</a> <p class="content-txt" style="margin-top: 40px; margin-left: auto; margin-right: auto; text-align: center;">↑上記ボタンより、参加・アレルギーの回答をお願いします。<br>
+        <span class="txt-bold">回答期限：〇月〇日（〇）まで</span></p>
+    </section>
+
+    <footer class="wrapper">
+        <p class="txt-en">KYOTO FAMILY WEDDING JOURNEY / 2026.11.28-29</p>
+        <p>Created with Love by 新郎新婦</p>
+    </footer>
+
+    <script>
+        // カウントダウンの実装はここに
+    </script>
+</body>
+</html>
