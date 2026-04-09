@@ -443,6 +443,317 @@
             letter-spacing: 0.2em;
         }
 
+        .invitation-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .invitation-card {
+            padding: clamp(24px, 4vw, 38px);
+            transform: rotate(-1deg);
+        }
+
+        .invitation-title {
+            font-size: clamp(2.5rem, 7vw, 5.6rem);
+            line-height: 0.9;
+            margin: 18px 0 20px;
+        }
+
+        .invitation-copy {
+            display: grid;
+            gap: 18px;
+            font-size: 1rem;
+            line-height: 2;
+            color: #2c241d;
+        }
+
+        .invitation-sign {
+            margin-top: 18px;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+        }
+
+        .invitation-meta {
+            margin-top: 26px;
+            display: grid;
+            gap: 10px;
+            padding-top: 18px;
+            border-top: var(--line) solid var(--ink);
+            font-size: 0.95rem;
+        }
+
+        .photo-wall {
+            position: relative;
+            min-height: 720px;
+        }
+
+        .photo-piece {
+            position: absolute;
+            overflow: hidden;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+
+        .photo-piece img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            filter: saturate(0.88) contrast(1.02);
+        }
+
+        .photo-piece figcaption {
+            position: absolute;
+            left: 12px;
+            bottom: 10px;
+            padding: 6px 10px;
+            border: 2px solid var(--ink);
+            background: rgba(255, 251, 244, 0.9);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+        }
+
+        .piece-a {
+            inset: 0 auto auto 0;
+            width: 58%;
+            height: 290px;
+            transform: rotate(-4deg);
+        }
+
+        .piece-b {
+            inset: 70px 0 auto auto;
+            width: 43%;
+            height: 220px;
+            transform: rotate(5deg);
+        }
+
+        .piece-c {
+            inset: 310px auto auto 28px;
+            width: 42%;
+            height: 190px;
+            transform: rotate(3deg);
+        }
+
+        .piece-d {
+            inset: 365px 0 auto auto;
+            width: 48%;
+            height: 280px;
+            transform: rotate(-3deg);
+        }
+
+        .photo-note {
+            position: absolute;
+            left: 44%;
+            top: 270px;
+            width: min(240px, 48%);
+            padding: 18px;
+            border: var(--line) solid var(--ink);
+            background: var(--accent-soft);
+            box-shadow: 8px 8px 0 rgba(17, 17, 17, 0.9);
+            transform: rotate(-5deg);
+            font-size: 0.94rem;
+            font-weight: 900;
+            line-height: 1.7;
+        }
+
+        .photo-link {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 10px 14px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            font-size: 0.84rem;
+            letter-spacing: 0.12em;
+        }
+
+        .guide-intro {
+            display: grid;
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .guide-title-card,
+        .guide-note {
+            padding: clamp(24px, 4vw, 34px);
+        }
+
+        .guide-title-card {
+            transform: rotate(-1deg);
+        }
+
+        .guide-title {
+            font-size: clamp(2.2rem, 6vw, 4.8rem);
+            line-height: 0.9;
+            margin: 18px 0 16px;
+        }
+
+        .guide-copy {
+            font-size: 1rem;
+            line-height: 2;
+        }
+
+        .guide-note {
+            background: var(--blue);
+            transform: rotate(1.5deg);
+        }
+
+        .guide-note h3 {
+            font-size: 0.92rem;
+            letter-spacing: 0.18em;
+            margin-bottom: 16px;
+        }
+
+        .guide-note p {
+            font-size: 0.98rem;
+            line-height: 1.9;
+        }
+
+        .rsvp-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .rsvp-card,
+        .rsvp-form-card {
+            padding: clamp(24px, 4vw, 38px);
+        }
+
+        .rsvp-card {
+            transform: rotate(-1deg);
+        }
+
+        .rsvp-title {
+            font-size: clamp(2.4rem, 6vw, 4.9rem);
+            line-height: 0.9;
+            margin: 18px 0;
+        }
+
+        .rsvp-copy {
+            display: grid;
+            gap: 16px;
+            font-size: 1rem;
+            line-height: 2;
+        }
+
+        .rsvp-setup {
+            margin-top: 24px;
+            padding: 16px 18px;
+            border: var(--line) solid var(--ink);
+            background: #9eb58d;
+            font-size: 0.92rem;
+            line-height: 1.8;
+        }
+
+        .rsvp-form-card {
+            transform: rotate(1deg);
+        }
+
+        .rsvp-form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .field-group {
+            display: grid;
+            gap: 10px;
+        }
+
+        .field-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.18em;
+            font-weight: 900;
+        }
+
+        .rsvp-input,
+        .rsvp-textarea {
+            width: 100%;
+            padding: 18px 20px;
+            border: var(--line) solid var(--ink);
+            background: #fffdf7;
+            font-size: 1rem;
+            border-radius: 0;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .rsvp-input:focus,
+        .rsvp-textarea:focus {
+            outline: none;
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .radio-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .radio-card {
+            position: relative;
+            flex: 1 1 180px;
+        }
+
+        .radio-card input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .radio-card span {
+            display: block;
+            padding: 16px 18px;
+            border: var(--line) solid var(--ink);
+            background: #fffdf7;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            font-weight: 900;
+        }
+
+        .radio-card input:checked + span {
+            background: var(--accent-soft);
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .rsvp-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .rsvp-submit {
+            justify-self: start;
+            margin-top: 10px;
+            padding: 16px 26px;
+            border: var(--line) solid var(--ink);
+            background: var(--accent);
+            color: #fff8f0;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transform: rotate(1deg);
+        }
+
+        .rsvp-status {
+            min-height: 1.5em;
+            color: #7f2b14;
+            font-size: 0.92rem;
+            font-weight: 900;
+        }
+
+        .rsvp-status.is-success {
+            color: #21591c;
+        }
+
         .intro-grid {
             display: grid;
             gap: 24px;
@@ -704,7 +1015,10 @@
         @media (max-width: 820px) {
             .masthead,
             .intro-grid,
-            .info-wrap {
+            .info-wrap,
+            .invitation-grid,
+            .guide-intro,
+            .rsvp-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -717,6 +1031,10 @@
                 position: static;
                 margin: 18px 18px 18px auto;
                 transform: rotate(2deg);
+            }
+
+            .photo-wall {
+                min-height: 760px;
             }
         }
 
@@ -756,8 +1074,44 @@
                 font-size: 2.1rem;
             }
 
-            .form-btn {
+            .form-btn,
+            .rsvp-submit {
                 width: 100%;
+            }
+
+            .photo-wall {
+                min-height: 920px;
+            }
+
+            .piece-a {
+                width: 78%;
+                height: 220px;
+            }
+
+            .piece-b {
+                top: 180px;
+                width: 56%;
+                height: 170px;
+            }
+
+            .piece-c {
+                top: 420px;
+                left: 14px;
+                width: 62%;
+                height: 160px;
+            }
+
+            .piece-d {
+                top: 560px;
+                width: 70%;
+                height: 220px;
+            }
+
+            .photo-note {
+                left: auto;
+                right: 8px;
+                top: 356px;
+                width: 48%;
             }
         }
     </style>
@@ -778,11 +1132,11 @@
     </div>
 
     <header class="site-header wrapper reveal" data-tilt="left">
-        <div class="masthead">
+        <div class="masthead paper-card">
             <div>
                 <p class="masthead-kicker">KYOTO FAMILY WEDDING JOURNEY</p>
-                <h1 class="masthead-title">広島組のための、<br>京都ウェディング<br><span class="txt-en">City Guide</span></h1>
-                <p class="masthead-sub">2026年11月28日から29日まで。貸切バスで向かう、家族だけのちいさな旅。式場、ホテル、寄り道プランまで、スマホで持ち歩ける「旅のしおり」にまとめました。</p>
+                <h1 class="masthead-title">Invitation &<br>Travel Guide<br><span class="txt-en">for Family</span></h1>
+                <p class="masthead-sub">2026年11月28日から29日まで。広島から京都へ、家族みんなで向かう2日間のための招待状兼デジタルしおりです。</p>
             </div>
             <aside class="issue-stamp txt-en">
                 <div>
@@ -794,14 +1148,46 @@
         </div>
     </header>
 
-    <section class="hero wrapper">
-        <div class="hero-visual reveal" data-tilt="right">
-            <p class="hero-label txt-en">Special Edition / Family Bus Trip</p>
-            <div class="hero-copy">
-                <p class="hero-copy-main">広島から京都へ。<br>みんなで祝う、<br>特別な2日間。</p>
-                <p class="hero-copy-sub">式は朝から。前日は少し早めに京都入りして、おいしいごはんと街歩き。慌ただしくならないように、動き方をぜんぶここに置いておきます。</p>
+    <section class="section-shell">
+        <div class="wrapper invitation-grid">
+            <article class="invitation-card paper-card reveal" data-tilt="left">
+                <p class="eyebrow txt-en">From The Hosts</p>
+                <h2 class="invitation-title">みなさまへ、<br><span class="txt-en">Welcome To Kyoto</span></h2>
+                <div class="invitation-copy">
+                    <p>このたび、私たちは京都で結婚式を挙げることになりました。広島からこうして家族みんなで来てもらえることが、とてもうれしいです。</p>
+                    <p>せっかくの機会なので、当日だけでなく前日から少し旅気分で楽しんでもらえたらと思い、招待状と旅のしおりをひとつにまとめました。</p>
+                    <p>おいしいものを食べて、少し歩いて、笑って、いい時間を一緒に過ごせたらうれしいです。どうぞよろしくお願いします。</p>
+                </div>
+                <p class="invitation-sign">新郎新婦より</p>
+                <div class="invitation-meta">
+                    <p><span class="txt-bold">挙式・披露宴：</span> 2026年11月29日（日）10:30〜</p>
+                    <p><span class="txt-bold">会場：</span> アトールテラス鴨川</p>
+                    <p><span class="txt-bold">宿泊：</span> IMU HOTEL KYOTO</p>
+                </div>
+            </article>
+
+            <div class="photo-wall reveal" data-tilt="right">
+                <figure class="photo-piece piece-a">
+                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80" alt="京都の街並み">
+                    <figcaption class="txt-en">Kyoto Walk</figcaption>
+                </figure>
+                <figure class="photo-piece piece-b">
+                    <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=1200&q=80" alt="カフェで過ごす時間">
+                    <figcaption class="txt-en">Cafe Stop</figcaption>
+                </figure>
+                <figure class="photo-piece piece-c">
+                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80" alt="花や装花をイメージした写真">
+                    <figcaption class="txt-en">Flowers</figcaption>
+                </figure>
+                <figure class="photo-piece piece-d">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80" alt="祝福のイメージ写真">
+                    <figcaption class="txt-en">Together</figcaption>
+                </figure>
+                <div class="photo-note">
+                    当日はもちろん、前日から少しずつ旅のムードで。<br>写真は好きなものに差し替えると、もっと自分たちらしくなります。
+                    <a href="#rsvp" class="photo-link txt-en">RSVP At The End</a>
+                </div>
             </div>
-            <p class="floating-note">Dress code is easy. 気負わず、でもちょっとだけ特別に。レストランウェディングらしく、肩の力を抜いてどうぞ。</p>
         </div>
     </section>
 
@@ -835,14 +1221,14 @@
     </section>
 
     <section class="section-shell">
-        <div class="wrapper intro-grid">
-            <article class="lead-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en">Hello, Family</p>
-                <h2 class="lead-title">ようこそ、<br><span class="txt-en">Kyoto Issue</span></h2>
-                <p class="lead-txt">広島からお越しいただき、本当にありがとうございます。私たちが大好きな京都で、おいしいものを食べて、笑って、気持ちよく祝える2日間にしたいと思っています。このサイトは、そのための小さなガイドです。迷ったらここを開けば大丈夫、という温度感でつくりました。</p>
+        <div class="wrapper guide-intro">
+            <article class="guide-title-card paper-card reveal" data-tilt="left">
+                <p class="eyebrow txt-en">Travel Guide</p>
+                <h2 class="guide-title">旅のしおり、<br><span class="txt-en">Start</span></h2>
+                <p class="guide-copy">ここから先は、広島から来てくれる家族向けの実用パートです。動き方、集合のタイミング、ホテル、会場まわりの情報をまとめています。当日はこのページを開いてもらえれば大丈夫、というつくりにしました。</p>
             </article>
-            <aside class="mini-note paper-card reveal" data-tilt="right">
-                <h3 class="txt-en">Small Memo</h3>
+            <aside class="guide-note paper-card reveal" data-tilt="right">
+                <h3 class="txt-en">Quick Note</h3>
                 <p>11月の京都は朝晩がしっかり冷えます。バス移動や街歩きもあるので、軽い羽織りがあると安心。ホテルは四条烏丸なので、食後に少し散歩したい人にもかなり良い立地です。</p>
             </aside>
         </div>
@@ -960,14 +1346,54 @@
         </div>
     </section>
 
-    <section class="section-shell">
-        <div class="wrapper">
-            <div class="form-frame paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en">Action Needed</p>
-                <h2 class="form-title txt-en">Join The Party</h2>
-                <p class="form-copy">参加可否とアレルギーの回答は、下のボタンからお願いします。親戚だけの式だからこそ、当日はみんなが気持ちよく過ごせるように事前に教えてもらえるとうれしいです。</p>
-                <a href="#" class="form-btn txt-en">RSVP Form</a>
-                <p class="deadline">回答期限：〇月〇日（〇）まで<br><span class="txt-bold">リンク先が確定したら、このボタンだけ差し替えればOKです。</span></p>
+    <section class="section-shell" id="rsvp">
+        <div class="wrapper rsvp-grid">
+            <article class="rsvp-card paper-card reveal" data-tilt="left">
+                <p class="eyebrow txt-en">RSVP</p>
+                <h2 class="rsvp-title">ご回答を、<br><span class="txt-en">Please</span></h2>
+                <div class="rsvp-copy">
+                    <p>最後に、参加可否とアレルギーの情報を教えてください。回答が集まると、席や料理の調整がしやすくなってとても助かります。</p>
+                    <p>フォームはスプレッドシート連携前提の送信形式にしてあるので、送信先URLを入れれば一覧化できます。</p>
+                </div>
+                <div class="rsvp-setup">
+                    <span class="txt-bold">運用メモ：</span> `FORM_ENDPOINT` に Google Apps Script の Web アプリ URL を入れると、そのままスプレッドシートへ保存できます。
+                </div>
+            </article>
+
+            <div class="rsvp-form-card paper-card reveal" data-tilt="right">
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="field-group">
+                        <label class="field-label txt-en" for="guestName">Name</label>
+                        <input class="rsvp-input" id="guestName" name="name" type="text" placeholder="お名前" required>
+                    </div>
+
+                    <div class="field-group">
+                        <span class="field-label txt-en">Attendance</span>
+                        <div class="radio-row">
+                            <label class="radio-card">
+                                <input type="radio" name="attendance" value="参加" required>
+                                <span>参加します</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="attendance" value="欠席">
+                                <span>欠席します</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label txt-en" for="allergy">Allergy</label>
+                        <textarea class="rsvp-textarea" id="allergy" name="allergy" placeholder="アレルギーや苦手な食材があればご記入ください"></textarea>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label txt-en" for="message">Message / Note</label>
+                        <textarea class="rsvp-textarea" id="message" name="message" placeholder="移動面での相談やひとことメッセージなど"></textarea>
+                    </div>
+
+                    <button class="rsvp-submit txt-en" type="submit">Send RSVP</button>
+                    <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
+                </form>
             </div>
         </div>
     </section>
@@ -980,6 +1406,7 @@
     <script>
         const ACCESS_STORAGE_KEY = 'wedi-family-access';
         const PASSWORD_HASH = '6e80596dbc1acf3059007f86ef034859ed10d002b5ad669a63c5e6d3765517e9';
+        const FORM_ENDPOINT = '';
         const accessGate = document.getElementById('accessGate');
         const accessForm = document.getElementById('accessForm');
         const passwordInput = document.getElementById('sitePassword');
@@ -1062,6 +1489,52 @@
 
         document.querySelectorAll('.reveal').forEach((element) => {
             revealObserver.observe(element);
+        });
+
+        const rsvpForm = document.getElementById('rsvpForm');
+        const rsvpStatus = document.getElementById('rsvpStatus');
+
+        rsvpForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!FORM_ENDPOINT) {
+                rsvpStatus.textContent = '送信先URLが未設定です。FORM_ENDPOINT に Apps Script の URL を入れてください。';
+                rsvpStatus.classList.remove('is-success');
+                return;
+            }
+
+            const formData = new FormData(rsvpForm);
+            const payload = {
+                name: formData.get('name'),
+                attendance: formData.get('attendance'),
+                allergy: formData.get('allergy'),
+                message: formData.get('message'),
+                submittedAt: new Date().toISOString()
+            };
+
+            rsvpStatus.textContent = '送信中です...';
+            rsvpStatus.classList.remove('is-success');
+
+            try {
+                const response = await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Submission failed');
+                }
+
+                rsvpForm.reset();
+                rsvpStatus.textContent = '送信ありがとうございました。内容を受け取りました。';
+                rsvpStatus.classList.add('is-success');
+            } catch (error) {
+                rsvpStatus.textContent = '送信できませんでした。時間をおいて再度お試しください。';
+                rsvpStatus.classList.remove('is-success');
+            }
         });
     </script>
 </body>
