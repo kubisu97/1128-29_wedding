@@ -560,6 +560,41 @@
             line-height: 1.7;
         }
 
+        .photo-placeholder {
+            display: grid;
+            place-items: center;
+            color: var(--muted);
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(239, 230, 216, 0.95)),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(17, 17, 17, 0.05) 0 10px,
+                    rgba(255, 255, 255, 0.3) 10px 20px
+                );
+            text-align: center;
+            padding: 18px;
+        }
+
+        .photo-placeholder strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .piece-e {
+            inset: 548px auto auto 12px;
+            width: 32%;
+            height: 140px;
+            transform: rotate(-6deg);
+        }
+
+        .piece-f {
+            inset: 16px 18px auto auto;
+            width: 24%;
+            height: 120px;
+            transform: rotate(8deg);
+        }
+
         .photo-link {
             display: inline-block;
             margin-top: 14px;
@@ -612,6 +647,150 @@
         .guide-note p {
             font-size: 0.98rem;
             line-height: 1.9;
+        }
+
+        .map-board {
+            padding: clamp(24px, 4vw, 36px);
+            transform: rotate(-1deg);
+        }
+
+        .map-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .map-figure {
+            position: relative;
+            min-height: 420px;
+            border: var(--line) solid var(--ink);
+            background:
+                linear-gradient(180deg, rgba(127, 167, 216, 0.3), rgba(246, 241, 232, 0.85)),
+                linear-gradient(90deg, rgba(17, 17, 17, 0.08) 1px, transparent 1px),
+                linear-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
+            background-size: auto, 52px 52px, 52px 52px;
+            overflow: hidden;
+        }
+
+        .map-river {
+            position: absolute;
+            inset: 0 38% 0 auto;
+            width: 26%;
+            background: rgba(114, 156, 212, 0.46);
+            transform: skewX(-8deg);
+            border-left: 3px solid rgba(17, 17, 17, 0.3);
+            border-right: 3px solid rgba(17, 17, 17, 0.3);
+        }
+
+        .map-label {
+            position: absolute;
+            padding: 7px 10px;
+            border: 2px solid var(--ink);
+            background: rgba(255, 251, 244, 0.95);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.8);
+        }
+
+        .map-label.hotel {
+            left: 10%;
+            top: 52%;
+        }
+
+        .map-label.river {
+            right: 8%;
+            top: 14%;
+            transform: rotate(-90deg);
+            transform-origin: right top;
+        }
+
+        .map-spot {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            border-radius: 50%;
+            border: 3px solid var(--ink);
+            background: var(--accent);
+            appearance: none;
+            box-shadow: 0 0 0 0 rgba(212, 91, 53, 0.34);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+        }
+
+        .map-spot::after {
+            content: attr(data-name);
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .map-spot.is-active {
+            transform: scale(1.25);
+            box-shadow: 0 0 0 14px rgba(212, 91, 53, 0.16);
+            background: var(--accent-soft);
+        }
+
+        .map-trail {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .map-trail path {
+            fill: none;
+            stroke: rgba(17, 17, 17, 0.6);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 8 10;
+        }
+
+        .spot-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .spot-card {
+            appearance: none;
+            width: 100%;
+            text-align: left;
+            padding: 16px 18px;
+            border: var(--line) solid var(--ink);
+            background: rgba(255, 253, 248, 0.92);
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            cursor: pointer;
+            transform: rotate(0deg);
+        }
+
+        .spot-card:nth-child(odd) {
+            transform: rotate(-0.5deg);
+        }
+
+        .spot-card:nth-child(even) {
+            transform: rotate(0.5deg);
+        }
+
+        .spot-card.is-active {
+            background: var(--accent-soft);
+        }
+
+        .spot-card strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .spot-card small {
+            display: block;
+            margin-top: 8px;
+            font-weight: 900;
+            letter-spacing: 0.12em;
         }
 
         .rsvp-grid {
@@ -752,6 +931,78 @@
 
         .rsvp-status.is-success {
             color: #21591c;
+        }
+
+        .members-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .member-add {
+            padding: 12px 16px;
+            border: var(--line) solid var(--ink);
+            background: var(--accent-soft);
+            color: var(--ink);
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            transform: rotate(-1deg);
+        }
+
+        .member-add:hover,
+        .member-remove:hover {
+            transform: translate(6px, 6px);
+            box-shadow: none;
+        }
+
+        .member-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .member-card {
+            padding: 18px;
+            border: var(--line) solid var(--ink);
+            background: rgba(255, 253, 248, 0.94);
+            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            display: grid;
+            gap: 14px;
+        }
+
+        .member-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .member-card-head strong {
+            font-size: 1rem;
+        }
+
+        .member-remove {
+            padding: 10px 14px;
+            border: var(--line) solid var(--ink);
+            background: #fff;
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            box-shadow: 5px 5px 0 rgba(17, 17, 17, 0.88);
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .allergy-detail[hidden] {
+            display: none;
         }
 
         .intro-grid {
@@ -1018,7 +1269,9 @@
             .info-wrap,
             .invitation-grid,
             .guide-intro,
-            .rsvp-grid {
+            .rsvp-grid,
+            .map-layout,
+            .member-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1107,11 +1360,29 @@
                 height: 220px;
             }
 
+            .piece-e {
+                top: 770px;
+                left: 20px;
+                width: 38%;
+                height: 120px;
+            }
+
+            .piece-f {
+                top: 32px;
+                right: 8px;
+                width: 34%;
+                height: 104px;
+            }
+
             .photo-note {
                 left: auto;
                 right: 8px;
                 top: 356px;
                 width: 48%;
+            }
+
+            .map-figure {
+                min-height: 360px;
             }
         }
     </style>
@@ -1183,6 +1454,18 @@
                     <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80" alt="祝福のイメージ写真">
                     <figcaption class="txt-en">Together</figcaption>
                 </figure>
+                <figure class="photo-piece piece-e photo-placeholder">
+                    <div>
+                        <strong>ふたりの写真</strong>
+                        <span>Photo Slot 01</span>
+                    </div>
+                </figure>
+                <figure class="photo-piece piece-f photo-placeholder">
+                    <div>
+                        <strong>ふたりの写真</strong>
+                        <span>Photo Slot 02</span>
+                    </div>
+                </figure>
                 <div class="photo-note">
                     当日はもちろん、前日から少しずつ旅のムードで。<br>写真は好きなものに差し替えると、もっと自分たちらしくなります。
                     <a href="#rsvp" class="photo-link txt-en">RSVP At The End</a>
@@ -1244,6 +1527,13 @@
                 </div>
 
                 <div class="timeline">
+                    <div class="timeline-item reveal" data-tilt="right">
+                        <span class="time txt-en">07:30</span>
+                        <div>
+                            <h3 class="content-title">広島をバスで出発</h3>
+                            <p class="content-txt">朝は少し早いですが、みんなでゆっくり京都へ向かいます。途中休憩をはさみながら、安全運転で向かう予定です。</p>
+                        </div>
+                    </div>
                     <div class="timeline-item reveal" data-tilt="left">
                         <span class="time txt-en">12:30</span>
                         <div>
@@ -1274,6 +1564,60 @@
                             <p class="content-txt">場所：〇〇（決定した居酒屋名）<br>現地集合。広島と京都の食材をつまみながら、明日に向けてゆるく前祝いをしましょう。</p>
                             <a href="#" class="map-link txt-en">Venue To Be Updated</a>
                         </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="section-shell">
+        <div class="wrapper">
+            <article class="map-board paper-card reveal" data-tilt="left">
+                <div class="section-heading">
+                    <p class="eyebrow txt-en">Free Walk Map</p>
+                    <h2 class="section-title-en txt-en">Around IMU</h2>
+                    <p class="section-title-ja">自由行動のときに立ち寄りやすい、おすすめスポット。</p>
+                </div>
+                <div class="map-layout">
+                    <div class="map-figure" id="freewalkMap">
+                        <div class="map-river"></div>
+                        <div class="map-label hotel txt-en">IMU HOTEL</div>
+                        <div class="map-label river txt-en">Kamo River</div>
+                        <svg class="map-trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M17 56 C30 49, 38 39, 50 40 S70 48, 83 27"></path>
+                        </svg>
+                        <button type="button" class="map-spot is-active" data-spot="imu" data-name="Hotel" style="left:18%; top:55%;"></button>
+                        <button type="button" class="map-spot" data-spot="nishiki" data-name="Nishiki" style="left:36%; top:38%;"></button>
+                        <button type="button" class="map-spot" data-spot="shijo" data-name="Shijo" style="left:28%; top:60%;"></button>
+                        <button type="button" class="map-spot" data-spot="gion" data-name="Gion" style="left:59%; top:26%;"></button>
+                        <button type="button" class="map-spot" data-spot="yasaka" data-name="Yasaka" style="left:70%; top:20%;"></button>
+                    </div>
+                    <div class="spot-list" id="spotList">
+                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO">
+                            <strong>IMU HOTEL KYOTO</strong>
+                            ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。
+                            <small class="txt-en">Base Camp</small>
+                        </button>
+                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4">
+                            <strong>錦市場</strong>
+                            おやつやちょっとしたお土産探しに。ホテルから歩いて立ち寄りやすい定番です。
+                            <small class="txt-en">Food Walk</small>
+                        </button>
+                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8">
+                            <strong>四条烏丸まわり</strong>
+                            カフェ休憩や買い物に便利。少し歩くだけでも京都の街の空気を感じられます。
+                            <small class="txt-en">Cafe & Shops</small>
+                        </button>
+                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92">
+                            <strong>祇園エリア</strong>
+                            夕方に歩くとぐっと京都らしい雰囲気。写真を撮るにも気持ちのいいエリアです。
+                            <small class="txt-en">Evening Mood</small>
+                        </button>
+                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE">
+                            <strong>八坂神社</strong>
+                            高台寺方面とセットで歩く王道コース。希望者は新郎新婦とここを目指しましょう。
+                            <small class="txt-en">Classic Kyoto</small>
+                        </button>
                     </div>
                 </div>
             </article>
@@ -1363,27 +1707,21 @@
             <div class="rsvp-form-card paper-card reveal" data-tilt="right">
                 <form class="rsvp-form" id="rsvpForm">
                     <div class="field-group">
-                        <label class="field-label txt-en" for="guestName">Name</label>
-                        <input class="rsvp-input" id="guestName" name="name" type="text" placeholder="お名前" required>
+                        <label class="field-label txt-en" for="householdName">Representative</label>
+                        <input class="rsvp-input" id="householdName" name="householdName" type="text" placeholder="代表者のお名前" required>
                     </div>
 
                     <div class="field-group">
-                        <span class="field-label txt-en">Attendance</span>
-                        <div class="radio-row">
-                            <label class="radio-card">
-                                <input type="radio" name="attendance" value="参加" required>
-                                <span>参加します</span>
-                            </label>
-                            <label class="radio-card">
-                                <input type="radio" name="attendance" value="欠席">
-                                <span>欠席します</span>
-                            </label>
+                        <label class="field-label txt-en" for="householdContact">Contact</label>
+                        <input class="rsvp-input" id="householdContact" name="contact" type="text" placeholder="電話番号 or メールアドレス">
+                    </div>
+
+                    <div class="field-group">
+                        <div class="members-header">
+                            <span class="field-label txt-en">Members</span>
+                            <button class="member-add txt-en" type="button" id="addMemberButton">+ Add Member</button>
                         </div>
-                    </div>
-
-                    <div class="field-group">
-                        <label class="field-label txt-en" for="allergy">Allergy</label>
-                        <textarea class="rsvp-textarea" id="allergy" name="allergy" placeholder="アレルギーや苦手な食材があればご記入ください"></textarea>
+                        <div class="member-list" id="memberList"></div>
                     </div>
 
                     <div class="field-group">
@@ -1391,9 +1729,59 @@
                         <textarea class="rsvp-textarea" id="message" name="message" placeholder="移動面での相談やひとことメッセージなど"></textarea>
                     </div>
 
+                    <div class="field-group">
+                        <label class="field-label txt-en" for="householdMemo">Bus / Stay Memo</label>
+                        <textarea class="rsvp-textarea" id="householdMemo" name="householdMemo" placeholder="バス利用や宿泊まわりで伝えておきたいこと"></textarea>
+                    </div>
+
                     <button class="rsvp-submit txt-en" type="submit">Send RSVP</button>
                     <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
                 </form>
+
+                <template id="memberTemplate">
+                    <section class="member-card">
+                        <div class="member-card-head">
+                            <strong>Member</strong>
+                            <button class="member-remove txt-en" type="button">Remove</button>
+                        </div>
+                        <div class="member-grid">
+                            <div class="field-group">
+                                <label class="field-label txt-en">Name</label>
+                                <input class="rsvp-input member-name-input" type="text" placeholder="参加メンバー名" required>
+                            </div>
+                            <div class="field-group">
+                                <span class="field-label txt-en">Attendance</span>
+                                <div class="radio-row">
+                                    <label class="radio-card">
+                                        <input class="member-attendance-input" type="radio" value="参加" required>
+                                        <span>参加</span>
+                                    </label>
+                                    <label class="radio-card">
+                                        <input class="member-attendance-input" type="radio" value="欠席">
+                                        <span>欠席</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <span class="field-label txt-en">Allergy</span>
+                            <div class="radio-row">
+                                <label class="radio-card">
+                                    <input class="member-allergy-toggle" type="radio" value="なし" required>
+                                    <span>なし</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input class="member-allergy-toggle" type="radio" value="あり">
+                                    <span>あり</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field-group allergy-detail" hidden>
+                            <label class="field-label txt-en">Allergy Detail</label>
+                            <textarea class="rsvp-textarea member-allergy-detail-input" placeholder="例：えび、かに、ナッツ など"></textarea>
+                        </div>
+                    </section>
+                </template>
             </div>
         </div>
     </section>
@@ -1491,8 +1879,110 @@
             revealObserver.observe(element);
         });
 
+        const spotCards = Array.from(document.querySelectorAll('.spot-card'));
+        const mapSpots = Array.from(document.querySelectorAll('.map-spot'));
+
+        function activateSpot(spotId) {
+            spotCards.forEach((card) => {
+                card.classList.toggle('is-active', card.dataset.spot === spotId);
+            });
+
+            mapSpots.forEach((spot) => {
+                spot.classList.toggle('is-active', spot.dataset.spot === spotId);
+            });
+        }
+
+        spotCards.forEach((card) => {
+            card.addEventListener('click', () => {
+                activateSpot(card.dataset.spot);
+            });
+        });
+
+        mapSpots.forEach((spot) => {
+            spot.addEventListener('click', () => {
+                activateSpot(spot.dataset.spot);
+                const linkedCard = spotCards.find((card) => card.dataset.spot === spot.dataset.spot);
+                linkedCard?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+
         const rsvpForm = document.getElementById('rsvpForm');
         const rsvpStatus = document.getElementById('rsvpStatus');
+        const memberList = document.getElementById('memberList');
+        const memberTemplate = document.getElementById('memberTemplate');
+        const addMemberButton = document.getElementById('addMemberButton');
+
+        function refreshMemberLabels() {
+            Array.from(memberList.children).forEach((memberCard, index) => {
+                const number = index + 1;
+                memberCard.querySelector('.member-card-head strong').textContent = `Member ${number}`;
+
+                memberCard.querySelectorAll('.member-attendance-input').forEach((input) => {
+                    input.name = `memberAttendance${number}`;
+                });
+
+                memberCard.querySelectorAll('.member-allergy-toggle').forEach((input) => {
+                    input.name = `memberAllergy${number}`;
+                });
+            });
+        }
+
+        function bindMemberCard(memberCard) {
+            const removeButton = memberCard.querySelector('.member-remove');
+            const allergyDetail = memberCard.querySelector('.allergy-detail');
+            const allergyToggleInputs = memberCard.querySelectorAll('.member-allergy-toggle');
+
+            removeButton.addEventListener('click', () => {
+                if (memberList.children.length === 1) {
+                    return;
+                }
+                memberCard.remove();
+                refreshMemberLabels();
+            });
+
+            allergyToggleInputs.forEach((input) => {
+                input.addEventListener('change', () => {
+                    const shouldShow = input.value === 'あり' && input.checked;
+                    allergyDetail.hidden = !shouldShow;
+                    if (!shouldShow) {
+                        allergyDetail.querySelector('textarea').value = '';
+                    }
+                });
+            });
+        }
+
+        function addMember(initialValues = {}) {
+            const memberCard = memberTemplate.content.firstElementChild.cloneNode(true);
+            memberCard.querySelector('.member-name-input').value = initialValues.name || '';
+
+            const attendanceInputs = memberCard.querySelectorAll('.member-attendance-input');
+            const allergyInputs = memberCard.querySelectorAll('.member-allergy-toggle');
+            const allergyDetail = memberCard.querySelector('.allergy-detail');
+            const allergyDetailInput = memberCard.querySelector('.member-allergy-detail-input');
+
+            attendanceInputs.forEach((input) => {
+                input.checked = input.value === (initialValues.attendance || '参加');
+            });
+
+            allergyInputs.forEach((input) => {
+                input.checked = input.value === (initialValues.allergyStatus || 'なし');
+            });
+
+            if (initialValues.allergyStatus === 'あり') {
+                allergyDetail.hidden = false;
+                allergyDetailInput.value = initialValues.allergyDetail || '';
+            }
+
+            bindMemberCard(memberCard);
+            memberList.appendChild(memberCard);
+            refreshMemberLabels();
+        }
+
+        addMemberButton.addEventListener('click', () => {
+            addMember();
+        });
+
+        addMember({ name: '', attendance: '参加', allergyStatus: 'なし', allergyDetail: '' });
 
         rsvpForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -1504,11 +1994,23 @@
             }
 
             const formData = new FormData(rsvpForm);
+            const members = Array.from(memberList.children).map((memberCard) => {
+                const selectedAttendance = memberCard.querySelector('.member-attendance-input:checked');
+                const selectedAllergy = memberCard.querySelector('.member-allergy-toggle:checked');
+                return {
+                    name: memberCard.querySelector('.member-name-input').value.trim(),
+                    attendance: selectedAttendance ? selectedAttendance.value : '',
+                    allergyStatus: selectedAllergy ? selectedAllergy.value : '',
+                    allergyDetail: memberCard.querySelector('.member-allergy-detail-input').value.trim()
+                };
+            });
+
             const payload = {
-                name: formData.get('name'),
-                attendance: formData.get('attendance'),
-                allergy: formData.get('allergy'),
+                householdName: formData.get('householdName'),
+                contact: formData.get('contact'),
+                householdMemo: formData.get('householdMemo'),
                 message: formData.get('message'),
+                members,
                 submittedAt: new Date().toISOString()
             };
 
@@ -1531,11 +2033,28 @@
                 rsvpForm.reset();
                 rsvpStatus.textContent = '送信ありがとうございました。内容を受け取りました。';
                 rsvpStatus.classList.add('is-success');
+                memberList.innerHTML = '';
+                addMember({ name: '', attendance: '参加', allergyStatus: 'なし', allergyDetail: '' });
             } catch (error) {
                 rsvpStatus.textContent = '送信できませんでした。時間をおいて再度お試しください。';
                 rsvpStatus.classList.remove('is-success');
             }
         });
+
+        if (window.matchMedia('(pointer:fine)').matches) {
+            document.querySelectorAll('.photo-piece, .spot-card, .member-card').forEach((card) => {
+                card.addEventListener('pointermove', (event) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (event.clientX - rect.left) / rect.width - 0.5;
+                    const y = (event.clientY - rect.top) / rect.height - 0.5;
+                    card.style.transform = `translate(${(x * 6).toFixed(2)}px, ${(y * 6).toFixed(2)}px)`;
+                });
+
+                card.addEventListener('pointerleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
     </script>
 </body>
 </html>
