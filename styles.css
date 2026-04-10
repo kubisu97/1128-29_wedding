@@ -1779,7 +1779,7 @@
             }
 
             body {
-                padding-bottom: 90px;
+                padding-bottom: 140px;
             }
 
             .site-header {
@@ -1918,5 +1918,18 @@
 
             .mobile-nav {
                 display: flex;
+                bottom: 10px;
+                padding: 8px 10px;
+                gap: 8px;
+            }
+
+            .mobile-nav a {
+                padding: 6px 8px;
+                font-size: 0.72rem;
+            }
+
+            .plan-item summary {
+                font-size: 0.95rem;
+                align-items: flex-start;
             }
         }
