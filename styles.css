@@ -1113,8 +1113,22 @@
         .plan-item {
             border: var(--line) solid var(--ink);
             background: #fff;
-            box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
+            box-shadow: 8px 8px 0 rgba(17, 17, 17, 0.88);
             overflow: hidden;
+            transition: box-shadow 0.18s ease, transform 0.18s ease;
+        }
+
+        .plan-item:nth-child(odd) {
+            transform: rotate(-0.5deg);
+        }
+
+        .plan-item:nth-child(even) {
+            transform: rotate(0.4deg);
+        }
+
+        .plan-item[open] {
+            transform: rotate(0deg) !important;
+            box-shadow: 12px 12px 0 rgba(17, 17, 17, 0.88);
         }
 
         .plan-item summary {
@@ -1122,31 +1136,88 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 18px;
+            gap: 14px;
+            padding: 18px 20px;
             font-size: 1rem;
             font-weight: 900;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.06em;
+            user-select: none;
         }
 
         .plan-item summary::-webkit-details-marker {
             display: none;
         }
 
-        .plan-icon {
-            font-size: 1.2rem;
+        .plan-badge {
+            flex-shrink: 0;
+            display: inline-block;
+            padding: 6px 12px;
+            border: var(--line) solid var(--ink);
+            background: var(--ink);
+            color: #fff8f0;
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+        }
+
+        .plan-item:nth-child(1) .plan-badge { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .plan-item:nth-child(2) .plan-badge { background: var(--blue); border-color: var(--blue); }
+        .plan-item:nth-child(3) .plan-badge { background: #7a9b6e; border-color: #7a9b6e; color: #fff; }
+        .plan-item:nth-child(4) .plan-badge { background: var(--accent-soft); border-color: var(--ink); color: var(--ink); }
+
+        .plan-name {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .plan-sub {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
+
+        .plan-arrow {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border: var(--line) solid var(--ink);
+            display: grid;
+            place-items: center;
+        }
+
+        .plan-arrow::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.22s ease;
+            display: block;
+        }
+
+        .plan-item[open] .plan-arrow::after {
+            transform: rotate(180deg);
         }
 
         .plan-item[open] summary {
             background: var(--accent-soft);
+            border-bottom: var(--line) solid var(--ink);
         }
 
         .plan-body {
-            padding: 18px;
+            padding: 22px 20px;
             border-top: var(--line) solid var(--ink);
             background: rgba(255, 251, 244, 0.95);
             display: grid;
-            gap: 16px;
+            gap: 18px;
+        }
+
+        .plan-desc {
+            font-size: 0.96rem;
+            line-height: 1.9;
+            color: var(--muted);
+            border-left: 4px solid var(--ink);
+            padding-left: 14px;
         }
 
         .plan-collage {
@@ -1171,29 +1242,127 @@
         .plan-access {
             border: var(--line) solid var(--ink);
             background: #fff;
-            padding: 12px 14px;
+            padding: 14px 16px;
             box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.88);
-            transform: rotate(2deg);
+            transform: rotate(1.5deg);
             display: grid;
-            gap: 8px;
-            font-size: 0.92rem;
+            gap: 10px;
+            font-size: 0.9rem;
         }
 
-        .plan-access strong {
+        .plan-access-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            line-height: 1.6;
+        }
+
+        .plan-access-row span:last-child {
+            color: var(--muted);
+        }
+
+        .plan-mode {
+            flex-shrink: 0;
+            display: inline-block;
+            padding: 3px 8px;
+            border: 2px solid var(--ink);
+            font-size: 0.68rem;
             font-weight: 900;
+            letter-spacing: 0.12em;
+            background: #fff;
         }
 
-        .plan-access span {
-            display: block;
+        .plan-mode-luup {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .plan-mode-train {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .plan-goal {
+            margin-top: 4px;
+            padding-top: 10px;
+            border-top: 2px dashed var(--ink);
+        }
+
+        .plan-goal .plan-mode {
+            background: var(--accent-soft);
+            border-color: var(--ink);
+        }
+
+        .plan-goal strong {
+            font-weight: 900;
+            color: var(--ink);
         }
 
         .plan-link {
-            justify-self: end;
-            border-bottom: 2px solid var(--ink);
+            justify-self: start;
+            padding: 10px 16px;
+            border: var(--line) solid var(--ink);
+            background: var(--ink);
+            color: #fff8f0;
+            font-weight: 900;
+            font-size: 0.88rem;
+            letter-spacing: 0.1em;
+            display: inline-block;
+            box-shadow: 5px 5px 0 rgba(17, 17, 17, 0.5);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .plan-link:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 rgba(17, 17, 17, 0.5);
+        }
+
+        .plan-goal-banner {
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px 28px;
+            border: var(--line) solid var(--ink);
+            background: var(--ink);
+            color: #fff8f0;
+            box-shadow: var(--shadow);
+            transform: rotate(-0.6deg);
+        }
+
+        .plan-goal-time {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1;
+            white-space: nowrap;
+            border-right: 3px solid rgba(255, 248, 240, 0.4);
+            padding-right: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .plan-goal-text {
+            flex: 1;
+            display: grid;
+            gap: 4px;
+        }
+
+        .plan-goal-text strong {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .plan-goal-text span {
+            font-size: 0.98rem;
+            color: rgba(255, 248, 240, 0.72);
             font-weight: 900;
             letter-spacing: 0.08em;
-            display: inline-block;
-            padding-bottom: 2px;
+        }
+
+        .plan-goal-flag {
+            font-size: 2.4rem;
+            line-height: 1;
         }
 
         .spot-list {
@@ -1931,5 +2100,24 @@
             .plan-item summary {
                 font-size: 0.95rem;
                 align-items: flex-start;
+            }
+
+            .plan-item,
+            .plan-item[open] {
+                transform: none !important;
+            }
+
+            .plan-goal-banner {
+                flex-wrap: wrap;
+                gap: 12px;
+                transform: none;
+            }
+
+            .plan-goal-time {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 3px solid rgba(255, 248, 240, 0.4);
+                padding-bottom: 8px;
+                width: 100%;
             }
         }
