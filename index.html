@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="is-locked">
+
+    <!-- ── Access Gate ───────────────────────────────────────── -->
     <div class="access-gate" id="accessGate">
         <div class="gate-card paper-card">
             <p class="eyebrow txt-en"><ruby class="bilingual">Private Preview<rt>限定公開</rt></ruby></p>
@@ -23,473 +25,467 @@
             </form>
         </div>
     </div>
+
+    <!-- ── Scroll Meter ──────────────────────────────────────── -->
     <div class="scroll-meter" aria-hidden="true"><span id="scrollMeter"></span></div>
 
-    <header class="site-header wrapper reveal" data-tilt="left">
-        <div class="masthead paper-card">
-            <div>
-                <p class="masthead-kicker">KYOTO FAMILY WEDDING JOURNEY</p>
-                <h1 class="masthead-title"><span class="txt-en"><ruby class="bilingual">Invitation<rt>招待状</rt></ruby></span> &<br><span class="txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></span><br><span class="txt-en"><ruby class="bilingual">for Family<rt>ご家族向け</rt></ruby></span></h1>
-                <p class="masthead-sub" id="mastheadSub">2026年11月28日から29日まで。広島から京都へ、家族みんなで向かう2日間のための招待状兼デジタルしおりです。</p>
-            </div>
-            <aside class="issue-stamp txt-en">
+    <!-- ── Tab Navigation ───────────────────────────────────── -->
+    <nav class="tab-nav" id="tabNav" aria-label="セクションナビゲーション">
+        <button class="tab-btn is-active" data-tab="welcome" type="button">
+            <span class="tab-en txt-en">Welcome</span>
+            <span class="tab-ja">はじめに</span>
+        </button>
+        <button class="tab-btn" data-tab="schedule" type="button">
+            <span class="tab-en txt-en">Schedule</span>
+            <span class="tab-ja">旅程</span>
+        </button>
+        <button class="tab-btn" data-tab="freewalk" type="button">
+            <span class="tab-en txt-en">Free Walk</span>
+            <span class="tab-ja">自由行動</span>
+        </button>
+        <button class="tab-btn" data-tab="rsvp" type="button">
+            <span class="tab-en txt-en">RSVP</span>
+            <span class="tab-ja">出欠回答</span>
+        </button>
+    </nav>
+
+    <!-- ══════════════════════════════════════════════════════════
+         Tab 1: はじめに
+    ══════════════════════════════════════════════════════════ -->
+    <div class="tab-pane is-active" data-pane="welcome">
+
+        <header class="site-header wrapper reveal" data-tilt="left">
+            <div class="masthead paper-card">
                 <div>
-                    <small><ruby class="bilingual">Issue<rt>特別号</rt></ruby></small>
-                    <strong>11.29</strong>
-                    <small><ruby class="bilingual">Kyoto<rt>京都</rt></ruby></small>
+                    <p class="masthead-kicker">KYOTO FAMILY WEDDING JOURNEY</p>
+                    <h1 class="masthead-title">
+                        <small class="masthead-en txt-en">Invitation &amp; Travel Guide</small>
+                        招待状 &amp;<br>旅のしおり
+                    </h1>
+                    <p class="masthead-sub" id="mastheadSub">2026年11月28日から29日まで。広島から京都へ、家族みんなで向かう2日間のための招待状兼デジタルしおりです。</p>
                 </div>
-            </aside>
-        </div>
-    </header>
-
-    <section class="section-shell section-compact" id="start">
-        <div class="wrapper">
-            <div class="route-board paper-card reveal" data-tilt="right">
-                <p class="eyebrow txt-en"><ruby class="bilingual">Start Here<rt>はじめに</rt></ruby></p>
-                <h2 class="route-title" id="routeTitle">迷わないための、3ステップ。</h2>
-                <p class="route-copy" id="routeCopy">初めてでも迷わず進めるように、見る順番をまとめました。ここだけ押さえればOKです。</p>
-                <div class="route-steps" id="routeSteps">
-                    <a class="route-step" href="#invitation" data-step="01">
-                        <small class="txt-en"><ruby class="bilingual">Invitation<rt>招待状</rt></ruby></small>
-                        <strong>まずは挨拶と概要</strong>
-                        <span>式の日程と場所、今回の旅の雰囲気を確認。</span>
-                    </a>
-                    <a class="route-step" href="#guide" data-step="02">
-                        <small class="txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></small>
-                        <strong>日程と地図をチェック</strong>
-                        <span>バス出発、自由行動、会場までの流れを把握。</span>
-                    </a>
-                    <a class="route-step" href="#rsvp" data-step="03">
-                        <small class="txt-en"><ruby class="bilingual">RSVP<rt>出欠回答</rt></ruby></small>
-                        <strong>最後にフォームを送信</strong>
-                        <span>出欠・アレルギーの確認をまとめて入力。</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-shell" id="invitation">
-        <div class="wrapper invitation-grid">
-            <article class="invitation-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en"><ruby class="bilingual">From The Hosts<rt>主催者より</rt></ruby></p>
-                <h2 class="invitation-title">みなさまへ、<br><span class="txt-en"><ruby class="bilingual">Welcome To Kyoto<rt>京都へようこそ</rt></ruby></span></h2>
-                <div class="invitation-copy" id="invitationCopy">
-                    <p>このたび、私たちは京都で結婚式を挙げることになりました。広島からこうして家族みんなで来てもらえることが、とてもうれしいです。</p>
-                    <p>せっかくの機会なので、当日だけでなく前日から少し旅気分で楽しんでもらえたらと思い、招待状と旅のしおりをひとつにまとめました。</p>
-                    <p>おいしいものを食べて、少し歩いて、笑って、いい時間を一緒に過ごせたらうれしいです。どうぞよろしくお願いします。</p>
-                </div>
-                <p class="invitation-sign">新郎新婦より</p>
-                <div class="invitation-meta">
-                    <p><span class="txt-bold">挙式・披露宴：</span> <span id="invitationMetaCeremony">2026年11月29日（日）10:30〜</span></p>
-                    <p><span class="txt-bold">会場：</span> <span id="invitationMetaVenue">アトールテラス鴨川</span></p>
-                    <p><span class="txt-bold">宿泊：</span> <span id="invitationMetaHotel">IMU HOTEL KYOTO</span></p>
-                </div>
-            </article>
-
-            <div class="photo-wall reveal" data-tilt="right">
-                <figure class="photo-piece piece-a" data-photo-slot="1">
-                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80" alt="京都の街並み">
-                    <figcaption class="txt-en"><ruby class="bilingual">Kyoto Walk<rt>京都散歩</rt></ruby></figcaption>
-                </figure>
-                <figure class="photo-piece piece-b" data-photo-slot="2">
-                    <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=1200&q=80" alt="カフェで過ごす時間">
-                    <figcaption class="txt-en"><ruby class="bilingual">Cafe Stop<rt>カフェ休憩</rt></ruby></figcaption>
-                </figure>
-                <figure class="photo-piece piece-c" data-photo-slot="3">
-                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80" alt="花や装花をイメージした写真">
-                    <figcaption class="txt-en"><ruby class="bilingual">Flowers<rt>花の景色</rt></ruby></figcaption>
-                </figure>
-                <figure class="photo-piece piece-d" data-photo-slot="4">
-                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80" alt="祝福のイメージ写真">
-                    <figcaption class="txt-en"><ruby class="bilingual">Together<rt>みんなで</rt></ruby></figcaption>
-                </figure>
-                <figure class="photo-piece piece-e photo-placeholder" data-photo-slot="5">
+                <aside class="issue-stamp txt-en">
                     <div>
-                        <strong>ふたりの写真</strong>
-                        <span>写真差し替え 01</span>
+                        <small><ruby class="bilingual">Issue<rt>特別号</rt></ruby></small>
+                        <strong>11.29</strong>
+                        <small><ruby class="bilingual">Kyoto<rt>京都</rt></ruby></small>
                     </div>
-                </figure>
-                <figure class="photo-piece piece-f photo-placeholder" data-photo-slot="6">
-                    <div>
-                        <strong>ふたりの写真</strong>
-                        <span>写真差し替え 02</span>
+                </aside>
+            </div>
+        </header>
+
+        <section class="section-shell" id="invitation">
+            <div class="wrapper invitation-grid">
+                <article class="invitation-card paper-card reveal" data-tilt="left">
+                    <p class="eyebrow txt-en"><ruby class="bilingual">From The Hosts<rt>主催者より</rt></ruby></p>
+                    <h2 class="invitation-title">みなさまへ、<br>京都へようこそ</h2>
+                    <div class="invitation-copy" id="invitationCopy">
+                        <p>このたび、私たちは京都で結婚式を挙げることになりました。広島からこうして家族みんなで来てもらえることが、とてもうれしいです。</p>
+                        <p>せっかくの機会なので、当日だけでなく前日から少し旅気分で楽しんでもらえたらと思い、招待状と旅のしおりをひとつにまとめました。</p>
+                        <p>おいしいものを食べて、少し歩いて、笑って、いい時間を一緒に過ごせたらうれしいです。どうぞよろしくお願いします。</p>
                     </div>
-                </figure>
-                <div class="photo-note" id="photoNote">
-                    <span id="photoNoteText">当日はもちろん、前日から少しずつ旅のムードで。<br>写真は好きなものに差し替えると、もっと自分たちらしくなります。</span>
-                    <a href="#rsvp" class="photo-link txt-en" id="photoNoteCta"><ruby class="bilingual">RSVP At The End<rt>回答はこちら</rt></ruby></a>
+                    <p class="invitation-sign">新郎新婦より</p>
+                    <div class="invitation-meta">
+                        <p><span class="txt-bold">挙式・披露宴：</span><span id="invitationMetaCeremony">2026年11月29日（日）10:30〜</span></p>
+                        <p><span class="txt-bold">会場：</span><span id="invitationMetaVenue">アトールテラス鴨川</span></p>
+                        <p><span class="txt-bold">宿泊：</span><span id="invitationMetaHotel">IMU HOTEL KYOTO</span></p>
+                    </div>
+                    <div class="invitation-tab-hint">
+                        <a class="tab-hint-link" href="#" data-goto="schedule">
+                            <span class="txt-en">→ Schedule</span>
+                            <span>旅程を確認する</span>
+                        </a>
+                        <a class="tab-hint-link" href="#" data-goto="rsvp">
+                            <span class="txt-en">→ RSVP</span>
+                            <span>出欠を回答する</span>
+                        </a>
+                    </div>
+                </article>
+
+                <div class="photo-wall reveal" data-tilt="right">
+                    <figure class="photo-piece piece-a" data-photo-slot="1">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80" alt="京都の街並み">
+                        <figcaption class="txt-en"><ruby class="bilingual">Kyoto Walk<rt>京都散歩</rt></ruby></figcaption>
+                    </figure>
+                    <figure class="photo-piece piece-b" data-photo-slot="2">
+                        <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=1200&q=80" alt="カフェで過ごす時間">
+                        <figcaption class="txt-en"><ruby class="bilingual">Cafe Stop<rt>カフェ休憩</rt></ruby></figcaption>
+                    </figure>
+                    <figure class="photo-piece piece-c" data-photo-slot="3">
+                        <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80" alt="花や装花をイメージした写真">
+                        <figcaption class="txt-en"><ruby class="bilingual">Flowers<rt>花の景色</rt></ruby></figcaption>
+                    </figure>
+                    <figure class="photo-piece piece-d" data-photo-slot="4">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80" alt="祝福のイメージ写真">
+                        <figcaption class="txt-en"><ruby class="bilingual">Together<rt>みんなで</rt></ruby></figcaption>
+                    </figure>
+                    <figure class="photo-piece piece-e photo-placeholder" data-photo-slot="5">
+                        <div><strong>ふたりの写真</strong><span>差し替え 01</span></div>
+                    </figure>
+                    <figure class="photo-piece piece-f photo-placeholder" data-photo-slot="6">
+                        <div><strong>ふたりの写真</strong><span>差し替え 02</span></div>
+                    </figure>
+                    <div class="photo-note" id="photoNote">
+                        <span id="photoNoteText">前日から少しずつ旅のムードで。写真は好きなものに差し替えてください。</span>
+                        <a href="#" class="photo-link txt-en" data-goto="rsvp" id="photoNoteCta"><ruby class="bilingual">RSVP At The End<rt>回答はこちら</rt></ruby></a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="countdown-section section-shell">
-        <div class="wrapper">
-            <div class="countdown-frame reveal" data-tilt="left">
-                <div class="countdown-head">
-                    <p class="countdown-label txt-en"><ruby class="bilingual">Countdown To The Ceremony<rt>挙式まであと</rt></ruby></p>
-                    <p class="countdown-target" id="countdownTarget">挙式日時：2026.11.29 10:30 / アトールテラス鴨川</p>
+        <section class="countdown-section section-shell">
+            <div class="wrapper">
+                <div class="countdown-frame reveal" data-tilt="left">
+                    <div class="countdown-head">
+                        <p class="countdown-label txt-en"><ruby class="bilingual">Countdown To The Ceremony<rt>挙式まであと</rt></ruby></p>
+                        <p class="countdown-target" id="countdownTarget">挙式日時：2026.11.29 10:30 / アトールテラス鴨川</p>
+                    </div>
+                    <div class="countdown-timer" id="countdown" aria-live="polite">
+                        <div class="countdown-block">
+                            <span class="countdown-number" data-unit="days">000</span>
+                            <span class="countdown-unit txt-en"><ruby class="bilingual">Days<rt>日</rt></ruby></span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" data-unit="hours">00</span>
+                            <span class="countdown-unit txt-en"><ruby class="bilingual">Hours<rt>時間</rt></ruby></span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" data-unit="minutes">00</span>
+                            <span class="countdown-unit txt-en"><ruby class="bilingual">Minutes<rt>分</rt></ruby></span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" data-unit="seconds">00</span>
+                            <span class="countdown-unit txt-en"><ruby class="bilingual">Seconds<rt>秒</rt></ruby></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="countdown-timer" id="countdown" aria-live="polite">
-                    <div class="countdown-block">
-                        <span class="countdown-number" data-unit="days">000</span>
-                        <span class="countdown-unit txt-en"><ruby class="bilingual">Days<rt>日</rt></ruby></span>
-                    </div>
-                    <div class="countdown-block">
-                        <span class="countdown-number" data-unit="hours">00</span>
-                        <span class="countdown-unit txt-en"><ruby class="bilingual">Hours<rt>時間</rt></ruby></span>
-                    </div>
-                    <div class="countdown-block">
-                        <span class="countdown-number" data-unit="minutes">00</span>
-                        <span class="countdown-unit txt-en"><ruby class="bilingual">Minutes<rt>分</rt></ruby></span>
-                    </div>
-                    <div class="countdown-block">
-                        <span class="countdown-number" data-unit="seconds">00</span>
-                        <span class="countdown-unit txt-en"><ruby class="bilingual">Seconds<rt>秒</rt></ruby></span>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="section-shell photo-gallery" id="gallery">
-        <div class="wrapper">
-            <div class="section-heading">
-                <p class="eyebrow txt-en"><ruby class="bilingual">Photo Diary<rt>写真のページ</rt></ruby></p>
-                <h2 class="section-title-en txt-en"><ruby class="bilingual">Kyoto Moodboard<rt>京都ムード</rt></ruby></h2>
-                <p class="section-title-ja">当日の雰囲気イメージ。ふたりの写真に差し替えてOKです。</p>
-            </div>
-            <div class="gallery-grid">
-                <figure class="gallery-card" data-gallery-slot="1">
-                    <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=900&q=80" alt="京都の寺社と石畳">
-                    <figcaption class="txt-en"><ruby class="bilingual">Temple Walk<rt>寺社散歩</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card" data-gallery-slot="2">
-                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="町並みの夕方">
-                    <figcaption class="txt-en"><ruby class="bilingual">Evening Glow<rt>夕方の光</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card" data-gallery-slot="3">
-                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" alt="木々と自然の景色">
-                    <figcaption class="txt-en"><ruby class="bilingual">Quiet Green<rt>静かな緑</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card" data-gallery-slot="4">
-                    <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=900&q=80" alt="カフェで過ごす時間">
-                    <figcaption class="txt-en"><ruby class="bilingual">Cafe Time<rt>カフェ時間</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card" data-gallery-slot="5">
-                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=900&q=80" alt="京都の街の景色">
-                    <figcaption class="txt-en"><ruby class="bilingual">City View<rt>京都の街</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card" data-gallery-slot="6">
-                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80" alt="ふたりのイメージ">
-                    <figcaption class="txt-en"><ruby class="bilingual">Together<rt>ふたり</rt></ruby></figcaption>
-                </figure>
-                <figure class="gallery-card gallery-placeholder" data-gallery-slot="7">
-                    <div>
-                        <strong>ふたりの写真</strong>
-                        <span>写真差し替え 03</span>
-                    </div>
-                </figure>
-                <figure class="gallery-card gallery-placeholder" data-gallery-slot="8">
-                    <div>
-                        <strong>ふたりの写真</strong>
-                        <span>写真差し替え 04</span>
-                    </div>
-                </figure>
-            </div>
-        </div>
-    </section>
+    </div><!-- /tab-pane welcome -->
 
-    <section class="section-shell" id="guide">
-        <div class="wrapper guide-intro">
-            <article class="guide-title-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en"><ruby class="bilingual">Travel Guide<rt>旅のしおり</rt></ruby></p>
-                <h2 class="guide-title">旅のしおり、<br><span class="txt-en"><ruby class="bilingual">Start<rt>ここから</rt></ruby></span></h2>
-                <p class="guide-copy" id="guideCopy">ここから先は、広島から来てくれる家族向けの実用パートです。動き方、集合のタイミング、ホテル、会場まわりの情報をまとめています。当日はこのページを開いてもらえれば大丈夫、というつくりにしました。</p>
-            </article>
-            <aside class="guide-note paper-card reveal" data-tilt="right">
-                <h3 class="txt-en"><ruby class="bilingual">Quick Note<rt>ひとことメモ</rt></ruby></h3>
+    <!-- ══════════════════════════════════════════════════════════
+         Tab 2: 旅程
+    ══════════════════════════════════════════════════════════ -->
+    <div class="tab-pane" data-pane="schedule">
+
+        <div class="wrapper guide-banner-wrap">
+            <aside class="guide-banner paper-card reveal" data-tilt="right">
+                <h2 class="guide-banner-title">旅のしおり</h2>
                 <p id="guideNote">11月の京都は朝晩がしっかり冷えます。バス移動や街歩きもあるので、軽い羽織りがあると安心。ホテルは四条烏丸なので、食後に少し散歩したい人にもかなり良い立地です。</p>
             </aside>
         </div>
-    </section>
 
-    <section class="section-shell">
-        <div class="wrapper">
-            <article class="schedule-panel day-one paper-card reveal" data-tilt="left" id="day1">
-                <div class="section-heading">
-                    <p class="eyebrow txt-en"><ruby class="bilingual">Day 1<rt>1日目</rt></ruby> / <ruby class="bilingual">Saturday<rt>土曜日</rt></ruby></p>
-                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Nov 28<rt>11月28日</rt></ruby></h2>
-                    <p class="section-title-ja">京都到着。まずは、おいしいランチと街歩き。</p>
-                </div>
-
-                <div class="timeline" id="day1Timeline">
-                    <div class="timeline-item reveal" data-tilt="right">
-                        <span class="time txt-en">07:30</span>
-                        <div>
-                            <h3 class="content-title">広島をバスで出発</h3>
-                            <p class="content-txt">朝は少し早いですが、みんなでゆっくり京都へ向かいます。途中休憩をはさみながら、安全運転で向かう予定です。</p>
-                        </div>
+        <section class="section-shell section-compact">
+            <div class="wrapper">
+                <article class="schedule-panel day-one paper-card reveal" data-tilt="left" id="day1">
+                    <div class="section-heading">
+                        <p class="eyebrow txt-en"><ruby class="bilingual">Day 1<rt>1日目</rt></ruby> / <ruby class="bilingual">Saturday<rt>土曜日</rt></ruby></p>
+                        <h2 class="section-title-ja">11月28日<span class="section-en-sub txt-en"> — Nov. 28</span></h2>
+                        <p class="section-title-ja section-title-sub">京都到着。まずは、おいしいランチと街歩き。</p>
                     </div>
-                    <div class="timeline-item reveal" data-tilt="left">
-                        <span class="time txt-en">12:30</span>
-                        <div>
-                            <h3 class="content-title">あたか飯店でランチ</h3>
-                            <p class="content-txt">京都南ICを降りてすぐ。老舗中華で長旅の疲れを癒しましょう。3階の大広間を用意しています。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%9F%E3%81%8B%E9%A3%AF%E5%BA%97+%E4%BA%AC%E9%83%BD" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal" data-tilt="right">
-                        <span class="time txt-en">15:00</span>
-                        <div>
-                            <h3 class="content-title">IMU HOTELにチェックイン</h3>
-                            <p class="content-txt">バスでホテルへ移動。まずは荷物を預けてリフレッシュ。四条烏丸エリアを歩きやすい、センスの良いモダンなホテルです。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal" data-tilt="left">
-                        <span class="time txt-en">15:30</span>
-                        <div>
-                            <h3 class="content-title">自由行動 or 夕暮れ散歩</h3>
-                            <p class="content-txt">ホテル周辺を散策したり、錦市場へ行ったり。<span class="txt-bold">希望者は新郎新婦と一緒に「高台寺〜八坂神社」方面へ。</span>11月の夕暮れどき、一番京都らしい景色をのんびり歩きます。</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal" data-tilt="right">
-                        <span class="time txt-en">19:00</span>
-                        <div>
-                            <h3 class="content-title">夕食会（前夜祭）</h3>
-                            <p class="content-txt">場所：〇〇（決定した居酒屋名）<br>現地集合。広島と京都の食材をつまみながら、明日に向けてゆるく前祝いをしましょう。</p>
-                            <a href="#" class="map-link txt-en"><ruby class="bilingual">Venue To Be Updated<rt>会場は後日追記</rt></ruby></a>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <section class="section-shell" id="freewalk">
-        <div class="wrapper">
-            <article class="map-board paper-card reveal" data-tilt="left">
-                <div class="section-heading">
-                    <p class="eyebrow txt-en"><ruby class="bilingual">Free Walk Map<rt>自由行動マップ</rt></ruby></p>
-                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Around IMU<rt>ホテル周辺</rt></ruby></h2>
-                    <p class="section-title-ja">自由行動のときに立ち寄りやすい、おすすめスポット。</p>
-                </div>
-                <p class="map-summary" id="mapSummary">ホテルを起点に、歩きやすさと京都らしさのバランスで選んだスポットです。ピンか右のカードを押すと詳細が切り替わり、上のボタンで地図の種類も変えられます。</p>
-                <div class="map-legend">
-                    <span class="map-chip txt-en"><ruby class="bilingual">Walkable<rt>徒歩圏内</rt></ruby></span>
-                    <span class="map-chip txt-en"><ruby class="bilingual">Food<rt>ごはん</rt></ruby></span>
-                    <span class="map-chip txt-en"><ruby class="bilingual">Scenery<rt>景色</rt></ruby></span>
-                    <span class="map-chip txt-en"><ruby class="bilingual">Photo Spot<rt>写真向き</rt></ruby></span>
-                </div>
-                <div class="map-layout">
-                    <div class="map-stage">
-                        <div class="map-toggle" role="tablist" aria-label="地図の表示を切り替える">
-                            <button class="map-toggle-btn is-active txt-en" type="button" data-map-target="paper"><ruby class="bilingual">Paper Map<rt>紙の地図</rt></ruby></button>
-                            <button class="map-toggle-btn txt-en" type="button" data-map-target="real"><ruby class="bilingual">Real Map<rt>リアル地図</rt></ruby></button>
-                        </div>
-                        <div class="map-panel map-figure" id="freewalkMap" data-map-panel="paper">
-                        <div class="map-river"></div>
-                        <div class="map-road road-a"></div>
-                        <div class="map-road road-b"></div>
-                        <div class="map-road road-c"></div>
-                        <div class="map-label hotel txt-en"><ruby class="bilingual">IMU HOTEL<rt>ホテル</rt></ruby></div>
-                        <div class="map-label river txt-en"><ruby class="bilingual">Kamo River<rt>鴨川</rt></ruby></div>
-                        <svg class="map-trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                            <path d="M17 56 C30 49, 38 39, 50 40 S70 48, 83 27"></path>
-                        </svg>
-                        <button type="button" class="map-spot is-active" data-spot="imu" data-name="ホテル" style="left:18%; top:55%;"></button>
-                        <button type="button" class="map-spot" data-spot="nishiki" data-name="錦市場" style="left:36%; top:38%;"></button>
-                        <button type="button" class="map-spot" data-spot="shijo" data-name="四条烏丸" style="left:28%; top:60%;"></button>
-                        <button type="button" class="map-spot" data-spot="gion" data-name="祇園" style="left:59%; top:26%;"></button>
-                        <button type="button" class="map-spot" data-spot="yasaka" data-name="八坂神社" style="left:70%; top:20%;"></button>
-                        </div>
-                        <div class="map-panel map-real" data-map-panel="real" hidden>
-                            <iframe title="IMU HOTEL KYOTO 周辺地図" id="mapEmbed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=IMU+HOTEL+KYOTO&output=embed"></iframe>
-                            <p class="map-real-note">地図の上をタップすると拡大できます。スポットは右のカードか、ボタンの地図アプリからも開けます。</p>
-                        </div>
-                    </div>
-                    <div class="map-card-stack">
-                        <div class="map-detail" id="mapDetail">
-                            <p class="eyebrow txt-en"><ruby class="bilingual">Current Spot<rt>いま見ている場所</rt></ruby></p>
-                            <h3 id="mapDetailTitle">IMU HOTEL KYOTO</h3>
-                            <div class="map-detail-meta">
-                                <span id="mapDetailWalk">徒歩 0分</span>
-                                <span id="mapDetailVibe">起点</span>
-                            </div>
-                            <p class="map-detail-copy" id="mapDetailCopy">ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
-                            <div class="map-actions">
-                                <a class="map-action txt-en" id="mapDetailLink" href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer"><ruby class="bilingual">Open In Google Maps<rt>地図アプリで開く</rt></ruby></a>
-                                <a class="map-action txt-en" id="mapRouteLink" href="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" target="_blank" rel="noreferrer"><ruby class="bilingual">Route From Hotel<rt>ホテルからの経路</rt></ruby></a>
+                    <div class="timeline" id="day1Timeline">
+                        <div class="timeline-item reveal" data-tilt="right">
+                            <span class="time txt-en">07:30</span>
+                            <div>
+                                <h3 class="content-title">広島をバスで出発</h3>
+                                <p class="content-txt">朝は少し早いですが、みんなでゆっくり京都へ向かいます。途中休憩をはさみながら、安全運転で向かう予定です。</p>
                             </div>
                         </div>
-
-                        <div class="spot-list" id="spotList">
-                        <button type="button" class="spot-card is-active" data-spot="imu" data-map-link="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" data-route-link="https://www.google.com/maps/dir/?api=1&destination=IMU+HOTEL+KYOTO" data-walk="徒歩 0分" data-vibe="起点">
-                            <strong>IMU HOTEL KYOTO</strong>
-                            <p>ホテルを起点に、四条烏丸から東山方面へ向かうと歩きやすいです。</p>
-                            <small class="txt-en"><ruby class="bilingual">Base Camp<rt>起点</rt></ruby></small>
-                        </button>
-                        <button type="button" class="spot-card" data-spot="nishiki" data-map-link="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E9%8C%A6%E5%B8%82%E5%A0%B4" data-walk="徒歩 14分" data-vibe="食べ歩き">
-                            <strong>錦市場</strong>
-                            <p>おやつやちょっとしたお土産探しに。ホテルから歩いて立ち寄りやすい定番です。</p>
-                            <small class="txt-en"><ruby class="bilingual">Food Walk<rt>食べ歩き</rt></ruby></small>
-                        </button>
-                        <button type="button" class="spot-card" data-spot="shijo" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%9B%9B%E6%9D%A1%E7%83%8F%E4%B8%B8" data-walk="徒歩 8分" data-vibe="カフェと買い物">
-                            <strong>四条烏丸まわり</strong>
-                            <p>カフェ休憩や買い物に便利。少し歩くだけでも京都の街の空気を感じられます。</p>
-                            <small class="txt-en"><ruby class="bilingual">Cafe & Shops<rt>カフェと買い物</rt></ruby></small>
-                        </button>
-                        <button type="button" class="spot-card" data-spot="gion" data-map-link="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E7%A5%87%E5%9C%92" data-walk="徒歩 24分" data-vibe="夕方におすすめ">
-                            <strong>祇園エリア</strong>
-                            <p>夕方に歩くとぐっと京都らしい雰囲気。写真を撮るにも気持ちのいいエリアです。</p>
-                            <small class="txt-en"><ruby class="bilingual">Evening Mood<rt>夕方におすすめ</rt></ruby></small>
-                        </button>
-                        <button type="button" class="spot-card" data-spot="yasaka" data-map-link="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-route-link="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" data-walk="徒歩 28分" data-vibe="王道の京都">
-                            <strong>八坂神社</strong>
-                            <p>高台寺方面とセットで歩く王道コース。希望者は新郎新婦とここを目指しましょう。</p>
-                            <small class="txt-en"><ruby class="bilingual">Classic Kyoto<rt>王道の京都</rt></ruby></small>
-                        </button>
+                        <div class="timeline-item reveal" data-tilt="left">
+                            <span class="time txt-en">12:30</span>
+                            <div>
+                                <h3 class="content-title">あたか飯店でランチ</h3>
+                                <p class="content-txt">京都南ICを降りてすぐ。老舗中華で長旅の疲れを癒しましょう。3階の大広間を用意しています。</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%9F%E3%81%8B%E9%A3%AF%E5%BA%97+%E4%BA%AC%E9%83%BD" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
+                            </div>
+                        </div>
+                        <div class="timeline-item reveal" data-tilt="right">
+                            <span class="time txt-en">15:00</span>
+                            <div>
+                                <h3 class="content-title">IMU HOTELにチェックイン</h3>
+                                <p class="content-txt">バスでホテルへ移動。まずは荷物を預けてリフレッシュ。四条烏丸エリアを歩きやすい、センスの良いモダンなホテルです。</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=IMU+HOTEL+KYOTO" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
+                            </div>
+                        </div>
+                        <div class="timeline-item reveal" data-tilt="left">
+                            <span class="time txt-en">15:30</span>
+                            <div>
+                                <h3 class="content-title">自由行動</h3>
+                                <p class="content-txt">ホテル周辺を散策したり、錦市場へ行ったり。<span class="txt-bold">希望者は新郎新婦と一緒に「高台寺〜八坂神社」方面へ。</span>11月の夕暮れどき、一番京都らしい景色をのんびり歩きます。観光プランは「自由行動」タブをチェック。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item reveal" data-tilt="right">
+                            <span class="time txt-en">19:00</span>
+                            <div>
+                                <h3 class="content-title">夕食会（前夜祭）</h3>
+                                <p class="content-txt">場所：〇〇（決定した居酒屋名）<br>現地集合。広島と京都の食材をつまみながら、明日に向けてゆるく前祝いをしましょう。</p>
+                                <a href="#" class="map-link txt-en"><ruby class="bilingual">Venue To Be Updated<rt>会場は後日追記</rt></ruby></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
-        </div>
-    </section>
+                </article>
+            </div>
+        </section>
 
-    <section class="section-shell">
-        <div class="wrapper">
-            <article class="plan-board paper-card reveal" data-tilt="right">
-                <div class="section-heading">
-                    <p class="eyebrow txt-en"><ruby class="bilingual">Plan Menu<rt>観光プラン</rt></ruby></p>
-                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Hotel Nearby Ideas<rt>ホテル周辺の過ごし方</rt></ruby></h2>
-                    <p class="section-title-ja">「こんなプランもあるよ」的な提案。タップして詳細を開けます。</p>
-                </div>
-                <div class="plan-accordion">
-                    <details class="plan-item">
-                        <summary>
-                            <span class="plan-badge txt-en">Plan A</span>
-                            <span class="plan-name">天皇の家<span class="plan-sub">京都御所 &amp; 井倉木材</span></span>
-                            <span class="plan-arrow" aria-hidden="true"></span>
-                        </summary>
-                        <div class="plan-body">
-                            <p class="plan-desc">京都御所の広大な敷地をのんびり散歩。近くの材木屋「井倉木材」もフォトジェニックで立ち寄り必須。緑と歴史の空気を感じながら歩くコース。</p>
-                            <div class="plan-collage">
-                                <figure class="plan-photo">
-                                    <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Plan+A+Photo" alt="京都御所のイメージ">
-                                </figure>
-                                <div class="plan-access">
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-luup txt-en">LUUP</span>
-                                        <span>ホテル周辺 → 今出川エリアまでスイスイ</span>
-                                    </div>
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-train txt-en">TRAIN</span>
-                                        <span>地下鉄烏丸線 四条駅 → 丸太町駅（2駅）</span>
-                                    </div>
-                                    <div class="plan-access-row plan-goal">
-                                        <span class="plan-mode txt-en">GOAL</span>
-                                        <span><strong>18:30 四条烏丸へ移動開始</strong></span>
-                                    </div>
-                                </div>
+        <section class="section-shell section-compact">
+            <div class="wrapper">
+                <article class="schedule-panel day-two paper-card reveal" data-tilt="right" id="day2">
+                    <div class="section-heading">
+                        <p class="eyebrow txt-en"><ruby class="bilingual">Day 2<rt>2日目</rt></ruby> / <ruby class="bilingual">Sunday<rt>日曜日</rt></ruby></p>
+                        <h2 class="section-title-ja">11月29日<span class="section-en-sub txt-en"> — Nov. 29</span></h2>
+                        <p class="section-title-ja section-title-sub">いよいよ、結婚式当日。朝は少しだけ早めです。</p>
+                    </div>
+                    <div class="timeline" id="day2Timeline">
+                        <div class="timeline-item reveal" data-tilt="left">
+                            <span class="time txt-en">09:30</span>
+                            <div>
+                                <h3 class="content-title">各自ホテルを出発</h3>
+                                <p class="content-txt">タクシーまたは徒歩にて会場へ。<span class="txt-bold">タクシーの方は「木屋町の五条を上がってすぐの東側」と伝えるとスムーズです。</span></p>
                             </div>
-                            <a class="plan-link" href="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E4%BA%AC%E9%83%BD%E5%BE%A1%E6%89%80" target="_blank" rel="noreferrer">Google Mapでルートを確認 →</a>
                         </div>
-                    </details>
-                    <details class="plan-item">
-                        <summary>
-                            <span class="plan-badge txt-en">Plan B</span>
-                            <span class="plan-name">飲みたい人<span class="plan-sub">西院・折鶴会館</span></span>
-                            <span class="plan-arrow" aria-hidden="true"></span>
-                        </summary>
-                        <div class="plan-body">
-                            <p class="plan-desc">ローカルな西院エリアへ。昭和の香りが漂う「折鶴会館」は京都の隠れた名スポット。お酒が好きな人には特におすすめのディープコース。</p>
-                            <div class="plan-collage">
-                                <figure class="plan-photo">
-                                    <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Plan+B+Photo" alt="西院エリアのイメージ">
-                                </figure>
-                                <div class="plan-access">
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-luup txt-en">LUUP</span>
-                                        <span>四条通をまっすぐ西へ一直線</span>
-                                    </div>
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-train txt-en">TRAIN</span>
-                                        <span>阪急 烏丸駅 → 西院駅（5分）</span>
-                                    </div>
-                                    <div class="plan-access-row plan-goal">
-                                        <span class="plan-mode txt-en">GOAL</span>
-                                        <span><strong>18:30 四条烏丸へ移動開始</strong></span>
-                                    </div>
-                                </div>
+                        <div class="timeline-item reveal" data-tilt="right">
+                            <span class="time txt-en">10:00</span>
+                            <div>
+                                <h3 class="content-title">受付開始</h3>
+                                <p class="content-txt">アトールテラス鴨川 4Fにて。鴨川の景色を見ながら、少し深呼吸してお待ちください。</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
                             </div>
-                            <a class="plan-link" href="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E8%A5%BF%E9%99%A2%E9%A7%85" target="_blank" rel="noreferrer">Google Mapでルートを確認 →</a>
                         </div>
-                    </details>
-                    <details class="plan-item">
-                        <summary>
-                            <span class="plan-badge txt-en">Plan C</span>
-                            <span class="plan-name">京都満喫<span class="plan-sub">サウナの梅湯 &amp; 鴨川</span></span>
-                            <span class="plan-arrow" aria-hidden="true"></span>
-                        </summary>
-                        <div class="plan-body">
-                            <p class="plan-desc">鴨川沿いに建つ老舗銭湯「梅湯」でととのう本気の京都体験。サウナ後は鴨川の土手でぼーっとするのが最高。時間に余裕のある人向け。</p>
-                            <div class="plan-collage">
-                                <figure class="plan-photo">
-                                    <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Plan+C+Photo" alt="梅湯・鴨川のイメージ">
-                                </figure>
-                                <div class="plan-access">
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-luup txt-en">LUUP</span>
-                                        <span>ホテル → 梅湯（鴨川沿いを南下）</span>
-                                    </div>
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-train txt-en">TRAIN</span>
-                                        <span>地下鉄烏丸線 五条駅から徒歩 約7分</span>
-                                    </div>
-                                    <div class="plan-access-row plan-goal">
-                                        <span class="plan-mode txt-en">GOAL</span>
-                                        <span><strong>18:30 四条烏丸へ移動開始</strong></span>
-                                    </div>
-                                </div>
+                        <div class="timeline-item reveal" data-tilt="left">
+                            <span class="time txt-en">10:30</span>
+                            <div>
+                                <h3 class="content-title">挙式・披露宴</h3>
+                                <p class="content-txt">いよいよ本番。気負わず、でもしっかり楽しんでもらえたらうれしいです。美味しい料理もぜひ楽しみにしていてください。</p>
                             </div>
-                            <a class="plan-link" href="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=%E3%82%B5%E3%82%A6%E3%83%8A%E3%81%AE%E6%A2%85%E6%B9%AF+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">Google Mapでルートを確認 →</a>
                         </div>
-                    </details>
-                    <details class="plan-item">
-                        <summary>
-                            <span class="plan-badge txt-en">Plan D</span>
-                            <span class="plan-name">お買い物<span class="plan-sub">D&amp;DEPARTMENT &amp; 寺町通</span></span>
-                            <span class="plan-arrow" aria-hidden="true"></span>
-                        </summary>
-                        <div class="plan-body">
-                            <p class="plan-desc">デザインの名店「D&amp;DEPARTMENT KYOTO」から始まり、個性派ショップが並ぶ寺町通を散策。お土産もここで決まり。買い物好きに最適なコース。</p>
-                            <div class="plan-collage">
-                                <figure class="plan-photo">
-                                    <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Plan+D+Photo" alt="D&DEPARTMENTのイメージ">
-                                </figure>
-                                <div class="plan-access">
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-luup txt-en">LUUP</span>
-                                        <span>佛光寺 → 寺町御池エリアへ</span>
-                                    </div>
-                                    <div class="plan-access-row">
-                                        <span class="plan-mode plan-mode-train txt-en">TRAIN</span>
-                                        <span>地下鉄烏丸線 四条駅 → 市役所前駅（2駅）</span>
-                                    </div>
-                                    <div class="plan-access-row plan-goal">
-                                        <span class="plan-mode txt-en">GOAL</span>
-                                        <span><strong>18:30 四条烏丸へ移動開始</strong></span>
-                                    </div>
-                                </div>
+                        <div class="timeline-item reveal" data-tilt="right">
+                            <span class="time txt-en">14:30</span>
+                            <div>
+                                <h3 class="content-title">お開き</h3>
+                                <p class="content-txt">集合写真とプチギフトのお渡し後、自由解散。帰路へつく方も、もう少し京都を歩く方も、どうぞ良い午後を。</p>
                             </div>
-                            <a class="plan-link" href="https://www.google.com/maps/dir/?api=1&origin=IMU+HOTEL+KYOTO&destination=D%26DEPARTMENT+KYOTO" target="_blank" rel="noreferrer">Google Mapでルートを確認 →</a>
                         </div>
-                    </details>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-shell section-compact">
+            <div class="wrapper info-wrap">
+                <article class="info-board paper-card reveal" data-tilt="left">
+                    <h2 class="info-title txt-en"><ruby class="bilingual">Important Info<rt>大事なお知らせ</rt></ruby></h2>
+                    <ul class="info-list" id="infoList">
+                        <li data-mark="A"><span class="txt-bold">貸切バスについて：</span>28日のホテル到着後はバスの運用が終了します。29日の会場への移動、及び帰路は各自での手配となります。</li>
+                        <li data-mark="B"><span class="txt-bold">ドレスコード：</span>レストランウエディングですので、平服または準礼装でお気軽にお越しください。少しきれいめ、くらいの気持ちで大丈夫です。</li>
+                        <li data-mark="C"><span class="txt-bold">荷物：</span>29日、大きな荷物は式場のクロークに預けられます。チェックアウト後も身軽に動けます。</li>
+                    </ul>
+                </article>
+                <aside class="stay-card paper-card reveal" data-tilt="right">
+                    <h3 class="txt-en"><ruby class="bilingual">Stay & Venue<rt>宿泊と会場</rt></ruby></h3>
+                    <p class="stay-name" id="stayName">IMU HOTEL KYOTO</p>
+                    <div class="stay-meta">
+                        <p><span class="txt-bold">宿泊：</span><span id="stayMetaStay">四条烏丸。食事も散歩も動きやすい、今回のベースキャンプです。</span></p>
+                        <p><span class="txt-bold">式場：</span><span id="stayMetaVenue">アトールテラス鴨川 / 11月29日 10:30 start</span></p>
+                        <p><span class="txt-bold">朝の目安：</span><span id="stayMetaMorning">ホテル出発は9:30。早めに支度を済ませておくと安心です。</span></p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+    </div><!-- /tab-pane schedule -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         Tab 3: 自由行動
+    ══════════════════════════════════════════════════════════ -->
+    <div class="tab-pane" data-pane="freewalk">
+
+        <section class="section-shell section-compact" id="freewalk">
+            <div class="wrapper">
+                <div class="section-heading reveal" data-tilt="right">
+                    <p class="eyebrow txt-en"><ruby class="bilingual">Spot Guide<rt>おすすめスポット</rt></ruby></p>
+                    <h2 class="section-title-ja">気になる場所へ<span class="section-en-sub txt-en"> — Pick Your Spot</span></h2>
+                    <p class="section-title-sub">IMU HOTELを起点に、朝ごはんから飲み屋、銭湯まで。気になるところだけ行けばOKです。</p>
                 </div>
 
-                <div class="plan-goal-banner">
+                <div class="area-map reveal" data-tilt="left">
+                    <iframe title="IMU HOTEL KYOTO 周辺のおすすめスポット" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=IMU+HOTEL+KYOTO&z=15&output=embed"></iframe>
+                    <p class="area-map-note">地図をタップで拡大・操作できます。各スポットの詳細は下のカードからどうぞ。</p>
+                </div>
+
+                <div class="spot-grid">
+                    <!-- 01 朝ごはん: 喫茶マドラグ -->
+                    <article class="spot-tile reveal" data-tilt="left">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Madrag" alt="喫茶マドラグ">
+                            <span class="spot-tile-no txt-en">01</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">朝ごはん</span>
+                            <h3 class="spot-tile-name">喫茶マドラグ</h3>
+                            <p class="spot-tile-desc">名物の分厚すぎる玉子サンドが有名なレトロ喫茶。朝のコーヒーにぴったり。行列覚悟で。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩8分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%96%AB%E8%8C%B6%E3%83%9E%E3%83%89%E3%83%A9%E3%82%B0+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 02 朝ごはん: イノダコーヒ本店 -->
+                    <article class="spot-tile reveal" data-tilt="right">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Inoda+Coffee" alt="イノダコーヒ本店">
+                            <span class="spot-tile-no txt-en">02</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">朝ごはん</span>
+                            <h3 class="spot-tile-name">イノダコーヒ 本店</h3>
+                            <p class="spot-tile-desc">京都を代表する老舗喫茶。「京の朝食」セットで優雅な朝を。中庭席の雰囲気が最高。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩10分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E3%82%A4%E3%83%8E%E3%83%80%E3%82%B3%E3%83%BC%E3%83%92+%E6%9C%AC%E5%BA%97" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 03 食べ歩き: 錦市場 -->
+                    <article class="spot-tile reveal" data-tilt="left">
+                        <figure class="spot-tile-photo">
+                            <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=80" alt="錦市場">
+                            <span class="spot-tile-no txt-en">03</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">食べ歩き</span>
+                            <h3 class="spot-tile-name">錦市場</h3>
+                            <p class="spot-tile-desc">「京の台所」。漬物、出汁巻き、抹茶スイーツなど、歩きながらつまめるお店がずらり。お土産探しにも。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩14分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 04 銭湯: サウナの梅湯 -->
+                    <article class="spot-tile reveal" data-tilt="right">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Sauna+Umeyu" alt="サウナの梅湯">
+                            <span class="spot-tile-no txt-en">04</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">銭湯・サウナ</span>
+                            <h3 class="spot-tile-name">サウナの梅湯</h3>
+                            <p class="spot-tile-desc">鴨川沿いの老舗銭湯。サウナ後に鴨川の土手でぼーっとする時間が至福。旅の疲れをリセット。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>地下鉄</strong> 五条駅 徒歩7分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E3%82%B5%E3%82%A6%E3%83%8A%E3%81%AE%E6%A2%85%E6%B9%AF+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 05 飲み屋: 折鶴会館 -->
+                    <article class="spot-tile reveal" data-tilt="left">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=Orizuru+Kaikan" alt="折鶴会館">
+                            <span class="spot-tile-no txt-en">05</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">飲み屋</span>
+                            <h3 class="spot-tile-name">折鶴会館</h3>
+                            <p class="spot-tile-desc">昭和レトロな西院の横丁。小さな飲み屋がぎゅっと密集するディープスポット。お酒好きは必見。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>阪急</strong> 西院駅 徒歩2分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E8%A5%BF%E9%99%A2+%E6%8A%98%E9%B6%B4%E4%BC%9A%E9%A4%A8" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 06 ショップ: D&DEPARTMENT -->
+                    <article class="spot-tile reveal" data-tilt="right">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=D%26DEPARTMENT" alt="D&DEPARTMENT KYOTO">
+                            <span class="spot-tile-no txt-en">06</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">ショップ</span>
+                            <h3 class="spot-tile-name">D&amp;DEPARTMENT KYOTO</h3>
+                            <p class="spot-tile-desc">佛光寺の境内にあるデザインの名店。カフェも併設。ここでしか買えないお土産が見つかる。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩5分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=D%26DEPARTMENT+KYOTO" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 07 カフェ: % Arabica 東山 -->
+                    <article class="spot-tile reveal" data-tilt="left">
+                        <figure class="spot-tile-photo">
+                            <img src="https://placehold.jp/24/2d2d2d/f5f0e8/600x400.png?text=%25+Arabica" alt="% Arabica 東山">
+                            <span class="spot-tile-no txt-en">07</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">カフェ</span>
+                            <h3 class="spot-tile-name">% Arabica 東山</h3>
+                            <p class="spot-tile-desc">八坂の塔を背景にコーヒーが飲める、京都発の世界的コーヒーショップ。写真映え必至。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩25分 / バス可</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%25+Arabica+%E4%BA%AC%E9%83%BD+%E6%9D%B1%E5%B1%B1" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 08 観光: 高台寺〜八坂神社 -->
+                    <article class="spot-tile reveal" data-tilt="right">
+                        <figure class="spot-tile-photo">
+                            <img src="https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&fit=crop&w=600&q=80" alt="八坂神社">
+                            <span class="spot-tile-no txt-en">08</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">王道観光</span>
+                            <h3 class="spot-tile-name">高台寺〜八坂神社</h3>
+                            <p class="spot-tile-desc">夕方に歩くと最高の京都コース。紅葉ど真ん中。新郎新婦も一緒に歩く予定なので希望者はぜひ。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>ホテル</strong>から徒歩28分 / バス可</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%85%AB%E5%9D%82%E7%A5%9E%E7%A4%BE" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 09 京都御所 -->
+                    <article class="spot-tile reveal" data-tilt="left">
+                        <figure class="spot-tile-photo">
+                            <img src="https://images.unsplash.com/photo-1576675466969-c4a13ea23780?auto=format&fit=crop&w=600&q=80" alt="京都御所">
+                            <span class="spot-tile-no txt-en">09</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">観光</span>
+                            <h3 class="spot-tile-name">京都御所</h3>
+                            <p class="spot-tile-desc">圧倒的な広さの敷地を自由に散歩できる。砂利道を歩くだけで京都の空気を感じられる特別な場所。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>地下鉄</strong> 丸太町駅 徒歩5分</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E9%83%BD%E5%BE%A1%E6%89%80" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+
+                    <!-- 10 寺町通 -->
+                    <article class="spot-tile reveal" data-tilt="right">
+                        <figure class="spot-tile-photo">
+                            <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=600&q=80" alt="寺町通">
+                            <span class="spot-tile-no txt-en">10</span>
+                        </figure>
+                        <div class="spot-tile-body">
+                            <span class="spot-tile-tag">散歩・買い物</span>
+                            <h3 class="spot-tile-name">寺町通</h3>
+                            <p class="spot-tile-desc">古書店、お香屋、文房具屋が並ぶ通り。歩くだけで楽しい、京都のセンスが詰まったストリート。</p>
+                            <div class="spot-tile-meta">
+                                <span class="spot-tile-access"><strong>地下鉄</strong> 市役所前駅すぐ</span>
+                            </div>
+                            <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%AF%BA%E7%94%BA%E9%80%9A+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">MAP</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="plan-goal-banner reveal" data-tilt="left">
                     <span class="plan-goal-time txt-en">19:00</span>
                     <div class="plan-goal-text">
                         <strong>全員集合！</strong>
@@ -497,180 +493,99 @@
                     </div>
                     <span class="plan-goal-flag" aria-hidden="true">🍻</span>
                 </div>
-            </article>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section class="section-shell">
-        <div class="wrapper">
-            <article class="schedule-panel day-two paper-card reveal" data-tilt="right" id="day2">
-                <div class="section-heading">
-                    <p class="eyebrow txt-en"><ruby class="bilingual">Day 2<rt>2日目</rt></ruby> / <ruby class="bilingual">Sunday<rt>日曜日</rt></ruby></p>
-                    <h2 class="section-title-en txt-en"><ruby class="bilingual">Nov 29<rt>11月29日</rt></ruby></h2>
-                    <p class="section-title-ja">いよいよ、結婚式当日。朝は少しだけ早めです。</p>
-                </div>
+    </div><!-- /tab-pane freewalk -->
 
-                <div class="timeline" id="day2Timeline">
-                    <div class="timeline-item reveal" data-tilt="left">
-                        <span class="time txt-en">09:30</span>
-                        <div>
-                            <h3 class="content-title">各自ホテルを出発</h3>
-                            <p class="content-txt">タクシーまたは徒歩にて会場へ。<span class="txt-bold">タクシーの方は「木屋町の五条を上がってすぐの東側」と伝えるとスムーズです。</span></p>
-                        </div>
+    <!-- ══════════════════════════════════════════════════════════
+         Tab 4: RSVP
+    ══════════════════════════════════════════════════════════ -->
+    <div class="tab-pane" data-pane="rsvp">
+
+        <section class="section-shell" id="rsvp">
+            <div class="wrapper rsvp-grid">
+                <article class="rsvp-card paper-card reveal" data-tilt="left">
+                    <p class="eyebrow txt-en"><ruby class="bilingual">RSVP<rt>出欠回答</rt></ruby></p>
+                    <h2 class="rsvp-title">ご回答を、<br>お願いします</h2>
+                    <div class="rsvp-copy" id="rsvpCopy">
+                        <p>最後に、参加可否とアレルギーの情報を教えてください。回答が集まると、席や料理の調整がしやすくなってとても助かります。</p>
+                        <p>所要時間は2分ほど。ご家族分をまとめて入力していただけると助かります。</p>
                     </div>
-                    <div class="timeline-item reveal" data-tilt="right">
-                        <span class="time txt-en">10:00</span>
-                        <div>
-                            <h3 class="content-title">受付開始</h3>
-                            <p class="content-txt">アトールテラス鴨川 4Fにて。鴨川の景色を見ながら、少し深呼吸してお待ちください。</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" class="map-link txt-en" target="_blank" rel="noreferrer"><ruby class="bilingual">Open Google Map<rt>地図を見る</rt></ruby></a>
-                        </div>
+                    <div class="rsvp-setup">
+                        <span class="txt-bold">ご案内：</span>ご家族ごとにまとめてご回答ください。出席される方を下の「メンバーを追加」から増やして入力できます。
                     </div>
-                    <div class="timeline-item reveal" data-tilt="left">
-                        <span class="time txt-en">10:30</span>
-                        <div>
-                            <h3 class="content-title">挙式・披露宴</h3>
-                            <p class="content-txt">いよいよ本番。気負わず、でもしっかり楽しんでもらえたらうれしいです。美味しい料理もぜひ楽しみにしていてください。</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal" data-tilt="right">
-                        <span class="time txt-en">14:30</span>
-                        <div>
-                            <h3 class="content-title">お開き</h3>
-                            <p class="content-txt">集合写真とプチギフトのお渡し後、自由解散。帰路へつく方も、もう少し京都を歩く方も、どうぞ良い午後を。</p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
+                </article>
 
-    <section class="section-shell">
-        <div class="wrapper info-wrap">
-            <article class="info-board paper-card reveal" data-tilt="left">
-                <h2 class="info-title txt-en"><ruby class="bilingual">Important Info<rt>大事なお知らせ</rt></ruby></h2>
-                <ul class="info-list" id="infoList">
-                    <li data-mark="A"><span class="txt-bold">貸切バスについて：</span> 28日のホテル到着後はバスの運用が終了します。29日の会場への移動、及び帰路は各自での手配となります。</li>
-                    <li data-mark="B"><span class="txt-bold">ドレスコード：</span> レストランウエディングですので、平服または準礼装でお気軽にお越しください。少しきれいめ、くらいの気持ちで大丈夫です。</li>
-                    <li data-mark="C"><span class="txt-bold">荷物：</span> 29日、大きな荷物は式場のクロークに預けられます。チェックアウト後も身軽に動けます。</li>
-                </ul>
-            </article>
-            <aside class="stay-card paper-card reveal" data-tilt="right">
-                <h3 class="txt-en"><ruby class="bilingual">Stay & Venue<rt>宿泊と会場</rt></ruby></h3>
-                <p class="stay-name" id="stayName">IMU HOTEL KYOTO</p>
-                <div class="stay-meta">
-                    <p><span class="txt-bold">宿泊：</span> <span id="stayMetaStay">四条烏丸。食事も散歩も動きやすい、今回のベースキャンプです。</span></p>
-                    <p><span class="txt-bold">式場：</span> <span id="stayMetaVenue">アトールテラス鴨川 / 11月29日 10:30 start</span></p>
-                    <p><span class="txt-bold">朝の目安：</span> <span id="stayMetaMorning">ホテル出発は9:30。早めに支度を済ませておくと安心です。</span></p>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <section class="section-shell" id="rsvp">
-        <div class="wrapper rsvp-grid">
-            <article class="rsvp-card paper-card reveal" data-tilt="left">
-                <p class="eyebrow txt-en"><ruby class="bilingual">RSVP<rt>出欠回答</rt></ruby></p>
-                <h2 class="rsvp-title">ご回答を、<br><span class="txt-en"><ruby class="bilingual">Please<rt>お願いします</rt></ruby></span></h2>
-                <div class="rsvp-copy" id="rsvpCopy">
-                    <p>最後に、参加可否とアレルギーの情報を教えてください。回答が集まると、席や料理の調整がしやすくなってとても助かります。</p>
-                    <p>所要時間は2分ほど。ご家族分をまとめて入力していただけると助かります。</p>
-                </div>
-                <div class="rsvp-setup">
-                    <span class="txt-bold">ご案内：</span> ご家族ごとにまとめてご回答ください。出席される方を下の「メンバーを追加」から増やして入力できます。
-                </div>
-            </article>
-
-            <div class="rsvp-form-card paper-card reveal" data-tilt="right">
-                <form class="rsvp-form" id="rsvpForm">
-                    <div class="field-group">
-                        <label class="field-label txt-en" for="householdName"><ruby class="bilingual">Representative<rt>代表者</rt></ruby></label>
-                        <input class="rsvp-input" id="householdName" name="householdName" type="text" placeholder="代表者のお名前" required>
-                    </div>
-
-                    <div class="field-group">
-                        <label class="field-label txt-en" for="householdContact"><ruby class="bilingual">Contact<rt>連絡先</rt></ruby></label>
-                        <input class="rsvp-input" id="householdContact" name="contact" type="text" placeholder="電話番号 or メールアドレス">
-                    </div>
-
-                    <div class="field-group">
-                        <div class="members-header">
-                            <span class="field-label txt-en"><ruby class="bilingual">Members<rt>参加メンバー</rt></ruby></span>
-                            <button class="member-add txt-en" type="button" id="addMemberButton"><ruby class="bilingual">+ Add Member<rt>メンバーを追加</rt></ruby></button>
-                        </div>
-                        <div class="member-list" id="memberList"></div>
-                    </div>
-
-                    <div class="field-group">
-                        <label class="field-label txt-en" for="message"><ruby class="bilingual">Message / Note<rt>ひとことメモ</rt></ruby></label>
-                        <textarea class="rsvp-textarea" id="message" name="message" placeholder="移動面での相談やひとことメッセージなど"></textarea>
-                    </div>
-
-                    <div class="field-group">
-                        <label class="field-label txt-en" for="householdMemo"><ruby class="bilingual">Bus / Stay Memo<rt>バス・宿泊メモ</rt></ruby></label>
-                        <textarea class="rsvp-textarea" id="householdMemo" name="householdMemo" placeholder="バス利用や宿泊まわりで伝えておきたいこと"></textarea>
-                    </div>
-
-                    <button class="rsvp-submit txt-en" type="submit"><ruby class="bilingual">Send RSVP<rt>回答を送信</rt></ruby></button>
-                    <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
-                </form>
-
-                <template id="memberTemplate">
-                    <section class="member-card">
-                        <div class="member-card-head">
-                            <strong>メンバー</strong>
-                            <button class="member-remove txt-en" type="button"><ruby class="bilingual">Remove<rt>削除</rt></ruby></button>
-                        </div>
-                        <div class="member-grid">
-                            <div class="field-group">
-                                <label class="field-label txt-en"><ruby class="bilingual">Name<rt>お名前</rt></ruby></label>
-                                <input class="rsvp-input member-name-input" type="text" placeholder="参加メンバー名" required>
-                            </div>
-                            <div class="field-group">
-                                <span class="field-label txt-en"><ruby class="bilingual">Attendance<rt>出欠</rt></ruby></span>
-                                <div class="radio-row">
-                                    <label class="radio-card">
-                                        <input class="member-attendance-input" type="radio" value="参加" required>
-                                        <span>参加</span>
-                                    </label>
-                                    <label class="radio-card">
-                                        <input class="member-attendance-input" type="radio" value="欠席">
-                                        <span>欠席</span>
-                                    </label>
-                                </div>
-                            </div>
+                <div class="rsvp-form-card paper-card reveal" data-tilt="right">
+                    <form class="rsvp-form" id="rsvpForm">
+                        <div class="field-group">
+                            <label class="field-label txt-en" for="householdName"><ruby class="bilingual">Representative<rt>代表者</rt></ruby></label>
+                            <input class="rsvp-input" id="householdName" name="householdName" type="text" placeholder="代表者のお名前" required>
                         </div>
                         <div class="field-group">
-                            <span class="field-label txt-en"><ruby class="bilingual">Allergy<rt>アレルギー</rt></ruby></span>
-                            <div class="radio-row">
-                                <label class="radio-card">
-                                    <input class="member-allergy-toggle" type="radio" value="なし" required>
-                                    <span>なし</span>
-                                </label>
-                                <label class="radio-card">
-                                    <input class="member-allergy-toggle" type="radio" value="あり">
-                                    <span>あり</span>
-                                </label>
+                            <label class="field-label txt-en" for="householdContact"><ruby class="bilingual">Contact<rt>連絡先</rt></ruby></label>
+                            <input class="rsvp-input" id="householdContact" name="contact" type="text" placeholder="電話番号 or メールアドレス">
+                        </div>
+                        <div class="field-group">
+                            <div class="members-header">
+                                <span class="field-label txt-en"><ruby class="bilingual">Members<rt>参加メンバー</rt></ruby></span>
+                                <button class="member-add txt-en" type="button" id="addMemberButton"><ruby class="bilingual">+ Add Member<rt>メンバーを追加</rt></ruby></button>
                             </div>
+                            <div class="member-list" id="memberList"></div>
                         </div>
-                        <div class="field-group allergy-detail" hidden>
-                            <label class="field-label txt-en"><ruby class="bilingual">Allergy Detail<rt>内容</rt></ruby></label>
-                            <textarea class="rsvp-textarea member-allergy-detail-input" placeholder="例：えび、かに、ナッツ など"></textarea>
+                        <div class="field-group">
+                            <label class="field-label txt-en" for="message"><ruby class="bilingual">Message / Note<rt>ひとことメモ</rt></ruby></label>
+                            <textarea class="rsvp-textarea" id="message" name="message" placeholder="移動面での相談やひとことメッセージなど"></textarea>
                         </div>
-                    </section>
-                </template>
+                        <div class="field-group">
+                            <label class="field-label txt-en" for="householdMemo"><ruby class="bilingual">Bus / Stay Memo<rt>バス・宿泊メモ</rt></ruby></label>
+                            <textarea class="rsvp-textarea" id="householdMemo" name="householdMemo" placeholder="バス利用や宿泊まわりで伝えておきたいこと"></textarea>
+                        </div>
+                        <button class="rsvp-submit txt-en" type="submit"><ruby class="bilingual">Send RSVP<rt>回答を送信</rt></ruby></button>
+                        <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
+                    </form>
+
+                    <template id="memberTemplate">
+                        <section class="member-card">
+                            <div class="member-card-head">
+                                <strong>メンバー</strong>
+                                <button class="member-remove txt-en" type="button"><ruby class="bilingual">Remove<rt>削除</rt></ruby></button>
+                            </div>
+                            <div class="member-grid">
+                                <div class="field-group">
+                                    <label class="field-label txt-en"><ruby class="bilingual">Name<rt>お名前</rt></ruby></label>
+                                    <input class="rsvp-input member-name-input" type="text" placeholder="参加メンバー名" required>
+                                </div>
+                                <div class="field-group">
+                                    <span class="field-label txt-en"><ruby class="bilingual">Attendance<rt>出欠</rt></ruby></span>
+                                    <div class="radio-row">
+                                        <label class="radio-card"><input class="member-attendance-input" type="radio" value="参加" required><span>参加</span></label>
+                                        <label class="radio-card"><input class="member-attendance-input" type="radio" value="欠席"><span>欠席</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <span class="field-label txt-en"><ruby class="bilingual">Allergy<rt>アレルギー</rt></ruby></span>
+                                <div class="radio-row">
+                                    <label class="radio-card"><input class="member-allergy-toggle" type="radio" value="なし" required><span>なし</span></label>
+                                    <label class="radio-card"><input class="member-allergy-toggle" type="radio" value="あり"><span>あり</span></label>
+                                </div>
+                            </div>
+                            <div class="field-group allergy-detail" hidden>
+                                <label class="field-label txt-en"><ruby class="bilingual">Allergy Detail<rt>内容</rt></ruby></label>
+                                <textarea class="rsvp-textarea member-allergy-detail-input" placeholder="例：えび、かに、ナッツ など"></textarea>
+                            </div>
+                        </section>
+                    </template>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <nav class="mobile-nav" aria-label="ページ内ナビゲーション">
-        <a href="#day1">日程</a>
-        <a href="#freewalk">地図</a>
-        <a href="#rsvp">回答</a>
-    </nav>
+    </div><!-- /tab-pane rsvp -->
 
-    <footer class="wrapper">
-        <p class="txt-en"><ruby class="bilingual">Kyoto Family Wedding Journey<rt>京都家族旅のしおり</rt></ruby> / 2026.11.28-29</p>
+    <footer class="site-footer wrapper">
+        <p class="txt-en"><ruby class="bilingual">Kyoto Family Wedding Journey<rt>京都家族旅のしおり</rt></ruby> / 2026.11.28–29</p>
         <p>Created with love by 新郎新婦</p>
     </footer>
 
@@ -678,4 +593,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

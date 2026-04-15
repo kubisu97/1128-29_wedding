@@ -760,13 +760,27 @@
             });
         }
 
-        document.querySelectorAll('.plan-item').forEach((item) => {
-            const icon = item.querySelector('.plan-icon');
-            if (!icon) {
-                return;
-            }
-            icon.textContent = item.open ? '👇' : '👉';
-            item.addEventListener('toggle', () => {
-                icon.textContent = item.open ? '👇' : '👉';
+        // Tab navigation
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        function switchTab(target) {
+            tabButtons.forEach(btn => btn.classList.toggle('is-active', btn.dataset.tab === target));
+            tabPanes.forEach(pane => {
+                const active = pane.dataset.pane === target;
+                pane.classList.toggle('is-active', active);
+                if (active) {
+                    pane.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+                    window.scrollTo(0, 0);
+                }
+            });
+        }
+
+        tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+        document.querySelectorAll('[data-goto]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                switchTab(link.dataset.goto);
             });
         });
