@@ -23,7 +23,9 @@
 
         function unlockSite() {
             document.body.classList.remove('is-locked');
-            accessGate.hidden = true;
+            if (accessGate) {
+                accessGate.hidden = true;
+            }
         }
 
         const scrollMeter = document.getElementById('scrollMeter');
@@ -37,27 +39,31 @@
             scrollMeter.style.width = `${(ratio * 100).toFixed(2)}%`;
         }
 
-        if (localStorage.getItem(ACCESS_STORAGE_KEY) === PASSWORD_HASH) {
-            unlockSite();
-        } else {
-            passwordInput.focus();
-        }
-
-        accessForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            gateError.textContent = '';
-
-            const inputHash = await sha256(passwordInput.value.trim());
-            if (inputHash === PASSWORD_HASH) {
-                localStorage.setItem(ACCESS_STORAGE_KEY, PASSWORD_HASH);
+        if (accessGate && accessForm && passwordInput && gateError) {
+            if (localStorage.getItem(ACCESS_STORAGE_KEY) === PASSWORD_HASH) {
                 unlockSite();
-                accessForm.reset();
-                return;
+            } else {
+                passwordInput.focus();
             }
 
-            gateError.textContent = 'パスワードが違います。もう一度お試しください。';
-            passwordInput.select();
-        });
+            accessForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                gateError.textContent = '';
+
+                const inputHash = await sha256(passwordInput.value.trim());
+                if (inputHash === PASSWORD_HASH) {
+                    localStorage.setItem(ACCESS_STORAGE_KEY, PASSWORD_HASH);
+                    unlockSite();
+                    accessForm.reset();
+                    return;
+                }
+
+                gateError.textContent = 'パスワードが違います。もう一度お試しください。';
+                passwordInput.select();
+            });
+        } else {
+            unlockSite();
+        }
 
         let scrollTicking = false;
         window.addEventListener('scroll', () => {
@@ -76,34 +82,38 @@
 
         const targetDate = new Date('2026-11-29T10:30:00+09:00');
         const countdownRoot = document.getElementById('countdown');
-        const units = {
-            days: countdownRoot.querySelector('[data-unit="days"]'),
-            hours: countdownRoot.querySelector('[data-unit="hours"]'),
-            minutes: countdownRoot.querySelector('[data-unit="minutes"]'),
-            seconds: countdownRoot.querySelector('[data-unit="seconds"]')
-        };
 
-        function updateCountdown() {
-            const now = new Date();
-            const diff = Math.max(targetDate.getTime() - now.getTime(), 0);
+        if (countdownRoot) {
+            const units = {
+                days: countdownRoot.querySelector('[data-unit="days"]'),
+                hours: countdownRoot.querySelector('[data-unit="hours"]'),
+                minutes: countdownRoot.querySelector('[data-unit="minutes"]'),
+                seconds: countdownRoot.querySelector('[data-unit="seconds"]')
+            };
+            let countdownTimerId;
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
+            function updateCountdown() {
+                const now = new Date();
+                const diff = Math.max(targetDate.getTime() - now.getTime(), 0);
 
-            units.days.textContent = String(days).padStart(3, '0');
-            units.hours.textContent = String(hours).padStart(2, '0');
-            units.minutes.textContent = String(minutes).padStart(2, '0');
-            units.seconds.textContent = String(seconds).padStart(2, '0');
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
 
-            if (diff === 0) {
-                clearInterval(countdownTimerId);
+                if (units.days) units.days.textContent = String(days).padStart(3, '0');
+                if (units.hours) units.hours.textContent = String(hours).padStart(2, '0');
+                if (units.minutes) units.minutes.textContent = String(minutes).padStart(2, '0');
+                if (units.seconds) units.seconds.textContent = String(seconds).padStart(2, '0');
+
+                if (diff === 0 && countdownTimerId) {
+                    clearInterval(countdownTimerId);
+                }
             }
-        }
 
-        const countdownTimerId = setInterval(updateCountdown, 1000);
-        updateCountdown();
+            countdownTimerId = setInterval(updateCountdown, 1000);
+            updateCountdown();
+        }
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
