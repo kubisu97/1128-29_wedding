@@ -1,0 +1,364 @@
+/* ===========================================================================
+ * blocks.css — ブロック共通の見た目 + style プリセット（Favori 調）
+ * theme.css のトークン変数を使う。背景はパレット色のみ＝崩れない。
+ * フロント・エディター両方が読み込む。
+ * =========================================================================== */
+
+.wb-page { background: var(--pink); }
+
+/* ---- ブロック共通ラッパ ---- */
+.wb-block { position: relative; padding: var(--section-pad) 22px; }
+.wb-block__inner { margin: 0 auto; width: 100%; }
+
+.wb-w--narrow .wb-block__inner { max-width: var(--w-narrow); }
+.wb-w--normal .wb-block__inner { max-width: var(--w-normal); }
+.wb-w--wide   .wb-block__inner { max-width: var(--w-wide); }
+
+.wb-space--tight  { padding-top: calc(var(--section-pad) * 0.5); padding-bottom: calc(var(--section-pad) * 0.5); }
+.wb-space--normal { padding-top: var(--section-pad); padding-bottom: var(--section-pad); }
+.wb-space--roomy  { padding-top: calc(var(--section-pad) * 1.5); padding-bottom: calc(var(--section-pad) * 1.5); }
+
+.wb-align--left   { text-align: left; }
+.wb-align--center { text-align: center; }
+.wb-align--right  { text-align: right; }
+
+.wb-bg--none     { background: transparent; }
+.wb-bg--paper    { background: var(--paper); }
+.wb-bg--pink     { background: var(--pink); }
+.wb-bg--pinkSoft { background: var(--pinkSoft); }
+.wb-bg--sage     { background: var(--sage); }
+.wb-bg--sageSoft { background: var(--sageSoft); }
+.wb-bg--coral    { background: var(--coral); color: #fff; }
+.wb-bg--ink      { background: var(--ink); color: #fff; }
+.wb-bg--coral .wb-subheading, .wb-bg--ink .wb-subheading { color: rgba(255,255,255,.82); }
+
+.wb-tilt--none  .wb-block__inner { transform: none; }
+.wb-tilt--left  .wb-block__inner { transform: rotate(-1deg); }
+.wb-tilt--right .wb-block__inner { transform: rotate(1deg); }
+
+/* ---- 共通見出し（英字 h2 + 小さな日本語サブ） ---- */
+.wb-head { margin-bottom: 26px; }
+.wb-heading {
+  font-weight: 400;
+  font-size: clamp(26px, 7vw, 32px);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+.wb-subheading {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* 左右に伸びる罫線つき見出し（挙式 / 披露宴 / 会場情報） */
+.wb-rule {
+  display: inline-block;
+  width: 42px; height: 1px;
+  background: var(--coral);
+  vertical-align: middle;
+  margin: 0 14px;
+}
+.wb-rule--ink { background: var(--ink); }
+
+/* ---- 共通ピルボタン（radius 40） ---- */
+.wb-pill {
+  display: inline-block;
+  font: inherit;
+  font-size: 15px;
+  padding: 15px 40px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--coral);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--motion) ease, transform 0.15s ease, box-shadow var(--motion) ease;
+  text-decoration: none;
+}
+.wb-pill:hover { background: var(--coral-deep); box-shadow: var(--shadow-soft); }
+.wb-pill:active { transform: translateY(1px); }
+
+/* =========================================================== cover */
+.wb-cover { position: relative; padding: 8px 0 6px; }
+/* 筆文字エリア（テキスト or PNG）。写真の上に重なる */
+.wb-cover__lettering-wrap { position: relative; z-index: 2; }
+.wb-cover__lettering {
+  font-weight: 700;
+  font-size: clamp(48px, 17vw, 84px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  white-space: pre-line;
+  text-align: left;
+  padding-left: 6px;
+  margin: 0;
+}
+/* 手描き筆文字PNG（透過）。横幅いっぱい、写真に被さる */
+.wb-cover__lettering-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  padding: 0 4px;
+}
+.wb-cover__photo {
+  position: relative;
+  z-index: 1;
+  margin: -36px auto 0;
+  width: 64%;
+  aspect-ratio: 3 / 4;
+  background: var(--paper);
+  border: 6px solid var(--paper);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+/* PNG筆文字のときは、画像が大きいので写真の食い込みを少し深く */
+.wb-cover__lettering-wrap.is-img + .wb-cover__photo { margin-top: -22%; }
+.wb-cover__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wb-cover__ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 13px; background: var(--pinkSoft);
+}
+.wb-cover__names {
+  position: relative; z-index: 2;
+  margin-top: -28px;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  font-family: var(--font-accent);
+  letter-spacing: 0.16em;
+  text-transform: none;       /* 「and」を小文字のまま保つ（サンプル準拠） */
+}
+.wb-cover__date { text-align: right; padding-right: 10px; margin-top: 6px; font-size: 11px; color: var(--muted); }
+
+/* =========================================================== countdown */
+.wb-countdown { display: flex; justify-content: center; }
+.wb-countdown__ring {
+  position: relative;
+  width: 280px; height: 280px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.wb-countdown__arc { position: absolute; font-size: 12px; letter-spacing: 0.22em; color: var(--ink); }
+.wb-countdown__arc--top { top: 30px; }
+.wb-countdown__arc--bottom { bottom: 30px; }
+.wb-countdown__days { display: flex; align-items: baseline; gap: 8px; }
+.wb-countdown__num { font-size: 56px; font-weight: 500; line-height: 1; }
+.wb-countdown__dayslabel { font-size: 14px; color: var(--ink); }
+.wb-countdown__hms { display: flex; gap: 20px; margin-top: 10px; }
+.wb-countdown__hms span { display: flex; flex-direction: column; align-items: center; }
+.wb-countdown__hms b { font-size: 26px; font-weight: 500; line-height: 1.1; }
+.wb-countdown__hms i { font-size: 9px; letter-spacing: 0.1em; color: var(--muted); font-style: normal; }
+.wb-countdown__date { margin-top: 12px; font-size: 13px; letter-spacing: 0.1em; }
+
+/* =========================================================== message */
+.wb-message__body { font-size: 14px; line-height: 2.2; color: var(--ink); }
+.wb-message__sign { margin-top: 18px; font-size: 13px; }
+.wb-message__photo { margin-top: 28px; border-radius: var(--radius); overflow: hidden; }
+.wb-message__photo img { width: 100%; display: block; }
+
+/* =========================================================== profile */
+.wb-profile { position: relative; }
+/* 手描き風の squiggle 背景（CSS で軽く再現） */
+.wb-profile::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0.5;
+  background-image:
+    radial-gradient(circle at 12% 22%, transparent 18px, var(--pinkSoft) 19px 20px, transparent 21px),
+    radial-gradient(circle at 86% 60%, transparent 22px, var(--pinkSoft) 23px 24px, transparent 25px);
+  pointer-events: none;
+}
+.wb-profile > * { position: relative; z-index: 1; }
+.wb-profile__list { display: grid; gap: 40px; }
+.wb-profile__card { }
+.wb-profile__photo {
+  width: 100%; aspect-ratio: 4 / 3; overflow: hidden;
+  border-radius: var(--radius); background: var(--pinkSoft);
+}
+.wb-profile__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wb-profile__ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
+.wb-profile__role { margin-top: 16px; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+.wb-profile__name { font-size: 20px; font-weight: 500; margin-top: 2px; }
+.wb-profile__text { font-size: 13px; line-height: 2; color: var(--ink); margin-top: 12px; }
+
+/* =========================================================== album */
+.wb-album__stage { position: relative; border-radius: var(--radius); overflow: hidden; }
+.wb-album__slides { position: relative; aspect-ratio: 4 / 3; background: var(--pinkSoft); }
+.wb-album__slide { position: absolute; inset: 0; opacity: 0; transition: opacity var(--motion) ease; }
+.wb-album__slide.is-active { opacity: 1; }
+.wb-album__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wb-album__nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border-radius: 50%; border: 0;
+  background: rgba(255,255,255,0.85); color: var(--ink);
+  font-size: 20px; cursor: pointer; z-index: 2; line-height: 1;
+}
+.wb-album__nav--prev { left: 10px; }
+.wb-album__nav--next { right: 10px; }
+.wb-album__thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; }
+.wb-album__thumb { flex: 0 0 64px; height: 48px; border: 0; padding: 0; border-radius: var(--radius-xs); overflow: hidden; cursor: pointer; opacity: 0.55; transition: opacity var(--motion) ease; }
+.wb-album__thumb.is-active { opacity: 1; outline: 2px solid var(--coral); }
+.wb-album__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.wb-album__empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 16px; color: var(--muted); font-size: 13px; }
+
+/* =========================================================== party-info */
+.wb-party__date { margin-bottom: 28px; }
+.wb-party__datelabel { font-size: 13px; color: var(--coral); letter-spacing: 0.2em; }
+.wb-party__datetext { font-size: 24px; font-weight: 500; margin-top: 8px; }
+.wb-party__card {
+  background: var(--sageSoft);
+  border-radius: var(--radius);
+  padding: 26px 18px; margin-bottom: 18px;
+}
+.wb-party__name { font-size: 17px; font-weight: 500; color: var(--coral); display: flex; align-items: center; justify-content: center; }
+.wb-party__name .wb-rule { background: var(--coral); }
+.wb-party__start { margin-top: 14px; font-size: 14px; color: var(--ink); }
+.wb-party__start b { font-size: 28px; font-weight: 500; margin-left: 6px; }
+.wb-party__sub { margin-top: 6px; font-size: 13px; color: var(--muted); }
+.wb-party__venue { margin-top: 36px; }
+.wb-party__venue .wb-party__name { color: var(--ink); }
+.wb-party__venuename { font-size: 20px; font-weight: 500; margin-top: 16px; }
+.wb-party__venuelines { font-size: 13px; color: var(--ink); margin-top: 10px; line-height: 2; }
+
+/* =========================================================== request */
+.wb-request__card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: left;
+  background: var(--paper);
+}
+.wb-request__title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.wb-request__body { font-size: 14px; line-height: 2.1; color: var(--ink); }
+
+/* =========================================================== rsvp */
+.wb-rsvp__intro { margin-bottom: 30px; }
+.wb-rsvp__lead { font-size: 18px; letter-spacing: 0.1em; margin-bottom: 14px; }
+.wb-rsvp__deadline { font-size: 14px; line-height: 2; }
+.wb-rsvp__deadline u { text-underline-offset: 4px; }
+.wb-rsvp__note {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px; margin-top: 18px;
+  font-size: 13px; color: var(--muted); line-height: 1.9;
+}
+
+/* 出欠（Attend / Decline / Hold） */
+.wb-attend { border: 0; margin-bottom: 30px; }
+.wb-attend__legend { font-size: 18px; font-weight: 500; display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 22px; }
+.wb-attend__row { display: flex; justify-content: center; gap: 8px; }
+.wb-attend__opt {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 4px; cursor: pointer; border-radius: var(--radius);
+  transition: background var(--motion) ease;
+}
+.wb-attend__opt:hover { background: var(--pinkSoft); }
+.wb-attend__opt input { position: absolute; opacity: 0; pointer-events: none; }
+.wb-attend__en { font-size: 22px; font-weight: 500; color: var(--muted); transition: color var(--motion) ease; letter-spacing: 0.02em; }
+.wb-attend__ja { font-size: 12px; color: var(--muted); }
+.wb-attend__opt input:checked ~ .wb-attend__en { color: var(--coral); }
+.wb-attend__opt input:checked ~ .wb-attend__ja { color: var(--ink); }
+.wb-attend__opt:has(input:checked) { background: var(--pinkSoft); }
+
+/* フォーム項目 */
+.wb-rsvp__form { text-align: left; }
+.wb-rsvp__hint { font-size: 13px; font-weight: 600; margin: 8px 0 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.wb-req { color: var(--coral); font-style: normal; }
+.wb-rsvp__field { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.wb-rsvp__field > label { display: block; font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+.wb-rsvp__field input[type="text"],
+.wb-rsvp__field input[type="email"],
+.wb-rsvp__field textarea {
+  width: 100%; font: inherit; font-size: 15px; padding: 13px 14px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--ink);
+}
+.wb-rsvp__field textarea { resize: vertical; min-height: 80px; }
+.wb-rsvp__field input:focus, .wb-rsvp__field textarea:focus { outline: none; border-color: var(--coral); }
+.wb-rsvp__twin { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.wb-radio { display: block; font-size: 15px; margin-top: 10px; cursor: pointer; }
+.wb-rsvp__allergydetail { margin-top: 12px; }
+.wb-rsvp__busnote { font-size: 14px; line-height: 1.9; color: var(--ink); margin-bottom: 12px; }
+
+/* select 共通（同席者人数・同席者出欠） */
+.wb-rsvp__field select,
+.wb-rsvp__select {
+  width: 100%; font: inherit; font-size: 15px; padding: 13px 14px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--paper); color: var(--ink); -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.wb-rsvp__field select:focus, .wb-rsvp__select:focus { outline: none; border-color: var(--coral); }
+.wb-rsvp__hintnote { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.7; }
+
+/* 同席者の動的行 */
+.wb-rsvp__companion-list { margin-top: 12px; display: grid; gap: 10px; }
+.wb-rsvp__companion-row { display: grid; grid-template-columns: 1fr 96px; gap: 10px; }
+.wb-rsvp__companion-row input { width: 100%; }
+
+/* 新郎/新婦ゲスト ピックボタン */
+.wb-pickbtn {
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px; border-radius: var(--radius); background: var(--sageSoft);
+  cursor: pointer; font-size: 16px; transition: background var(--motion) ease, box-shadow var(--motion) ease;
+}
+.wb-pickbtn input { position: absolute; opacity: 0; }
+.wb-pickbtn:has(input:checked) { background: var(--coral); color: #fff; box-shadow: var(--shadow-soft); }
+
+.wb-rsvp__form .wb-pill { display: block; width: 100%; margin: 14px auto 0; }
+.wb-rsvp__status { font-size: 13px; color: var(--coral); text-align: center; margin-top: 14px; min-height: 1em; }
+
+/* =========================================================== schedule */
+.wb-schedule__list { list-style: none; text-align: left; max-width: 360px; margin: 0 auto; }
+.wb-align--left .wb-schedule__list { margin-left: 0; }
+.wb-schedule__row { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid var(--line); }
+.wb-schedule__row:last-child { border-bottom: 1px solid var(--line); }
+.wb-schedule__time { font-size: 16px; color: var(--coral); }
+.wb-schedule__title { font-size: 15px; font-weight: 600; }
+.wb-schedule__text { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* =========================================================== map */
+.wb-map__frame { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-soft); border: 1px solid var(--line); }
+.wb-map__frame iframe { display: block; width: 100%; height: 300px; border: 0; }
+.wb-map__cap { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.wb-map__empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 16px; color: var(--muted); font-size: 13px; }
+
+/* =========================================================== photo / text / image */
+.wb-photo__grid { display: grid; gap: 12px; }
+.wb-photo--gallery .wb-photo__grid { grid-template-columns: repeat(2, 1fr); }
+.wb-photo--single .wb-photo__grid { grid-template-columns: 1fr; }
+.wb-photo__item { margin: 0; border-radius: var(--radius); overflow: hidden; background: var(--pinkSoft); }
+.wb-photo__item img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.wb-photo--single .wb-photo__item img { aspect-ratio: 16/10; }
+.wb-photo__cap { font-size: 10px; padding: 8px 10px; color: var(--muted); }
+.wb-photo__empty, .wb-image__empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 16px; color: var(--muted); font-size: 13px; }
+.wb-text__body { font-size: 14px; line-height: 2.1; }
+.wb-image__fig { margin: 0; }
+.wb-image__fig img { display: block; width: 100%; border-radius: var(--radius); }
+.wb-image__cap { font-size: 10px; margin-top: 8px; color: var(--muted); }
+
+/* =========================================================== photoCta */
+.wb-photocta__title { font-size: 20px; font-weight: 500; margin-bottom: 12px; }
+.wb-photocta__text { font-size: 14px; color: var(--ink); line-height: 2; margin-bottom: 22px; }
+.wb-photocta__note { font-size: 11px; color: var(--muted); margin-top: 10px; }
+.wb-pill--disabled { background: var(--muted); cursor: default; pointer-events: none; opacity: 0.7; }
+
+/* =========================================================== embed */
+.wb-embed__frame {
+  display: block; width: 100%; border: 0;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--paper); box-shadow: var(--shadow-soft);
+}
+.wb-embed__empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 16px; color: var(--muted); font-size: 13px; }
+
+.wb-unknown { padding: 24px; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--muted); font-size: 13px; }
+
+/* ---- レスポンシブ ---- */
+@media (max-width: 600px) {
+  .wb-block { padding-left: 18px; padding-right: 18px; }
+  .wb-tilt--left .wb-block__inner, .wb-tilt--right .wb-block__inner { transform: none; }
+}

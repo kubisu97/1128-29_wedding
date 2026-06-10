@@ -1,0 +1,77 @@
+/* ===========================================================================
+ * theme.css — トークン既定値（theme.js の DEFAULT_THEME と一致 / Favori 調）
+ * applyTheme() がここを上書きする。JS 未実行でも崩れないための保険。
+ * フロント・エディター両方が読み込む。
+ * =========================================================================== */
+:root {
+  --pink: #ecd9d1;
+  --pinkSoft: #f5e9e4;
+  --coral: #ec775b;
+  --coral-deep: #d8623f;
+  --sage: #c6cec9;
+  --sageSoft: #dde2de;
+  --ink: #333333;
+  --muted: #9c9c9c;
+  --paper: #ffffff;
+  --line: #d9d9d9;
+
+  --font-body: 'Noto Sans JP', sans-serif;
+  --font-display: 'Noto Serif JP', serif;
+  --font-accent: 'Poppins', sans-serif;
+
+  /* DESIGN.md: radius 4 / 8 / 40 */
+  --radius-xs: 4px;
+  --radius: 8px;
+  --radius-pill: 40px;
+
+  --section-pad: 64px;
+  --motion: 350ms;
+  --shadow-soft: 0 8px 24px rgba(51, 41, 38, 0.08);
+  --shadow: 0 18px 48px rgba(51, 41, 38, 0.12);
+
+  /* 幅プリセット */
+  --w-narrow: 380px;
+  --w-normal: 430px;   /* スマホ幅カードの基準 */
+  --w-wide: 560px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 英字アクセント（小キャップ） */
+.txt-en {
+  font-family: var(--font-accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* 明朝の見出し */
+.txt-serif {
+  font-family: var(--font-display);
+}
+
+/* フォーカスリング（DESIGN.md: focus-visible 必須） */
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}

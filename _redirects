@@ -1,0 +1,9 @@
+# Cloudflare Pages リダイレクト/リライト設定
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# エディター（管理画面）を /index/admin で開けるようにする。
+# 200 = リライト（URL は /index/admin のまま、中身は editor.html を返す）
+/index/admin    /editor.html    200
+
+# しおりページの綺麗な URL（任意）
+/guide          /index.html     200

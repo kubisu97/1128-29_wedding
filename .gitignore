@@ -1,0 +1,9 @@
+node_modules/
+package.json
+package-lock.json
+.venv/
+_*.test.js
+_*.js
+_shot-*.png
+_v-*.png
+.DS_Store

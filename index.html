@@ -1,441 +1,295 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYOTO FAMILY WEDDING JOURNEY - 11.28-29</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@200;400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/blocks.css">
+  <style>
+    body { background: var(--sage); }
+
+    /* ===== レイアウト：PC=左サイドバー＋右カード / SP=1カラム ===== */
+    .site-wrap { min-height: 100vh; }
+
+    /* SP（既定）: スマホ幅で中央寄せの1カラム。ページ全体が通常スクロール
+       （内部スクロールコンテナを作らない＝iOSのスクロール閉じ込めを回避） */
+    .site-card {
+      max-width: 480px; margin: 0 auto; background: var(--pink); min-height: 100vh;
+      position: relative; overflow: visible;
+    }
+    .site-sidebar { display: none; }
+
+    /* ページ内ナビ（追従バナーとは別。複数ページ時のヘッダタブ） */
+    .site-topnav {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; gap: 4px; padding: 10px 14px;
+      background: rgba(236,217,209,0.94); backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(51,51,51,0.08); overflow-x: auto;
+    }
+    .site-topnav__btn {
+      font-family: var(--font-accent); font-size: 12px; letter-spacing: 0.04em;
+      padding: 7px 14px; border: 0; border-radius: var(--radius-pill);
+      background: transparent; color: var(--ink); cursor: pointer; white-space: nowrap;
+    }
+    .site-topnav__btn.is-active { background: var(--coral); color: #fff; }
+    .site-topnav[hidden] { display: none; }
+
+    /* ===== 追従バナー（栗栖家の方はこちらも） ===== */
+    .follow-banner {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      z-index: 40; max-width: 440px; width: calc(100% - 36px);
+      display: flex; align-items: center; gap: 10px;
+      background: var(--ink); color: #fff; text-decoration: none;
+      padding: 13px 18px; border-radius: var(--radius-pill);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      font-size: 13px; line-height: 1.5;
+      transition: transform var(--motion) ease, opacity var(--motion) ease;
+    }
+    .follow-banner__arrow { margin-left: auto; flex: 0 0 auto; opacity: 0.85; }
+    .follow-banner[hidden] { display: none; }
+    .follow-banner:hover { background: #1f1f1f; }
+
+    .site-loading { padding: 80px 24px; text-align: center; color: var(--muted); font-family: var(--font-accent); }
+
+    /* ===== PC（920px〜）: 左固定サイドバー＋右スマホ幅カード（カード内だけスクロール） ===== */
+    @media (min-width: 920px) {
+      /* 画面全体は固定。スクロールするのは右カードの中だけ。 */
+      html, body { height: 100%; overflow: hidden; }
+      .site-wrap {
+        display: grid;
+        grid-template-columns: 1fr minmax(380px, 460px);
+        gap: 40px;
+        max-width: 1080px; margin: 0 auto;
+        padding: 40px 24px;
+        align-items: stretch;
+        height: 100vh;
+        height: 100dvh;          /* モバイル系PCブラウザのUIバー対策 */
+      }
+      .site-sidebar {
+        display: block;
+        align-self: center;       /* 左サイドバーは中央あたりに固定表示 */
+      }
+      .site-sidebar__inner {
+        background: var(--pink); border-radius: var(--radius);
+        padding: 36px 30px; text-align: center;
+      }
+      .sb-names { font-family: var(--font-display); font-size: 22px; font-weight: 500; }
+      .sb-date { font-size: 30px; font-weight: 500; letter-spacing: 0.02em; margin-top: 10px; font-family: var(--font-display); }
+      .sb-sub { font-size: 13px; color: var(--muted); margin-top: 6px; letter-spacing: 0.08em; }
+      .sb-cd { display: flex; justify-content: center; gap: 16px; margin-top: 22px; }
+      .sb-cd > div { display: flex; flex-direction: column; }
+      .sb-cd b { font-family: var(--font-display); font-size: 26px; font-weight: 500; line-height: 1; }
+      .sb-cd i { font-family: var(--font-accent); font-size: 9px; letter-spacing: 0.1em; color: var(--muted); font-style: normal; margin-top: 4px; text-transform: uppercase; }
+      .sb-note {
+        margin-top: 26px; background: var(--pinkSoft); border-radius: var(--radius);
+        padding: 18px; font-size: 12px; color: var(--muted); line-height: 1.9;
+      }
+      .sb-note u { color: var(--ink); text-underline-offset: 3px; }
+      .sb-cta {
+        display: block; width: 100%; margin-top: 14px; text-align: center;
+        font-family: var(--font-body); font-size: 14px; padding: 13px;
+        border: 0; border-radius: var(--radius-pill); background: var(--coral); color: #fff;
+        cursor: pointer; text-decoration: none; transition: background var(--motion) ease;
+      }
+      .sb-cta:hover { background: var(--coral-deep); }
+
+      /* カードは固定高さの内部スクロールコンテナ（参考サイトの「枠の中だけ動く」挙動） */
+      .site-card {
+        max-width: none; margin: 0; min-height: 0;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+      }
+      .site-card::-webkit-scrollbar { width: 8px; }
+      .site-card::-webkit-scrollbar-thumb { background: rgba(51,51,51,0.18); border-radius: 8px; }
+      /* topnav はカード内 overflow:auto の中で sticky 固定（カードの上端に貼り付く） */
+      .site-topnav { border-radius: var(--radius) var(--radius) 0 0; }
+      .follow-banner { left: auto; right: 24px; transform: none; max-width: 320px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="scroll-meter" aria-hidden="true"><span id="scrollMeter"></span></div>
+  <div class="site-wrap">
+    <!-- PC: 左サイドバー -->
+    <aside class="site-sidebar" id="sidebar"></aside>
 
-    <a class="floating-guide-banner" href="#travel-guide" aria-label="栗栖家用旅のしおりはこちら">
-        <span>栗栖家用旅のしおりはこちら</span>
-    </a>
-
-    <div class="wedding-page">
-        <main>
-            <section class="tm-hero" id="top" aria-labelledby="heroTitle">
-                <div class="tm-hero-white"></div>
-                <div class="slider-box">
-                    <div class="tm-hero-img">
-                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=85" alt="京都の街並み">
-                    </div>
-                </div>
-                <p class="tm-hero-text-01 txt-en">INVITATION</p>
-                <h1 class="tm-hero-text-wrapper" id="heroTitle">
-                    <span class="tm-hero-text-02 txt-didot">Wedding Celebration</span>
-                    <span class="tm-hero-text-03 txt-en">PLEASE JOIN TO CELEBRATE</span>
-                    <span class="tm-hero-deco" aria-hidden="true"></span>
-                    <span class="tm-hero-text-04">2026.11.29 / Kyoto</span>
-                </h1>
-            </section>
-
-            <section class="tm-intro tm-section" aria-labelledby="introTitle">
-                <div class="tm-common-inner intro-layout">
-                    <div class="tm-intro-title reveal">
-                        <p class="section-kicker txt-en">Invitation</p>
-                        <h2 id="introTitle">京都で、家族と祝う日。</h2>
-                    </div>
-                    <div class="tm-intro-card reveal">
-                        <p class="intro-lead" id="mastheadSub">2026年11月28日から29日まで。広島から京都へ、家族みんなで向かう2日間のための招待状兼デジタルしおりです。</p>
-                        <div class="invitation-copy" id="invitationCopy">
-                            <p>このたび、私たちは京都で結婚式を挙げることになりました。広島からこうして家族みんなで来てもらえることが、とてもうれしいです。</p>
-                            <p>せっかくの機会なので、当日だけでなく前日から少し旅気分で楽しんでもらえたらと思い、招待状と旅のしおりをひとつにまとめました。</p>
-                            <p>おいしいものを食べて、少し歩いて、笑って、いい時間を一緒に過ごせたらうれしいです。どうぞよろしくお願いします。</p>
-                        </div>
-                        <p class="invitation-sign">新郎新婦より</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-host tm-section" aria-labelledby="hostTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-host-title reveal">
-                        <p class="section-kicker txt-en">Welcome</p>
-                        <h2 id="hostTitle">ご案内</h2>
-                    </div>
-                    <div class="host-grid">
-                        <article class="host-item reveal">
-                            <figure class="host-item-img" data-photo-slot="1">
-                                <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=85" alt="京都の通り">
-                            </figure>
-                            <div class="host-item-copy">
-                                <p class="host-item-title txt-en">Ceremony</p>
-                                <h3 id="invitationMetaCeremony">2026年11月29日（日）10:30-</h3>
-                                <p>アトールテラス鴨川にて、挙式・披露宴を行います。鴨川の景色を見ながら、ゆっくりお過ごしください。</p>
-                            </div>
-                        </article>
-                        <article class="host-item reveal">
-                            <figure class="host-item-img" data-photo-slot="2">
-                                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=85" alt="祝福のイメージ">
-                            </figure>
-                            <div class="host-item-copy">
-                                <p class="host-item-title txt-en">Stay</p>
-                                <h3 id="invitationMetaHotel">Rakuten STAY URBAN 四条河原町</h3>
-                                <p>前日は四条河原町周辺を拠点にします。食事も散歩も動きやすい、今回の旅のベースです。</p>
-                            </div>
-                        </article>
-                    </div>
-                    <p class="hidden-meta" id="invitationMetaVenue">アトールテラス鴨川</p>
-                </div>
-            </section>
-
-            <section class="tm-countdown tm-section" aria-labelledby="countdownTitle">
-                <div class="countdown-bg" aria-hidden="true"></div>
-                <div class="tm-common-inner">
-                    <div class="tm-countdown-inner reveal">
-                        <p class="section-kicker txt-en">Countdown</p>
-                        <h2 id="countdownTitle">挙式まで</h2>
-                        <p class="tm-countdown-text" id="countdownTarget">挙式日時：2026.11.29 10:30 / アトールテラス鴨川</p>
-                        <div class="countdown-timer" id="countdown" aria-live="polite">
-                            <div class="countdown-block">
-                                <span class="countdown-number" data-unit="days">000</span>
-                                <span class="countdown-unit txt-en">Days</span>
-                            </div>
-                            <div class="countdown-block">
-                                <span class="countdown-number" data-unit="hours">00</span>
-                                <span class="countdown-unit txt-en">Hours</span>
-                            </div>
-                            <div class="countdown-block">
-                                <span class="countdown-number" data-unit="minutes">00</span>
-                                <span class="countdown-unit txt-en">Minutes</span>
-                            </div>
-                            <div class="countdown-block">
-                                <span class="countdown-number" data-unit="seconds">00</span>
-                                <span class="countdown-unit txt-en">Seconds</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-information tm-section" aria-labelledby="infoTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-information-title reveal">
-                        <p class="section-kicker txt-en">Information</p>
-                        <h2 id="infoTitle">当日のご案内</h2>
-                    </div>
-
-                    <div class="information-grid">
-                        <article class="information-content reveal">
-                            <h3>
-                                <span class="en txt-en">Wedding Day</span>
-                                <span class="ja">11月29日（日）</span>
-                            </h3>
-                            <p class="information-date"><span>10:30</span> start</p>
-                            <div class="information-detail">
-                                <p>受付 10:00</p>
-                                <p>挙式・披露宴 10:30</p>
-                                <p>お開き 14:30頃</p>
-                            </div>
-                        </article>
-
-                        <article class="information-content reveal">
-                            <h3>
-                                <span class="en txt-en">Venue Access</span>
-                                <span class="ja">アクセス</span>
-                            </h3>
-                            <div class="information-map">
-                                <iframe title="アトールテラス鴨川への地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D&z=16&output=embed"></iframe>
-                            </div>
-                            <div class="information-place">
-                                <p>会場 / アトールテラス鴨川</p>
-                                <p>ホテル出発の目安 / 9:30</p>
-                                <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" target="_blank" rel="noreferrer">Google Map</a>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-travel tm-section" id="travel-guide" aria-labelledby="travelTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-travel-title reveal">
-                        <p class="section-kicker txt-en">Family Trip Guide</p>
-                        <h2 id="travelTitle">栗栖家用 旅のしおり</h2>
-                        <p id="guideNote">11月の京都は朝晩がしっかり冷えます。バス移動や街歩きもあるので、軽い羽織りがあると安心。ホテルは四条河原町なので、食後に少し散歩したい人にもかなり良い立地です。</p>
-                    </div>
-
-                    <div class="timeline-wrap">
-                        <article class="timeline-panel reveal">
-                            <p class="timeline-day txt-en">Day 1 / Saturday</p>
-                            <h3>11月28日</h3>
-                            <div class="timeline" id="day1Timeline">
-                                <div class="timeline-item">
-                                    <span class="time txt-en">07:30</span>
-                                    <div>
-                                        <h4 class="content-title">広島をバスで出発</h4>
-                                        <p class="content-txt">朝は少し早いですが、みんなでゆっくり京都へ向かいます。途中休憩をはさみながら、安全運転で向かう予定です。</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">15:00</span>
-                                    <div>
-                                        <h4 class="content-title">Rakuten STAY URBAN 四条河原町にチェックイン</h4>
-                                        <p class="content-txt">バスでホテルへ移動。まずは荷物を預けてリフレッシュ。四条河原町エリアを散策しやすい立地です。</p>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Rakuten+STAY+URBAN+%E5%9B%9B%E6%9D%A1%E6%B2%B3%E5%8E%9F%E7%94%BA" class="map-link" target="_blank" rel="noreferrer">Google Map</a>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">15:30</span>
-                                    <div>
-                                        <h4 class="content-title">自由行動</h4>
-                                        <p class="content-txt">ホテル周辺を散策したり、錦市場へ行ったり。希望者は新郎新婦と一緒に「高台寺〜八坂神社」方面へ。</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">19:00</span>
-                                    <div>
-                                        <h4 class="content-title">さざんか亭 本店で夕食（前夜祭）</h4>
-                                        <p class="content-txt">現地集合。広島と京都の食材をつまみながら、明日に向けてゆるく前祝いをしましょう。</p>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%95%E3%81%96%E3%82%93%E3%81%8B%E4%BA%AD+%E6%9C%AC%E5%BA%97+%E4%BA%AC%E9%83%BD" class="map-link" target="_blank" rel="noreferrer">Google Map</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="timeline-panel reveal">
-                            <p class="timeline-day txt-en">Day 2 / Sunday</p>
-                            <h3>11月29日</h3>
-                            <div class="timeline" id="day2Timeline">
-                                <div class="timeline-item">
-                                    <span class="time txt-en">09:30</span>
-                                    <div>
-                                        <h4 class="content-title">各自ホテルを出発</h4>
-                                        <p class="content-txt">タクシーまたは徒歩にて会場へ。タクシーの方は「木屋町の五条を上がってすぐの東側」と伝えるとスムーズです。</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">10:00</span>
-                                    <div>
-                                        <h4 class="content-title">受付開始</h4>
-                                        <p class="content-txt">アトールテラス鴨川 4Fにて。鴨川の景色を見ながら、少し深呼吸してお待ちください。</p>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D" class="map-link" target="_blank" rel="noreferrer">Google Map</a>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">10:30</span>
-                                    <div>
-                                        <h4 class="content-title">挙式・披露宴</h4>
-                                        <p class="content-txt">いよいよ本番。気負わず、でもしっかり楽しんでもらえたらうれしいです。美味しい料理もぜひ楽しみにしていてください。</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <span class="time txt-en">14:30</span>
-                                    <div>
-                                        <h4 class="content-title">お開き</h4>
-                                        <p class="content-txt">集合写真とプチギフトのお渡し後、自由解散。帰路へつく方も、もう少し京都を歩く方も、どうぞ良い午後を。</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-
-                    <div class="info-stay-grid">
-                        <article class="info-board reveal">
-                            <h3 class="txt-en">Important Info</h3>
-                            <ul class="info-list" id="infoList">
-                                <li><span class="txt-bold">貸切バスについて：</span>28日のホテル到着後はバスの運用が終了します。29日の会場への移動、及び帰路は各自での手配となります。</li>
-                                <li><span class="txt-bold">ドレスコード：</span>レストランウエディングですので、平服または準礼装でお気軽にお越しください。少しきれいめ、くらいの気持ちで大丈夫です。</li>
-                                <li><span class="txt-bold">荷物：</span>29日、大きな荷物は式場のクロークに預けられます。チェックアウト後も身軽に動けます。</li>
-                            </ul>
-                        </article>
-                        <aside class="stay-board reveal">
-                            <h3 class="txt-en">Stay & Venue</h3>
-                            <p class="stay-name" id="stayName">Rakuten STAY URBAN 四条河原町</p>
-                            <div class="stay-meta">
-                                <p><span class="txt-bold">宿泊：</span><span id="stayMetaStay">四条河原町。食事も散歩も動きやすい、今回のベースキャンプです。</span></p>
-                                <p><span class="txt-bold">式場：</span><span id="stayMetaVenue">アトールテラス鴨川 / 11月29日 10:30 start</span></p>
-                                <p><span class="txt-bold">朝の目安：</span><span id="stayMetaMorning">ホテル出発は9:30。早めに支度を済ませておくと安心です。</span></p>
-                            </div>
-                        </aside>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-area tm-section" aria-labelledby="areaTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-area-title reveal">
-                        <p class="section-kicker txt-en">Free Walk</p>
-                        <h2 id="areaTitle">京都、どこ行く？</h2>
-                        <p>Rakuten STAY URBAN 四条河原町を起点に、自由行動で行きやすい4つのエリアを選びました。</p>
-                    </div>
-
-                    <div class="area-map reveal">
-                        <iframe title="京都自由行動の4エリアマップ" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=%E4%BA%AC%E9%83%BD%20%E5%9B%9B%E6%9D%A1%E6%B2%B3%E5%8E%9F%E7%94%BA%20%E7%A5%87%E5%9C%92%20%E5%B2%A1%E5%B4%8E%20%E5%B5%90%E5%B1%B1&z=12&output=embed"></iframe>
-                    </div>
-
-                    <div class="spot-grid">
-                        <article class="spot-tile reveal">
-                            <figure class="spot-tile-photo">
-                                <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=85" alt="四条河原町と錦市場周辺の街歩き">
-                            </figure>
-                            <div class="spot-tile-body">
-                                <span class="spot-tile-tag">近場で安心</span>
-                                <h3>四条河原町・錦市場</h3>
-                                <p>ホテルから歩きやすく、短い自由時間でも迷いにくいエリア。買い物、つまみ歩き、喫茶休憩をぜんぶ少しずつできます。</p>
-                                <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E6%9D%A1%E6%B2%B3%E5%8E%9F%E7%94%BA+%E9%8C%A6%E5%B8%82%E5%A0%B4" target="_blank" rel="noreferrer">Area Map</a>
-                            </div>
-                        </article>
-                        <article class="spot-tile reveal">
-                            <figure class="spot-tile-photo">
-                                <img src="https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&fit=crop&w=900&q=85" alt="祇園と東山の石畳">
-                            </figure>
-                            <div class="spot-tile-body">
-                                <span class="spot-tile-tag">王道の京都</span>
-                                <h3>祇園・東山</h3>
-                                <p>八坂神社、高台寺、八坂の塔のあたり。夕方の光がきれいで、新郎新婦と一緒に歩く候補にもぴったりです。</p>
-                                <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E7%A5%87%E5%9C%92+%E6%9D%B1%E5%B1%B1+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">Area Map</a>
-                            </div>
-                        </article>
-                        <article class="spot-tile reveal">
-                            <figure class="spot-tile-photo" data-photo-slot="3">
-                                <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=85" alt="岡崎と平安神宮周辺の京都散歩">
-                            </figure>
-                            <div class="spot-tile-body">
-                                <span class="spot-tile-tag">文化さんぽ</span>
-                                <h3>岡崎・平安神宮</h3>
-                                <p>美術館、ロームシアター、平安神宮の大鳥居があるエリア。人混みを少し避けて、ゆっくりお茶や本を見たい人に。</p>
-                                <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%B2%A1%E5%B4%8E+%E5%B9%B3%E5%AE%89%E7%A5%9E%E5%AE%AE+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">Area Map</a>
-                            </div>
-                        </article>
-                        <article class="spot-tile reveal">
-                            <figure class="spot-tile-photo">
-                                <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=900&q=85" alt="嵐山の竹林と散策路">
-                            </figure>
-                            <div class="spot-tile-body">
-                                <span class="spot-tile-tag">少し遠出</span>
-                                <h3>嵐山・嵯峨野</h3>
-                                <p>渡月橋、竹林、天龍寺方面へ。1日目は時間に余裕がある人向け、2日目のお開き後にもう少し京都を歩きたい人にも。</p>
-                                <a class="spot-tile-link" href="https://www.google.com/maps/search/?api=1&query=%E5%B5%90%E5%B1%B1+%E5%B5%AF%E5%B3%A8%E9%87%8E+%E4%BA%AC%E9%83%BD" target="_blank" rel="noreferrer">Area Map</a>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
-            <section class="tm-message tm-section" aria-labelledby="messageTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-message-bg">
-                        <div class="tm-message-title reveal">
-                            <p class="section-kicker txt-en">Message</p>
-                            <h2 id="messageTitle">みなさまへ</h2>
-                        </div>
-                        <div class="tm-message-detail reveal">
-                            <p>当日は1階に更衣室をご用意しておりますので、お召し替えが必要な方はどうぞご利用くださいませ。</p>
-                            <p>受付の手前にはクロークがございます。お荷物やコートを先にお預けいただき、身軽に受付へお進みいただけますと幸いです。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="tm-message-gallery reveal">
-                    <figure class="tm-message-gallery-item" data-gallery-slot="1">
-                        <img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=900&q=85" alt="カフェで過ごす時間">
-                    </figure>
-                    <figure class="tm-message-gallery-item" data-gallery-slot="2">
-                        <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=900&q=85" alt="京都の花の景色">
-                    </figure>
-                    <figure class="tm-message-gallery-item" data-gallery-slot="3">
-                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=85" alt="祝福のイメージ写真">
-                    </figure>
-                </div>
-            </section>
-
-            <section class="tm-poa tm-section" id="rsvp" aria-labelledby="rsvpTitle">
-                <div class="tm-common-inner">
-                    <div class="tm-poa-title reveal">
-                        <p class="section-kicker txt-en">RSVP</p>
-                        <h2 id="rsvpTitle">出欠のご回答</h2>
-                    </div>
-                    <div class="rsvp-copy reveal" id="rsvpCopy">
-                        <p>最後に、参加可否とアレルギーの情報を教えてください。回答が集まると、席や料理の調整がしやすくなってとても助かります。</p>
-                        <p>所要時間は2分ほど。ご家族分をまとめて入力していただけると助かります。</p>
-                    </div>
-
-                    <form class="rsvp-form reveal" id="rsvpForm">
-                        <div class="field-grid">
-                            <div class="field-group">
-                                <label class="field-label txt-en" for="householdName">Representative</label>
-                                <input class="rsvp-input" id="householdName" name="householdName" type="text" placeholder="代表者のお名前" required>
-                            </div>
-                            <div class="field-group">
-                                <label class="field-label txt-en" for="householdContact">Contact</label>
-                                <input class="rsvp-input" id="householdContact" name="contact" type="text" placeholder="電話番号 or メールアドレス">
-                            </div>
-                        </div>
-
-                        <div class="field-group">
-                            <div class="members-header">
-                                <span class="field-label txt-en">Members</span>
-                                <button class="member-add" type="button" id="addMemberButton">メンバーを追加</button>
-                            </div>
-                            <div class="member-list" id="memberList"></div>
-                        </div>
-
-                        <div class="field-grid">
-                            <div class="field-group">
-                                <label class="field-label txt-en" for="message">Message</label>
-                                <textarea class="rsvp-textarea" id="message" name="message" placeholder="ひとことメッセージなど"></textarea>
-                            </div>
-                            <div class="field-group">
-                                <label class="field-label txt-en" for="householdMemo">Bus / Stay Memo</label>
-                                <textarea class="rsvp-textarea" id="householdMemo" name="householdMemo" placeholder="バス利用や宿泊まわりで伝えておきたいこと"></textarea>
-                            </div>
-                        </div>
-
-                        <button class="rsvp-submit txt-en" type="submit">Send RSVP</button>
-                        <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
-                    </form>
-
-                    <template id="memberTemplate">
-                        <section class="member-card">
-                            <div class="member-card-head">
-                                <strong>メンバー</strong>
-                                <button class="member-remove" type="button">削除</button>
-                            </div>
-                            <div class="member-grid">
-                                <div class="field-group">
-                                    <label class="field-label txt-en">Name</label>
-                                    <input class="rsvp-input member-name-input" type="text" placeholder="参加メンバー名" required>
-                                </div>
-                                <div class="field-group">
-                                    <span class="field-label txt-en">Attendance</span>
-                                    <div class="radio-row">
-                                        <label class="radio-card"><input class="member-attendance-input" type="radio" value="参加" required><span>参加</span></label>
-                                        <label class="radio-card"><input class="member-attendance-input" type="radio" value="欠席"><span>欠席</span></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-group">
-                                <span class="field-label txt-en">Allergy</span>
-                                <div class="radio-row">
-                                    <label class="radio-card"><input class="member-allergy-toggle" type="radio" value="なし" required><span>なし</span></label>
-                                    <label class="radio-card"><input class="member-allergy-toggle" type="radio" value="あり"><span>あり</span></label>
-                                </div>
-                            </div>
-                            <div class="field-group allergy-detail" hidden>
-                                <label class="field-label txt-en">Allergy Detail</label>
-                                <textarea class="rsvp-textarea member-allergy-detail-input" placeholder="例：えび、かに、ナッツ など"></textarea>
-                            </div>
-                        </section>
-                    </template>
-                </div>
-            </section>
-        </main>
-
-        <footer class="tm-footer">
-            <div class="tm-footer-logo-wrapper">
-                <div class="tm-footer-logo txt-didot">Wedding Celebration</div>
-            </div>
-            <div class="tm-footer-thanks txt-didot">Thank you</div>
-            <p class="tm-footer-text txt-en">HOPE WE CAN SHARE OUR HAPPINESS.</p>
-        </footer>
+    <!-- スマホ幅カード（本体） -->
+    <div class="site-card">
+      <nav class="site-topnav" id="topnav" hidden></nav>
+      <main class="wb-page" id="site">
+        <div class="site-loading">読み込み中…</div>
+      </main>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+  <!-- 追従バナー -->
+  <a class="follow-banner" id="followBanner" hidden href="#">
+    <span id="followText">栗栖家の方はこちらもご確認ください</span>
+    <span class="follow-banner__arrow" aria-hidden="true">→</span>
+  </a>
+
+  <script src="core/theme.js"></script>
+  <script src="core/render.js"></script>
+  <script src="core/schema.js"></script>
+  <script src="core/storage.js"></script>
+  <script src="core/seed.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var WEDI = window.WEDI;
+      var site = document.getElementById('site');
+      var card = document.querySelector('.site-card');
+      var topnav = document.getElementById('topnav');
+      var sidebar = document.getElementById('sidebar');
+      var banner = document.getElementById('followBanner');
+      var followText = document.getElementById('followText');
+
+      /* PC ではカード内スクロール、SP ではウィンドウスクロールを先頭に戻す */
+      function scrollToTop() {
+        if (card && card.scrollHeight > card.clientHeight + 1) { card.scrollTop = 0; }
+        window.scrollTo(0, 0);
+      }
+
+      var doc = WEDI.storage.load() || WEDI.seed;
+      if (!doc || !doc.pages || !doc.pages.length) {
+        site.innerHTML = '<div class="site-loading">まだ内容がありません。エディターで作成してください。</div>';
+        return;
+      }
+      WEDI.theme.applyTheme(document.documentElement, doc.theme);
+
+      var activeId = doc.pages[0].id;
+      if (location.hash) {
+        var slug = location.hash.slice(1);
+        var m = doc.pages.filter(function (p) { return p.slug === slug || p.id === slug; })[0];
+        if (m) { activeId = m.id; }
+      }
+
+      function pageById(id) {
+        return doc.pages.filter(function (p) { return p.id === id; })[0] || doc.pages[0];
+      }
+
+      function renderPage(pageId) {
+        var page = pageById(pageId);
+        site.innerHTML = '';
+        var frag = WEDI.render.renderPage(page, doc.theme, { editor: false });
+        site.appendChild(frag);
+        Array.prototype.forEach.call(site.children, function (sectionEl, i) {
+          var block = page.blocks[i];
+          if (block) { WEDI.render.hydrate(sectionEl, block); }
+        });
+        scrollToTop();
+      }
+
+      function renderTopnav() {
+        if (doc.pages.length <= 1) { topnav.hidden = true; return; }
+        topnav.hidden = false;
+        topnav.innerHTML = '';
+        doc.pages.forEach(function (page) {
+          var btn = document.createElement('button');
+          btn.className = 'site-topnav__btn' + (page.id === activeId ? ' is-active' : '');
+          btn.textContent = page.name || 'Page';
+          btn.addEventListener('click', function () { goPage(page.id); });
+          topnav.appendChild(btn);
+        });
+      }
+
+      function goPage(id) {
+        activeId = id;
+        var page = pageById(id);
+        if (page.slug) { history.replaceState(null, '', '#' + page.slug); }
+        renderTopnav();
+        renderPage(id);
+        updateBanner();
+      }
+
+      /* ---- 追従バナー: 今表示していない「別ページ」へ誘導 ---- */
+      function updateBanner() {
+        // 2ページ以上ある時だけ。今が招待状なら「しおり」へ、しおりなら「招待状」へ。
+        if (doc.pages.length < 2) { banner.hidden = true; return; }
+        var other = doc.pages.filter(function (p) { return p.id !== activeId; })[0];
+        if (!other) { banner.hidden = true; return; }
+        banner.hidden = false;
+        // しおり系のページなら専用文言、それ以外は汎用
+        var isGuide = /しおり|guide|旅/.test(other.name + ' ' + other.slug);
+        followText.textContent = isGuide
+          ? '栗栖家の方はこちらもご確認ください'
+          : other.name + ' はこちら';
+        banner.onclick = function (ev) { ev.preventDefault(); goPage(other.id); };
+      }
+
+      /* ---- PC サイドバー（招待状ページの情報を表示） ---- */
+      function renderSidebar() {
+        var home = doc.pages[0];
+        var cover = home.blocks.filter(function (b) { return b.type === 'cover'; })[0];
+        var cd = home.blocks.filter(function (b) { return b.type === 'countdown'; })[0];
+        var rsvp = home.blocks.filter(function (b) { return b.type === 'rsvp'; })[0];
+        var names = cover ? (cover.data.names || '') : '';
+        var date = cover ? (cover.data.date || '') : '';
+        var deadline = rsvp ? (rsvp.data.deadline || '') : '';
+        var esc = WEDI.render.esc;
+
+        sidebar.innerHTML =
+          '<div class="site-sidebar__inner">' +
+            (names ? '<p class="sb-names">' + esc(names) + '</p>' : '') +
+            (date ? '<p class="sb-date">' + esc(date) + '</p>' : '') +
+            '<p class="sb-sub" id="sbSub"></p>' +
+            '<div class="sb-cd">' +
+              '<div><b data-u="days">―</b><i>days</i></div>' +
+              '<div><b data-u="hours">―</b><i>hours</i></div>' +
+              '<div><b data-u="minutes">―</b><i>min</i></div>' +
+              '<div><b data-u="seconds">―</b><i>sec</i></div>' +
+            '</div>' +
+            (deadline ? '<div class="sb-note">お手数ではございますが<br><u>' + esc(deadline) + '</u> までに<br>ご一報くださいますようお願いします</div>' : '') +
+            '<a class="sb-cta" id="sbCta" href="#">招待状に回答</a>' +
+          '</div>';
+
+        // カウントダウン駆動
+        if (cd && cd.data.target) {
+          var target = new Date(cd.data.target);
+          if (!isNaN(target.getTime())) {
+            var u = {
+              days: sidebar.querySelector('[data-u="days"]'),
+              hours: sidebar.querySelector('[data-u="hours"]'),
+              minutes: sidebar.querySelector('[data-u="minutes"]'),
+              seconds: sidebar.querySelector('[data-u="seconds"]')
+            };
+            var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+            var tick = function () {
+              var s = Math.max(0, Math.floor((target.getTime() - Date.now()) / 1000));
+              u.days.textContent = Math.floor(s / 86400);
+              u.hours.textContent = pad(Math.floor((s % 86400) / 3600));
+              u.minutes.textContent = pad(Math.floor((s % 3600) / 60));
+              u.seconds.textContent = pad(s % 60);
+            };
+            tick(); setInterval(tick, 1000);
+          }
+        }
+        // CTA → 招待状ページの RSVP へスクロール
+        var cta = sidebar.querySelector('#sbCta');
+        if (cta) {
+          cta.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            if (activeId !== doc.pages[0].id) { goPage(doc.pages[0].id); }
+            setTimeout(function () {
+              var rsvpEl = site.querySelector('[data-type="rsvp"]');
+              if (rsvpEl) { rsvpEl.scrollIntoView({ behavior: 'smooth' }); }
+            }, 60);
+          });
+        }
+      }
+
+      renderSidebar();
+      renderTopnav();
+      renderPage(activeId);
+      updateBanner();
+    })();
+  </script>
 </body>
 </html>
