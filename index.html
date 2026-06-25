@@ -40,20 +40,119 @@
 
     /* ===== 追従バナー（栗栖家の方はこちらも） ===== */
     .follow-banner {
-      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-      z-index: 40; max-width: 440px; width: calc(100% - 36px);
-      display: flex; align-items: center; gap: 10px;
-      background: var(--ink); color: #fff; text-decoration: none;
-      padding: 13px 18px; border-radius: var(--radius-pill);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
-      font-size: 13px; line-height: 1.5;
-      transition: transform var(--motion) ease, opacity var(--motion) ease;
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+      z-index: 40; max-width: 440px; width: calc(100% - 32px);
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, var(--coral) 0%, #d9614a 100%);
+      color: #fff; text-decoration: none;
+      padding: 14px 20px; border-radius: var(--radius-pill);
+      box-shadow: 0 8px 28px rgba(236,119,91,0.45), 0 2px 8px rgba(0,0,0,0.15);
+      font-size: 13px; line-height: 1.4;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: bannerPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    .follow-banner__arrow { margin-left: auto; flex: 0 0 auto; opacity: 0.85; }
+    @keyframes bannerPop {
+      from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+      to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+    }
+    .follow-banner:hover { transform: translateX(-50%) translateY(-2px); box-shadow: 0 12px 36px rgba(236,119,91,0.55), 0 2px 8px rgba(0,0,0,0.15); }
+    .follow-banner__icon { font-size: 20px; flex: 0 0 auto; }
+    .follow-banner__body { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+    .follow-banner__label { font-size: 10px; opacity: 0.85; letter-spacing: 0.08em; font-family: var(--font-accent); }
+    .follow-banner__arrow { font-size: 22px; flex: 0 0 auto; font-weight: 300; opacity: 0.9; }
     .follow-banner[hidden] { display: none; }
-    .follow-banner:hover { background: #1f1f1f; }
 
     .site-loading { padding: 80px 24px; text-align: center; color: var(--muted); font-family: var(--font-accent); }
+
+    /* ===== パスワードゲート ===== */
+    .site-gate {
+      position: fixed; inset: 0; z-index: 200;
+      background: var(--sage);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .site-gate__card {
+      background: var(--pink); border-radius: var(--radius);
+      padding: 48px 32px; max-width: 360px; width: 100%;
+      text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+    .site-gate__title {
+      font-family: var(--font-display); font-size: 22px; font-weight: 400;
+      letter-spacing: 0.12em; margin-bottom: 8px;
+    }
+    .site-gate__sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; letter-spacing: 0.06em; }
+    .site-gate__input {
+      width: 100%; font: inherit; font-size: 16px; padding: 14px 16px;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--paper); color: var(--ink); text-align: center;
+      letter-spacing: 0.1em; margin-bottom: 14px;
+    }
+    .site-gate__input:focus { outline: none; border-color: var(--coral); }
+    .site-gate__btn {
+      width: 100%; font: inherit; font-size: 15px; font-weight: 600;
+      padding: 14px; border: 0; border-radius: var(--radius-pill);
+      background: var(--coral); color: #fff; cursor: pointer;
+      transition: background var(--motion) ease;
+    }
+    .site-gate__btn:hover { background: var(--coral-deep); }
+    .site-gate__err { font-size: 13px; color: var(--coral); margin-top: 12px; }
+
+    /* ===== スクロールアニメーション（バウンス登場） ===== */
+    @keyframes blockBounceIn {
+      0%   { opacity: 0; transform: translateY(40px) scale(0.94); }
+      55%  { opacity: 1; transform: translateY(-8px) scale(1.02); }
+      75%  { transform: translateY(4px) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .wb-block {
+      opacity: 0;
+      transform: translateY(40px) scale(0.94);
+    }
+    .wb-block.is-visible {
+      animation: blockBounceIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+    }
+    .wb-block[data-type="cover"] {
+      opacity: 1; transform: none; animation: none;
+    }
+
+    /* ===== ページ切替スライドトランジション ===== */
+    @keyframes pageSlideIn {
+      from { opacity: 0; transform: translateX(32px) scale(0.97); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .wb-page.page-enter {
+      animation: pageSlideIn 0.42s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+    }
+
+    /* ===== ボタン弾む ===== */
+    .wb-pill, .site-gate__btn, .sb-cta {
+      transition: transform 0.15s cubic-bezier(0.34,1.6,0.64,1), box-shadow 0.15s ease, background 0.2s ease !important;
+    }
+    .wb-pill:hover, .site-gate__btn:hover, .sb-cta:hover {
+      transform: scale(1.06) translateY(-2px) !important;
+    }
+    .wb-pill:active, .site-gate__btn:active, .sb-cta:active {
+      transform: scale(0.95) !important;
+    }
+
+    /* ===== カバー文字ポンポン登場 ===== */
+    @keyframes charPop {
+      0%   { opacity: 0; transform: translateY(16px) scale(0.7) rotate(-4deg); }
+      65%  { transform: translateY(-4px) scale(1.08) rotate(1deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    .cover-char {
+      display: inline-block;
+      opacity: 0;
+      animation: charPop 0.5s cubic-bezier(0.34,1.5,0.64,1) both;
+    }
+
+    /* ===== カウントダウン数字ポン ===== */
+    @keyframes numPop {
+      0%  { transform: scale(1.4); color: var(--coral); }
+      100%{ transform: scale(1);   color: inherit; }
+    }
+    .num-pop { animation: numPop 0.35s cubic-bezier(0.34,1.6,0.64,1); }
 
     /* ===== PC（920px〜）: 左固定サイドバー＋右スマホ幅カード（カード内だけスクロール） ===== */
     @media (min-width: 920px) {
@@ -111,11 +210,24 @@
       .site-card::-webkit-scrollbar-thumb { background: rgba(51,51,51,0.18); border-radius: 8px; }
       /* topnav はカード内 overflow:auto の中で sticky 固定（カードの上端に貼り付く） */
       .site-topnav { border-radius: var(--radius) var(--radius) 0 0; }
-      .follow-banner { left: auto; right: 24px; transform: none; max-width: 320px; }
+      .follow-banner { left: auto; right: 24px; transform: none; max-width: 320px; animation: none; }
+      .follow-banner:hover { transform: translateY(-2px); }
     }
   </style>
 </head>
 <body>
+  <!-- パスワードゲート -->
+  <div id="siteGate" class="site-gate">
+    <div class="site-gate__card">
+      <p class="site-gate__title">Wedding Invitation</p>
+      <p class="site-gate__sub">合言葉を入力してください</p>
+      <input id="siteGateInput" class="site-gate__input" type="password" placeholder="合言葉">
+      <button id="siteGateBtn" class="site-gate__btn">開く</button>
+      <p id="siteGateErr" class="site-gate__err" hidden>合言葉が違います</p>
+    </div>
+  </div>
+
+  <div id="siteApp" style="display:none">
   <div class="site-wrap">
     <!-- PC: 左サイドバー -->
     <aside class="site-sidebar" id="sidebar"></aside>
@@ -131,9 +243,14 @@
 
   <!-- 追従バナー -->
   <a class="follow-banner" id="followBanner" hidden href="#">
-    <span id="followText">栗栖家の方はこちらもご確認ください</span>
-    <span class="follow-banner__arrow" aria-hidden="true">→</span>
+    <span class="follow-banner__icon">🗺</span>
+    <span class="follow-banner__body">
+      <span class="follow-banner__label">栗栖家の皆様へ</span>
+      <span id="followText">旅のしおりはこちら</span>
+    </span>
+    <span class="follow-banner__arrow" aria-hidden="true">›</span>
   </a>
+  </div><!-- /#siteApp -->
 
   <script src="core/theme.js"></script>
   <script src="core/render.js"></script>
@@ -141,6 +258,28 @@
   <script src="core/storage.js"></script>
   <script src="core/seed.js"></script>
   <script>
+    /* ===== フロント パスワードゲート ===== */
+    (function () {
+      var HASH = '910da0136c05b8f513f7222aa62affcb4c991add8c5dd1812311ae5870f6be31';
+      var KEY  = 'wedi-front-access';
+      var gate = document.getElementById('siteGate');
+      var app  = document.getElementById('siteApp');
+      function unlock() { gate.style.display = 'none'; app.style.display = ''; }
+      if (localStorage.getItem(KEY) === '1') { unlock(); return; }
+      var input = document.getElementById('siteGateInput');
+      var btn   = document.getElementById('siteGateBtn');
+      var err   = document.getElementById('siteGateErr');
+      function tryUnlock() {
+        var v = input.value;
+        crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function (buf) {
+          var hex = Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2,'0'); }).join('');
+          if (hex === HASH) { localStorage.setItem(KEY, '1'); err.hidden = true; unlock(); }
+          else { err.hidden = false; input.select(); }
+        });
+      }
+      btn.addEventListener('click', tryUnlock);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { tryUnlock(); } });
+    })();
     (function () {
       'use strict';
       var WEDI = window.WEDI;
@@ -178,13 +317,20 @@
       function renderPage(pageId) {
         var page = pageById(pageId);
         site.innerHTML = '';
+        site.classList.remove('page-enter');
         var frag = WEDI.render.renderPage(page, doc.theme, { editor: false });
         site.appendChild(frag);
         Array.prototype.forEach.call(site.children, function (sectionEl, i) {
           var block = page.blocks[i];
           if (block) { WEDI.render.hydrate(sectionEl, block); }
         });
+        // ページ切替スライドアニメ
+        void site.offsetWidth;
+        site.classList.add('page-enter');
         scrollToTop();
+        initScrollAnim();
+        initCoverAnim();
+        initCountdownPop();
       }
 
       function renderTopnav() {
@@ -289,6 +435,65 @@
       renderTopnav();
       renderPage(activeId);
       updateBanner();
+
+      // ---- スクロールアニメーション（バウンス登場） ----
+      function initScrollAnim() {
+        var els = Array.prototype.slice.call(site.querySelectorAll('.wb-block:not(.is-visible)'));
+        if (!els.length || !window.IntersectionObserver) {
+          site.querySelectorAll('.wb-block').forEach(function (el) { el.classList.add('is-visible'); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              // staggered delay（順番にずらして登場）
+              var idx = els.indexOf(e.target);
+              e.target.style.animationDelay = (idx * 0.06) + 's';
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.06 });
+        els.forEach(function (el) { io.observe(el); });
+      }
+
+      // ---- カバーの文字を1文字ずつポンポン登場 ----
+      function initCoverAnim() {
+        var cover = site.querySelector('[data-type="cover"]');
+        if (!cover) { return; }
+        // names と date を対象
+        cover.querySelectorAll('.wb-cover__names, .wb-cover__date').forEach(function (el) {
+          var text = el.textContent;
+          el.innerHTML = '';
+          text.split('').forEach(function (ch, i) {
+            var span = document.createElement('span');
+            span.className = 'cover-char';
+            span.textContent = ch === ' ' ? ' ' : ch;
+            span.style.animationDelay = (0.3 + i * 0.07) + 's';
+            el.appendChild(span);
+          });
+        });
+      }
+
+      // ---- カウントダウン数字が変わるたびにポンっと跳ねる ----
+      function initCountdownPop() {
+        var cd = site.querySelector('[data-type="countdown"]');
+        if (!cd) { return; }
+        var nums = cd.querySelectorAll('[data-unit]');
+        nums.forEach(function (el) {
+          var prev = el.textContent;
+          var observer = new MutationObserver(function () {
+            if (el.textContent !== prev) {
+              prev = el.textContent;
+              el.classList.remove('num-pop');
+              void el.offsetWidth;
+              el.classList.add('num-pop');
+            }
+          });
+          observer.observe(el, { childList: true, subtree: true, characterData: true });
+        });
+      }
+
     })();
   </script>
 </body>

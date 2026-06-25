@@ -61,6 +61,29 @@
     toastTimer = setTimeout(function () { toastEl.classList.remove('is-show'); }, 1600);
   }
 
+  /* ---- 書き出し（seed.js 用 JSON ダウンロード） ---- */
+  function doExport() {
+    var doc = state.doc;
+    if (!doc) { toast('データがありません'); return; }
+    var json = JSON.stringify(doc, null, 2);
+    var js = '/* ===========================================================================\n' +
+      ' * WEDI.seed — 書き出しデータ\n' +
+      ' * このファイルを core/seed.js に上書きして git push するとサイトに反映されます。\n' +
+      ' * =========================================================================== */\n' +
+      '(function (global) {\n' +
+      "  'use strict';\n" +
+      '  var WEDI = global.WEDI = global.WEDI || {};\n' +
+      '  WEDI.seed = ' + json + ';\n' +
+      '})(window);\n';
+    var blob = new Blob([js], { type: 'text/javascript' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'seed.js';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('seed.js をダウンロードしました');
+  }
+
   /* ---- 保存（デバウンス自動 + 明示） ---- */
   var pendingSave = false;
   function scheduleSave() {
@@ -458,6 +481,7 @@
 
     // トップバー
     document.getElementById('saveButton').addEventListener('click', function () { doSave(false); });
+    document.getElementById('exportButton').addEventListener('click', doExport);
     document.getElementById('addPageButton').addEventListener('click', addPage);
     previewButton.addEventListener('click', togglePreview);
     document.getElementById('undoButton').addEventListener('click', doUndo);
