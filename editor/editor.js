@@ -65,6 +65,8 @@
   function doExport() {
     var doc = state.doc;
     if (!doc) { toast('データがありません'); return; }
+    doc.updatedAt = Date.now();
+    WEDI.storage.save(doc);
     var json = JSON.stringify(doc, null, 2);
     var js = '/* ===========================================================================\n' +
       ' * WEDI.seed — 書き出しデータ\n' +
@@ -84,6 +86,77 @@
     toast('seed.js をダウンロードしました');
   }
 
+  /* ---- KML 書き出し（Google マイマップ用） ---- */
+  function doExportKml() {
+    var doc = state.doc;
+    if (!doc) { toast('データがありません'); return; }
+
+    // 全ページから spotMap ブロックのスポットを収集
+    var allSpots = [];
+    (doc.pages || []).forEach(function (page) {
+      (page.blocks || []).forEach(function (block) {
+        if (block.type === 'spotMap' && block.data && block.data.spots) {
+          allSpots = allSpots.concat(block.data.spots);
+        }
+      });
+    });
+
+    if (!allSpots.length) { toast('スポットデータがありません'); return; }
+
+    // ジャンル別に Folder を作成
+    var genreOrder = ['ホテル・式場', '飲食', 'カフェ', 'バー・深夜', '観光'];
+    var groups = {};
+    allSpots.forEach(function (s) {
+      var g = s.genre || 'その他';
+      if (!groups[g]) { groups[g] = []; }
+      groups[g].push(s);
+    });
+
+    function xmlEsc(v) {
+      return String(v || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    var folders = '';
+    var orderedGenres = genreOrder.concat(
+      Object.keys(groups).filter(function (g) { return genreOrder.indexOf(g) === -1; })
+    );
+    orderedGenres.forEach(function (genre) {
+      if (!groups[genre]) { return; }
+      var placemarks = '';
+      groups[genre].forEach(function (s) {
+        if (!s.lat || !s.lng) { return; }
+        placemarks += '    <Placemark>\n' +
+          '      <name>' + xmlEsc(s.name) + '</name>\n' +
+          '      <description>' + xmlEsc(s.description) + '</description>\n' +
+          '      <Point><coordinates>' + xmlEsc(s.lng) + ',' + xmlEsc(s.lat) + ',0</coordinates></Point>\n' +
+          '    </Placemark>\n';
+      });
+      if (placemarks) {
+        folders += '  <Folder><name>' + xmlEsc(genre) + '</name>\n' + placemarks + '  </Folder>\n';
+      }
+    });
+
+    var kml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<kml xmlns="http://www.opengis.net/kml/2.2">\n' +
+      '<Document>\n' +
+      '  <name>京都 おすすめスポット</name>\n' +
+      folders +
+      '</Document>\n' +
+      '</kml>\n';
+
+    var blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'spots.kml';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('spots.kml をダウンロードしました。Google マイマップにインポートしてください。');
+  }
+
   /* ---- 保存（デバウンス自動 + 明示） ---- */
   var pendingSave = false;
   function scheduleSave() {
@@ -97,12 +170,14 @@
   function flushSave() {
     if (!pendingSave) { return; }
     clearTimeout(saveTimer);
+    state.doc.updatedAt = Date.now();
     WEDI.storage.save(state.doc);
     pendingSave = false;
   }
 
   function doSave(silent) {
     pendingSave = false;
+    state.doc.updatedAt = Date.now();
     var res = WEDI.storage.save(state.doc);
     if (res.ok) {
       saveStatus.textContent = silent ? i18n.t('autosaved') : i18n.t('saved');
@@ -460,8 +535,10 @@
   function init() {
     document.getElementById('appTitle').textContent = i18n.t('appTitle');
 
-    var loaded = WEDI.storage.load();
-    state.doc = loaded || WEDI.theme.clone(WEDI.seed);
+    var stored = WEDI.storage.load();
+    var picked = WEDI.storage.pickNewer(stored, WEDI.seed);
+    // seed 側が採用された場合は複製してから編集対象にする
+    state.doc = (picked && picked !== WEDI.seed) ? picked : WEDI.theme.clone(WEDI.seed);
     if (!state.doc.theme) { state.doc.theme = WEDI.theme.clone(WEDI.theme.DEFAULT); }
     state.activePageId = state.doc.pages[0].id;
 
@@ -471,7 +548,7 @@
     WEDI.inspector.render(null);
     refreshUndoButton();
 
-    if (!loaded) { doSave(true); }  // 初回 seed を保存
+    if (picked !== stored) { doSave(true); }  // 初回 or seed が新しかった場合は保存して同期
 
     // ドラッグ初期化
     WEDI.drag.init(canvas, {
@@ -482,6 +559,7 @@
     // トップバー
     document.getElementById('saveButton').addEventListener('click', function () { doSave(false); });
     document.getElementById('exportButton').addEventListener('click', doExport);
+    document.getElementById('kmlButton').addEventListener('click', doExportKml);
     document.getElementById('addPageButton').addEventListener('click', addPage);
     previewButton.addEventListener('click', togglePreview);
     document.getElementById('undoButton').addEventListener('click', doUndo);

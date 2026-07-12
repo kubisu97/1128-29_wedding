@@ -30,7 +30,10 @@ function doPost(e) {
     for (var i = 1; i <= count; i++) {
       var nm = params['companion_' + i + '_name'] || '';
       var at = params['companion_' + i + '_attend'] || '';
-      if (nm || at) { companions.push(nm + '（' + at + '）'); }
+      var al = params['companion_' + i + '_allergy'] || '';
+      var alDetail = params['companion_' + i + '_allergy_detail'] || '';
+      var alText = al === 'あり' && alDetail ? 'アレルギー:' + alDetail : al === 'あり' ? 'アレルギーあり' : '';
+      if (nm || at) { companions.push(nm + '（' + at + (alText ? '／' + alText : '') + '）'); }
     }
 
     // 列の順番（ヘッダーと一致させる）
@@ -39,7 +42,7 @@ function doPost(e) {
       '姓', '名', '姓(ローマ字)', '名(ローマ字)', '間柄',
       '郵便番号', '住所1', '住所2', '住所3', '電話', 'メール',
       'アレルギー', 'アレルギー内容',
-      '同席者人数', '同席者', 'メッセージ', '送迎バス'
+      '同席者人数', '同席者', 'メッセージ', '送迎バス', 'プロフィール写真URL'
     ];
 
     // ヘッダーが無ければ1行目に作成
@@ -68,7 +71,8 @@ function doPost(e) {
       count,
       companions.join(' / '),
       params.message || '',
-      params.bus || ''
+      params.bus || '',
+      params.profile_photo_url || ''
     ];
     sheet.appendRow(row);
 

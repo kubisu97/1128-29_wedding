@@ -296,7 +296,8 @@
         window.scrollTo(0, 0);
       }
 
-      var doc = WEDI.storage.load() || WEDI.seed;
+      /* localStorage と seed.js の新しい方を表示（deploy 済み seed が古い localStorage に隠されないように） */
+      var doc = WEDI.storage.pickNewer(WEDI.storage.load(), WEDI.seed);
       if (!doc || !doc.pages || !doc.pages.length) {
         site.innerHTML = '<div class="site-loading">まだ内容がありません。エディターで作成してください。</div>';
         return;

@@ -72,11 +72,23 @@
     return global.localStorage.getItem(BAK_PREFIX + 0) != null;
   }
 
+  /* localStorage の doc と seed のうち updatedAt が新しい方を返す。
+   * どちらにも updatedAt が無い場合は従来通り stored を優先。
+   * （書き出し→deploy した seed が、古い localStorage に隠されるのを防ぐ） */
+  function pickNewer(stored, seed) {
+    if (!stored) { return seed || null; }
+    if (!seed) { return stored; }
+    var a = Number(stored.updatedAt) || 0;
+    var b = Number(seed.updatedAt) || 0;
+    return b > a ? seed : stored;
+  }
+
   WEDI.storage = {
     load: load,
     save: save,
     undo: undo,
     hasBackup: hasBackup,
+    pickNewer: pickNewer,
     clone: clone
   };
 })(window);

@@ -69,15 +69,38 @@
         blocks: [
           { id: 'bk_g_msg', type: 'message', style: st({ bg: 'paper' }), data: {
             heading: 'Travel Guide', subheading: '旅のしおり',
-            body: '前日から少しずつ旅気分で。\n11月の京都は朝晩が冷えるので、軽い羽織りがあると安心です。', sign: '' } },
+            body: '2日間、みんなで京都を楽しみましょう！\n11月の京都は朝晩がぐっと冷えます。軽い羽織りやカーディガンがあると安心です。\n自由時間にぜひおすすめスポットも回ってみてください。', sign: '' } },
           { id: 'bk_g_day1', type: 'schedule', style: st({ bg: 'pink' }), data: {
-            heading: 'Day 1', subheading: '11月28日', items: [
-              { time: '07:30', title: '広島をバスで出発', text: '' },
-              { time: '15:00', title: 'ホテルにチェックイン', text: '四条河原町' },
-              { time: '19:00', title: '前夜祭ディナー', text: '' }
+            heading: 'Day 1', subheading: '11月28日（金）', items: [
+              { time: '07:30', title: 'バス乗車（広島出発）', text: '集合場所: 〇〇〇〇\n※時間厳守でお願いします' },
+              { time: '12:00', title: 'ランチ休憩（予定）', text: 'サービスエリアにて各自でお昼を' },
+              { time: '15:00', title: 'ホテルにチェックイン', text: 'RakutenStays 四条河原町\n四条河原町駅から徒歩約3分' },
+              { time: '15:00', title: '自由時間', text: '京都の街を自由に散策！\nおすすめスポットは下のマップをチェック' },
+              { time: '19:00', title: 'みんなでご飯（さざんか亭）', text: '前夜に集まってわいわいしましょう 🍻\n※詳細は別途ご連絡します' },
+              { time: '21:00', title: '自由時間・就寝', text: '翌日に備えてゆっくり休んでください' }
             ] } },
-          { id: 'bk_g_map', type: 'map', style: st({ bg: 'paper' }), data: {
-            heading: 'Access', subheading: 'ホテル周辺', embed: '', caption: '地図をタップで拡大・操作できます。' } }
+          { id: 'bk_g_day2', type: 'schedule', style: st({ bg: 'sage' }), data: {
+            heading: 'Day 2', subheading: '11月29日（土）— 結婚式当日', items: [
+              { time: '10:00', title: 'アトールテラス鴨川に集合', text: '受付開始: 10:00\n挙式: 10:30〜\n会場: 〒600-0000 京都府京都市○-○-○' },
+              { time: '11:30', title: '披露宴スタート', text: '皆様と一緒に素敵な時間を過ごしましょう！' },
+              { time: '14:30', title: '披露宴お開き', text: '' },
+              { time: '15:00', title: 'バス乗車（京都出発）', text: '集合場所: 会場前\n※荷物の準備をお忘れなく' },
+              { time: '20:00', title: '広島到着（予定）', text: 'お疲れ様でした！' }
+            ] } },
+          { id: 'bk_g_spots', type: 'spotMap', style: st({ bg: 'paper' }), data: {
+            heading: 'Kyoto Spots', subheading: '京都おすすめスポット',
+            spots: [
+              { genre: 'ホテル・式場', name: 'RakutenStays 四条河原町', description: '宿泊先のホテルです。四条河原町駅から徒歩約3分。チェックインは15:00〜。', mapEmbed: '', lat: '35.0036', lng: '135.7682' },
+              { genre: 'ホテル・式場', name: 'アトールテラス鴨川', description: '結婚式・披露宴の会場。10:00集合です。鴨川沿いの素敵なテラス会場です。', mapEmbed: '', lat: '35.0083', lng: '135.7722' },
+              { genre: '飲食', name: 'さざんか亭', description: '前夜祭ディナーの会場。みんなで乾杯しましょう！詳細は別途連絡します。', mapEmbed: '', lat: '35.0050', lng: '135.7670' },
+              { genre: '観光', name: '清水寺', description: '言わずと知れた京都の名所。紅葉の11月は最高の季節。徒歩や市バスで行けます。', mapEmbed: '', lat: '34.9948', lng: '135.7851' },
+              { genre: '観光', name: '八坂神社・祇園', description: '祇園の中心。夜もライトアップされていて風情があります。', mapEmbed: '', lat: '35.0036', lng: '135.7785' },
+              { genre: 'カフェ', name: '（スプレッドシートから追加予定）', description: 'エディターのスポットリストにデータを追加してください。', mapEmbed: '', lat: '', lng: '' },
+              { genre: 'バー・深夜', name: '（スプレッドシートから追加予定）', description: 'エディターのスポットリストにデータを追加してください。', mapEmbed: '', lat: '', lng: '' }
+            ] } },
+          { id: 'bk_g_outro', type: 'message', style: st({ bg: 'pink' }), data: {
+            heading: 'See you in Kyoto', subheading: 'またね',
+            body: '皆さんと一緒に最高の2日間にしましょう。\n何かわからないことがあれば気軽に連絡してください。\n当日、京都でお会いできることを楽しみにしています！', sign: '俊平 ＆ このみ', image: '' } }
         ]
       }
     ]

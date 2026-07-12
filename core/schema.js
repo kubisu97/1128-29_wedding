@@ -495,6 +495,12 @@
           '</div>' +
           companions +
           f('ひとことメッセージ', 'message', { type: 'textarea' }) +
+          '<div class="wb-rsvp__field wb-rsvp__field--photo">' +
+            '<label>プロフィール写真</label>' +
+            '<p class="wb-rsvp__hintnote">よろしければプロフィール写真の添付をお願いいたします</p>' +
+            '<input type="file" name="profile_photo" accept="image/*" class="wb-rsvp__fileupload">' +
+            '<div class="wb-rsvp__photo-preview"></div>' +
+          '</div>' +
           bus +
           '<button type="submit" class="wb-pill">' + esc(d.submitLabel || '確認画面へ') + '</button>' +
           '<p class="wb-rsvp__status" aria-live="polite"></p>' +
@@ -515,24 +521,58 @@
       if (countSel && compList) {
         countSel.addEventListener('change', function () {
           var n = parseInt(countSel.value, 10) || 0;
-          var existing = compList.querySelectorAll('.wb-rsvp__companion-row').length;
-          // 入力済みの値を保持しつつ増減
+          var existing = compList.querySelectorAll('.wb-rsvp__companion-block').length;
           if (n < existing) {
-            var rows = compList.querySelectorAll('.wb-rsvp__companion-row');
-            for (var r = existing - 1; r >= n; r--) { rows[r].remove(); }
+            var blocks = compList.querySelectorAll('.wb-rsvp__companion-block');
+            for (var r = existing - 1; r >= n; r--) { blocks[r].remove(); }
           } else {
             for (var i = existing; i < n; i++) {
-              var row = document.createElement('div');
-              row.className = 'wb-rsvp__companion-row';
-              row.innerHTML =
-                '<input type="text" name="companion_' + (i + 1) + '_name" placeholder="同席者' + (i + 1) + ' のお名前">' +
-                '<select name="companion_' + (i + 1) + '_attend">' +
-                  '<option value="出席">出席</option>' +
-                  '<option value="欠席">欠席</option>' +
-                '</select>';
-              compList.appendChild(row);
+              var cblock = document.createElement('div');
+              cblock.className = 'wb-rsvp__companion-block';
+              cblock.innerHTML =
+                '<p class="wb-rsvp__companion-label">同席者 ' + (i + 1) + '</p>' +
+                '<div class="wb-rsvp__companion-row">' +
+                  '<input type="text" name="companion_' + (i + 1) + '_name" placeholder="お名前">' +
+                  '<select name="companion_' + (i + 1) + '_attend">' +
+                    '<option value="出席">出席</option>' +
+                    '<option value="欠席">欠席</option>' +
+                  '</select>' +
+                '</div>' +
+                '<div class="wb-rsvp__companion-allergy">' +
+                  '<label class="wb-radio"><input type="radio" name="companion_' + (i + 1) + '_allergy" value="なし" checked> アレルギーなし</label>' +
+                  '<label class="wb-radio"><input type="radio" name="companion_' + (i + 1) + '_allergy" value="あり"> アレルギーあり</label>' +
+                  '<input type="text" name="companion_' + (i + 1) + '_allergy_detail" placeholder="アレルギー内容" class="wb-rsvp__allergydetail wb-rsvp__companion-allergydetail">' +
+                '</div>';
+              (function (cb) {
+                var detail = cb.querySelector('.wb-rsvp__companion-allergydetail');
+                detail.style.display = 'none';
+                cb.querySelectorAll('input[type="radio"]').forEach(function (radio) {
+                  radio.addEventListener('change', function () {
+                    detail.style.display = (radio.value === 'あり' && radio.checked) ? '' : 'none';
+                  });
+                });
+              })(cblock);
+              compList.appendChild(cblock);
             }
           }
+        });
+      }
+
+      // --- 郵便番号→住所自動入力（zipcloud） ---
+      var zipInput = form.querySelector('[name="zip"]');
+      if (zipInput) {
+        zipInput.addEventListener('blur', function () {
+          var z = zipInput.value.replace(/[^0-9]/g, '');
+          if (z.length !== 7) { return; }
+          var url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + z;
+          fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+            if (!data.results || !data.results[0]) { return; }
+            var r = data.results[0];
+            var a1 = form.querySelector('[name="address1"]');
+            var a2 = form.querySelector('[name="address2"]');
+            if (a1) { a1.value = (r.address1 || '') + (r.address2 || '') + (r.address3 || ''); }
+            if (a2) { a2.value = ''; a2.focus(); }
+          }).catch(function () {});
         });
       }
 
@@ -547,34 +587,105 @@
         });
       }
 
+      // --- プロフィール写真: プレビュー表示 ---
+      var photoInput = form.querySelector('.wb-rsvp__fileupload');
+      var photoPreview = form.querySelector('.wb-rsvp__photo-preview');
+      if (photoInput && photoPreview) {
+        photoInput.addEventListener('change', function () {
+          var file = photoInput.files[0];
+          if (!file) { photoPreview.innerHTML = ''; return; }
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            photoPreview.innerHTML = '<img src="' + e.target.result + '" alt="プレビュー">';
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
         if (!endpoint) {
           if (status) { status.textContent = '※ プレビューのため入力内容の送信はできません'; }
           return;
         }
+
+        // --- バリデーション ---
+        // 既存のエラー表示をリセット
+        form.querySelectorAll('.wb-rsvp__field-error').forEach(function (el) { el.remove(); });
+        form.querySelectorAll('.wb-rsvp__field--error').forEach(function (el) { el.classList.remove('wb-rsvp__field--error'); });
+        var errors = [];
+        function fieldError(inputEl, msg) {
+          var field = inputEl.closest('.wb-rsvp__field') || inputEl.parentElement;
+          field.classList.add('wb-rsvp__field--error');
+          var errEl = document.createElement('p');
+          errEl.className = 'wb-rsvp__field-error';
+          errEl.textContent = msg;
+          field.appendChild(errEl);
+          errors.push(inputEl);
+        }
+        // メールアドレス（必須）
+        var emailEl = form.querySelector('[name="email"]');
+        if (emailEl && !emailEl.value.trim()) { fieldError(emailEl, 'メールアドレスを入力してください'); }
+        // 名前（必須）
+        var name1El = form.querySelector('[name="name1"]');
+        var name2El = form.querySelector('[name="name2"]');
+        if (name1El && !name1El.value.trim()) { fieldError(name1El, '姓を入力してください'); }
+        if (name2El && !name2El.value.trim()) { fieldError(name2El, '名を入力してください'); }
+        // ゲスト区分（必須ラジオ）
+        var guestSideChecked = form.querySelector('input[name="guest_side"]:checked');
+        if (!guestSideChecked) {
+          var guestField = form.querySelector('input[name="guest_side"]');
+          if (guestField) { fieldError(guestField, '新郎ゲスト / 新婦ゲストをお選びください'); }
+        }
+        if (errors.length) {
+          errors[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (status) { status.textContent = '未入力の項目があります。ご確認ください。'; }
+          return;
+        }
+
+        if (status) { status.textContent = '送信中…'; }
+
         var fd = new FormData(form);
         var payload = {};
-        fd.forEach(function (v, k) { payload[k] = v; });
-        if (status) { status.textContent = '送信中…'; }
-        var frameName = 'wedi-rsvp-' + block.id;
-        var iframe = document.createElement('iframe');
-        iframe.name = frameName; iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        var poster = document.createElement('form');
-        poster.action = endpoint; poster.method = 'POST'; poster.target = frameName; poster.style.display = 'none';
-        Object.keys(payload).forEach(function (k) {
-          var input = document.createElement('input');
-          input.type = 'hidden'; input.name = k; input.value = payload[k];
-          poster.appendChild(input);
+        fd.forEach(function (v, k) {
+          if (v instanceof File) { return; } // ファイルは別処理
+          payload[k] = v;
         });
-        document.body.appendChild(poster);
-        iframe.addEventListener('load', function () {
-          if (status) { status.textContent = 'ご回答ありがとうございました。'; }
-          form.reset();
-          setTimeout(function () { poster.remove(); iframe.remove(); }, 0);
-        });
-        poster.submit();
+
+        // プロフィール写真をSupabaseにアップロードしてからGAS送信
+        var photoFile = photoInput && photoInput.files[0];
+        function sendToGas(photoUrl) {
+          if (photoUrl) { payload['profile_photo_url'] = photoUrl; }
+          var frameName = 'wedi-rsvp-' + block.id;
+          var iframe = document.createElement('iframe');
+          iframe.name = frameName; iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+          var poster = document.createElement('form');
+          poster.action = endpoint; poster.method = 'POST'; poster.target = frameName; poster.style.display = 'none';
+          Object.keys(payload).forEach(function (k) {
+            var input = document.createElement('input');
+            input.type = 'hidden'; input.name = k; input.value = payload[k];
+            poster.appendChild(input);
+          });
+          document.body.appendChild(poster);
+          iframe.addEventListener('load', function () {
+            if (status) { status.textContent = 'ご回答ありがとうございました。'; }
+            form.reset();
+            if (photoPreview) { photoPreview.innerHTML = ''; }
+            setTimeout(function () { poster.remove(); iframe.remove(); }, 0);
+          });
+          poster.submit();
+        }
+
+        if (photoFile && WEDI.upload && WEDI.upload.isConfigured()) {
+          WEDI.upload.uploadFile(photoFile, 'rsvp-photos').then(function (url) {
+            sendToGas(url || '');
+          }).catch(function () {
+            sendToGas('');
+          });
+        } else {
+          sendToGas('');
+        }
       });
     }
   };
@@ -780,9 +891,128 @@
     }
   };
 
+  /* ------------------------------------------------------------ spotMap */
+  types.spotMap = {
+    label: 'スポットマップ',
+    icon: '🗺️',
+    defaultData: {
+      heading: 'Kyoto Spots',
+      subheading: '京都おすすめスポット',
+      spots: [
+        { genre: 'ホテル・式場', name: 'RakutenStays 四条河原町', description: '宿泊先のホテルです。四条河原町駅から徒歩約3分。', mapEmbed: '', lat: '35.0036', lng: '135.7682' },
+        { genre: 'ホテル・式場', name: 'アトールテラス鴨川', description: '結婚式・宴会会場。鴨川沿いの素敵な会場です。', mapEmbed: '', lat: '35.0083', lng: '135.7722' },
+        { genre: '飲食', name: 'さざんか亭', description: '前夜祭ディナーの会場です。みんなで乾杯しましょう！', mapEmbed: '', lat: '35.0050', lng: '135.7670' },
+        { genre: '観光', name: '清水寺', description: '言わずと知れた京都の名所。紅葉の季節は特に絶景。', mapEmbed: '', lat: '34.9948', lng: '135.7851' },
+        { genre: 'カフェ', name: '仮カフェ', description: 'スプレッドシートのデータに差し替えてください。', mapEmbed: '', lat: '', lng: '' },
+        { genre: 'バー・深夜', name: '仮バー', description: 'スプレッドシートのデータに差し替えてください。', mapEmbed: '', lat: '', lng: '' }
+      ]
+    },
+    fields: [
+      { key: 'heading', type: 'text', label: '英字見出し' },
+      { key: 'subheading', type: 'text', label: '見出し' },
+      { key: 'spots', type: 'list', label: 'スポット', itemLabel: 'スポット', max: 30,
+        itemFields: [
+          { key: 'genre', type: 'select', label: 'ジャンル',
+            options: [
+              { value: 'ホテル・式場', label: 'ホテル・式場' },
+              { value: '飲食', label: '飲食' },
+              { value: 'カフェ', label: 'カフェ' },
+              { value: 'バー・深夜', label: 'バー・深夜' },
+              { value: '観光', label: '観光' }
+            ] },
+          { key: 'name',        type: 'text',     label: '名前' },
+          { key: 'description', type: 'textarea', label: '説明文' },
+          { key: 'mapEmbed',    type: 'text',     label: 'Google Maps 埋め込みURL' },
+          { key: 'lat',         type: 'text',     label: '緯度 (KML用)' },
+          { key: 'lng',         type: 'text',     label: '経度 (KML用)' }
+        ]
+      }
+    ],
+    render: function (block) {
+      var d = block.data || {};
+      var spots = d.spots || [];
+      var root = el('div', 'wb-spotmap');
+
+      root.innerHTML = headHtml(d);
+
+      // ジャンル別にグループ化
+      var genreOrder = ['ホテル・式場', '飲食', 'カフェ', 'バー・深夜', '観光'];
+      var genreColors = { 'ホテル・式場': 'pink', '飲食': 'coral', 'カフェ': 'green', 'バー・深夜': 'navy', '観光': 'teal' };
+      var groups = {};
+      spots.forEach(function (s) { var g = s.genre || '観光'; if (!groups[g]) { groups[g] = []; } groups[g].push(s); });
+
+      // iframe + 説明パネル
+      var frameWrap = el('div', 'wb-spotmap__frame-wrap');
+      var iframe = document.createElement('iframe');
+      iframe.className = 'wb-spotmap__iframe';
+      iframe.setAttribute('loading', 'lazy');
+      iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+      iframe.setAttribute('allowfullscreen', '');
+      frameWrap.appendChild(iframe);
+
+      var detail = el('div', 'wb-spotmap__detail');
+      detail.innerHTML = '<p class="wb-spotmap__detail-name"></p><p class="wb-spotmap__detail-desc"></p>';
+      frameWrap.appendChild(detail);
+      root.appendChild(frameWrap);
+
+      // スポットリスト
+      var list = el('div', 'wb-spotmap__list');
+      genreOrder.forEach(function (genre) {
+        if (!groups[genre]) { return; }
+        var group = el('div', 'wb-spotmap__genre-group');
+        var tag = el('span', 'wb-spotmap__genre-tag wb-spotmap__genre-tag--' + (genreColors[genre] || 'teal'), genre);
+        group.appendChild(tag);
+        groups[genre].forEach(function (spot, i) {
+          var item = el('div', 'wb-spotmap__item');
+          item.textContent = spot.name || '（名称未設定）';
+          item.dataset.embed = spot.mapEmbed || '';
+          item.dataset.name = spot.name || '';
+          item.dataset.desc = spot.description || '';
+          group.appendChild(item);
+        });
+        list.appendChild(group);
+      });
+      root.appendChild(list);
+
+      // 初期表示（最初のスポット）
+      var first = spots[0];
+      if (first) {
+        var src = safeMapEmbed(first.mapEmbed);
+        if (src) { iframe.src = src; frameWrap.classList.remove('is-empty'); }
+        else { frameWrap.classList.add('is-empty'); }
+        detail.querySelector('.wb-spotmap__detail-name').textContent = first.name || '';
+        detail.querySelector('.wb-spotmap__detail-desc').textContent = first.description || '';
+        var firstItem = root.querySelector('.wb-spotmap__item');
+        if (firstItem) { firstItem.classList.add('is-active'); }
+      }
+
+      return root;
+    },
+    hydrate: function (root) {
+      var items = root.querySelectorAll('.wb-spotmap__item');
+      var iframe = root.querySelector('.wb-spotmap__iframe');
+      var frameWrap = root.querySelector('.wb-spotmap__frame-wrap');
+      var nameEl = root.querySelector('.wb-spotmap__detail-name');
+      var descEl = root.querySelector('.wb-spotmap__detail-desc');
+      items.forEach(function (item) {
+        item.addEventListener('click', function () {
+          items.forEach(function (i) { i.classList.remove('is-active'); });
+          item.classList.add('is-active');
+          var embed = item.dataset.embed || '';
+          var src = WEDI.render.safeMapEmbed(embed);
+          if (src) { iframe.src = src; frameWrap.classList.remove('is-empty'); }
+          else { iframe.removeAttribute('src'); frameWrap.classList.add('is-empty'); }
+          if (nameEl) { nameEl.textContent = item.dataset.name || ''; }
+          if (descEl) { descEl.textContent = item.dataset.desc || ''; }
+          frameWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+    }
+  };
+
   /* パレット表示順（招待状の王道順 → しおり用は後ろ） */
   var order = ['cover', 'countdown', 'message', 'profile', 'album', 'partyInfo', 'request', 'rsvp',
-    'photoCta', 'schedule', 'map', 'photo', 'text', 'image', 'embed'];
+    'photoCta', 'schedule', 'map', 'spotMap', 'photo', 'text', 'image', 'embed'];
 
   function defaultStyle() {
     return { bg: 'none', align: 'center', spacing: 'normal', width: 'normal', tilt: 'none' };
