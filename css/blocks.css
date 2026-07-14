@@ -302,6 +302,9 @@
 .wb-rsvp__companion-row { display: grid; grid-template-columns: 1fr 96px; gap: 10px; margin-bottom: 10px; }
 .wb-rsvp__companion-row input { width: 100%; }
 .wb-rsvp__companion-allergy { margin-top: 4px; }
+.wb-rsvp__companion-photo { margin-top: 12px; }
+.wb-rsvp__companion-photolabel { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.wb-rsvp__companion-photo-preview img { max-width: 96px; max-height: 96px; }
 
 /* 新郎/新婦ゲスト ピックボタン */
 .wb-pickbtn {

@@ -14,6 +14,29 @@
 // 任意: シート名（既定は最初のシート）。変えたいときだけ書き換え。
 var SHEET_NAME = '';
 
+// プロフィール写真の保存先 Google Drive フォルダ ID。
+// 空文字にすると Drive へのコピーをスキップ（スプレッドシートにURLだけ記録）。
+var DRIVE_FOLDER_ID = '1Theb87wVPa-9TJ90u88eKc-wihPutTE0';
+
+// 画像URLをDriveフォルダに保存してファイル名を返す。失敗しても送信は止めない。
+function saveImageToDrive(url, baseName) {
+  if (!DRIVE_FOLDER_ID || !url) { return ''; }
+  try {
+    var folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+    var resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    if (resp.getResponseCode() !== 200) { return ''; }
+    var blob = resp.getBlob();
+    var ct = blob.getContentType() || '';
+    var ext = ct.indexOf('png') >= 0 ? '.png' : ct.indexOf('webp') >= 0 ? '.webp'
+      : ct.indexOf('gif') >= 0 ? '.gif' : '.jpg';
+    blob.setName(baseName + ext);
+    var file = folder.createFile(blob);
+    return file.getName();
+  } catch (err) {
+    return '';
+  }
+}
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(20000); // 同時送信の取りこぼし防止
@@ -24,8 +47,13 @@ function doPost(e) {
 
     var params = (e && e.parameter) ? e.parameter : {};
 
+    // 送信者の氏名（Driveのファイル名に使う）
+    var guestName = ((params.name1 || '') + (params.name2 || '')).replace(/[\\/:*?"<>|]/g, '') || 'guest';
+    var stamp = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyyMMdd-HHmmss');
+
     // 同席者を1セルにまとめる（companion_1_name / companion_1_attend ...）
     var companions = [];
+    var companionPhotoUrls = [];
     var count = parseInt(params.companion_count, 10) || 0;
     for (var i = 1; i <= count; i++) {
       var nm = params['companion_' + i + '_name'] || '';
@@ -34,6 +62,18 @@ function doPost(e) {
       var alDetail = params['companion_' + i + '_allergy_detail'] || '';
       var alText = al === 'あり' && alDetail ? 'アレルギー:' + alDetail : al === 'あり' ? 'アレルギーあり' : '';
       if (nm || at) { companions.push(nm + '（' + at + (alText ? '／' + alText : '') + '）'); }
+      var cUrl = params['companion_' + i + '_photo_url'] || '';
+      if (cUrl) {
+        var cName = (nm || ('同席者' + i)).replace(/[\\/:*?"<>|]/g, '');
+        saveImageToDrive(cUrl, stamp + '_' + guestName + '_同席者' + i + '_' + cName);
+        companionPhotoUrls.push((nm || ('同席者' + i)) + ': ' + cUrl);
+      }
+    }
+
+    // 本人写真を Drive に保存
+    var profileUrl = params.profile_photo_url || '';
+    if (profileUrl) {
+      saveImageToDrive(profileUrl, stamp + '_' + guestName + '_本人');
     }
 
     // 列の順番（ヘッダーと一致させる）
@@ -42,7 +82,8 @@ function doPost(e) {
       '姓', '名', '姓(ローマ字)', '名(ローマ字)', '間柄',
       '郵便番号', '住所1', '住所2', '住所3', '電話', 'メール',
       'アレルギー', 'アレルギー内容',
-      '同席者人数', '同席者', 'メッセージ', '送迎バス', 'プロフィール写真URL'
+      '同席者人数', '同席者', 'メッセージ', '送迎バス', 'プロフィール写真URL',
+      '同席者写真URL'
     ];
 
     // ヘッダーが無ければ1行目に作成
@@ -72,7 +113,8 @@ function doPost(e) {
       companions.join(' / '),
       params.message || '',
       params.bus || '',
-      params.profile_photo_url || ''
+      profileUrl,
+      companionPhotoUrls.join('\n')
     ];
     sheet.appendRow(row);
 

@@ -542,6 +542,11 @@
                   '<label class="wb-radio"><input type="radio" name="companion_' + (i + 1) + '_allergy" value="なし" checked> アレルギーなし</label>' +
                   '<label class="wb-radio"><input type="radio" name="companion_' + (i + 1) + '_allergy" value="あり"> アレルギーあり</label>' +
                   '<input type="text" name="companion_' + (i + 1) + '_allergy_detail" placeholder="アレルギー内容" class="wb-rsvp__allergydetail wb-rsvp__companion-allergydetail">' +
+                '</div>' +
+                '<div class="wb-rsvp__companion-photo">' +
+                  '<label class="wb-rsvp__companion-photolabel">プロフィール写真（任意）</label>' +
+                  '<input type="file" name="companion_' + (i + 1) + '_photo" accept="image/*" class="wb-rsvp__fileupload wb-rsvp__companion-fileupload">' +
+                  '<div class="wb-rsvp__photo-preview wb-rsvp__companion-photo-preview"></div>' +
                 '</div>';
               (function (cb) {
                 var detail = cb.querySelector('.wb-rsvp__companion-allergydetail');
@@ -551,6 +556,18 @@
                     detail.style.display = (radio.value === 'あり' && radio.checked) ? '' : 'none';
                   });
                 });
+                // 同席者写真のプレビュー
+                var cPhoto = cb.querySelector('.wb-rsvp__companion-fileupload');
+                var cPrev = cb.querySelector('.wb-rsvp__companion-photo-preview');
+                if (cPhoto && cPrev) {
+                  cPhoto.addEventListener('change', function () {
+                    var f = cPhoto.files[0];
+                    if (!f) { cPrev.innerHTML = ''; return; }
+                    var rd = new FileReader();
+                    rd.onload = function (ev2) { cPrev.innerHTML = '<img src="' + ev2.target.result + '" alt="プレビュー">'; };
+                    rd.readAsDataURL(f);
+                  });
+                }
               })(cblock);
               compList.appendChild(cblock);
             }
@@ -652,10 +669,8 @@
           payload[k] = v;
         });
 
-        // プロフィール写真をSupabaseにアップロードしてからGAS送信
-        var photoFile = photoInput && photoInput.files[0];
-        function sendToGas(photoUrl) {
-          if (photoUrl) { payload['profile_photo_url'] = photoUrl; }
+        // プロフィール写真（本人＋同席者）をアップロードしてからGAS送信
+        function sendToGas() {
           var frameName = 'wedi-rsvp-' + block.id;
           var iframe = document.createElement('iframe');
           iframe.name = frameName; iframe.style.display = 'none';
@@ -677,14 +692,25 @@
           poster.submit();
         }
 
-        if (photoFile && WEDI.upload && WEDI.upload.isConfigured()) {
-          WEDI.upload.uploadFile(photoFile, 'rsvp-photos').then(function (url) {
-            sendToGas(url || '');
-          }).catch(function () {
-            sendToGas('');
-          });
+        // アップロード対象を集める: { field: payloadに入れるキー, file: File }
+        var uploads = [];
+        var mainFile = photoInput && photoInput.files[0];
+        if (mainFile) { uploads.push({ field: 'profile_photo_url', file: mainFile }); }
+        var compCount = parseInt(payload.companion_count, 10) || 0;
+        for (var ui = 1; ui <= compCount; ui++) {
+          var cInput = form.querySelector('[name="companion_' + ui + '_photo"]');
+          var cFile = cInput && cInput.files[0];
+          if (cFile) { uploads.push({ field: 'companion_' + ui + '_photo_url', file: cFile }); }
+        }
+
+        if (uploads.length && WEDI.upload && WEDI.upload.isConfigured()) {
+          Promise.all(uploads.map(function (u) {
+            return WEDI.upload.uploadFile(u.file, 'rsvp-photos')
+              .then(function (url) { if (url) { payload[u.field] = url; } })
+              .catch(function () { /* 個別失敗は無視して送信は続行 */ });
+          })).then(sendToGas, sendToGas);
         } else {
-          sendToGas('');
+          sendToGas();
         }
       });
     }
