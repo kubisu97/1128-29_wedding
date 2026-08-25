@@ -1261,9 +1261,7 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   border-color: rgba(255,255,255,.48);
 }
 
-/* 時刻には星のあしらいを付けず、文字色を地色から抜けるベージュにする。
-   Day1(赤)は beige で 4.4:1 だが、Day2(橙)は明るいオレンジのため
-   beige でも 2.4:1 しか出ない → Day2 だけ ink にして 6.0:1 を確保。 */
+/* 時刻には星のあしらいを付けず、文字色を地色から抜けるベージュにする。 */
 .page--guide .wb-schedule__time {
   position: relative;
   z-index: 1;
@@ -1275,7 +1273,8 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   letter-spacing: -.04em;
 }
 
-.page--guide [data-block-id="bk_g_day2"] .wb-schedule__time { color: var(--guide-ink); }
+/* Day2 は他のテキスト（見出し・本文）と同じ cream に揃える。 */
+.page--guide [data-block-id="bk_g_day2"] .wb-schedule__time { color: var(--guide-cream); }
 
 .page--guide .wb-schedule__title {
   font-size: 14px;
