@@ -53,6 +53,12 @@
     return '';
   }
 
+  /* color input 由来の16進カラーだけを許可（style 属性への任意値混入を防ぐ） */
+  function safeColor(value) {
+    var v = String(value || '').trim();
+    return /^#[0-9a-f]{6}$/i.test(v) ? v : '';
+  }
+
   /* ---- style プリセット → クラス ---- */
 
   function styleClasses(style) {
@@ -63,6 +69,26 @@
     cls.push('wb-space--' + (s.spacing || 'normal'));
     cls.push('wb-w--' + (s.width || 'normal'));
     cls.push('wb-tilt--' + (s.tilt || 'none'));
+    if (safeColor(s.customBg)) { cls.push('wb-custom-bg'); }
+    if (safeColor(s.customText)) { cls.push('wb-custom-text'); }
+    var decoration = ['none', 'starburst', 'flower', 'circle',
+      'scallop', 'daisy', 'splat', 'wreath', 'seal', 'spikeball', 'star8', 'star7',
+      'blob', 'sparkle', 'star6', 'starfish', 'clover', 'wavybar', 'squiggle', 'arch'
+    ].indexOf(s.decoration) >= 0
+      ? s.decoration : 'default';
+    if (decoration !== 'default') {
+      cls.push('wb-decoration-override');
+      cls.push('wb-deco--' + decoration);
+      if (decoration !== 'none') { cls.push('wb-has-decor'); }
+    }
+    if (decoration !== 'default' && decoration !== 'none') {
+      var position = ['top-left', 'top-right', 'bottom-left', 'bottom-right'].indexOf(s.decorationPosition) >= 0
+        ? s.decorationPosition : 'top-right';
+      var size = ['small', 'medium', 'large'].indexOf(s.decorationSize) >= 0
+        ? s.decorationSize : 'medium';
+      cls.push('wb-deco-pos--' + position);
+      cls.push('wb-deco-size--' + size);
+    }
     return cls.join(' ');
   }
 
@@ -85,6 +111,21 @@
     var section = document.createElement('section');
     section.className = 'wb-block ' + styleClasses(block.style);
     section.dataset.type = block.type;
+    section.dataset.blockId = block.id || '';
+    var blockStyle = block.style || {};
+    var customBg = safeColor(blockStyle.customBg);
+    var customText = safeColor(blockStyle.customText);
+    var decorationColor = safeColor(blockStyle.decorationColor);
+    if (customBg) { section.style.setProperty('--wb-custom-bg', customBg); }
+    if (customText) { section.style.setProperty('--wb-custom-text', customText); }
+    if (decorationColor) { section.style.setProperty('--wb-decoration-color', decorationColor); }
+
+    if (section.classList.contains('wb-has-decor')) {
+      var decor = document.createElement('span');
+      decor.className = 'wb-decor';
+      decor.setAttribute('aria-hidden', 'true');
+      section.appendChild(decor);
+    }
 
     var inner2 = document.createElement('div');
     inner2.className = 'wb-block__inner';
@@ -133,6 +174,7 @@
     escMultiline: escMultiline,
     safeUrl: safeUrl,
     safeMapEmbed: safeMapEmbed,
+    safeColor: safeColor,
     styleClasses: styleClasses
   };
 })(window);

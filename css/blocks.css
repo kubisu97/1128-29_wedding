@@ -188,9 +188,11 @@
 /* =========================================================== album */
 .wb-album__stage { position: relative; border-radius: var(--radius); overflow: hidden; }
 .wb-album__slides { position: relative; aspect-ratio: 4 / 3; background: var(--pinkSoft); }
-.wb-album__slide { position: absolute; inset: 0; opacity: 0; transition: opacity var(--motion) ease; }
-.wb-album__slide.is-active { opacity: 1; }
-.wb-album__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wb-album__slide { position: absolute; inset: 0; overflow: hidden; opacity: 0; transition: opacity .55s ease; }
+.wb-album__slide.is-active { z-index: 1; opacity: 1; }
+.wb-album__slide img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.wb-album__slide-bg { object-fit: cover; transform: scale(1.12); filter: blur(18px) saturate(.75); opacity: .5; }
+.wb-album__slide-main { z-index: 1; padding: 9px; object-fit: contain; }
 .wb-album__nav {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 36px; height: 36px; border-radius: 50%; border: 0;
@@ -204,6 +206,31 @@
 .wb-album__thumb.is-active { opacity: 1; outline: 2px solid var(--coral); }
 .wb-album__thumb img { width: 100%; height: 100%; object-fit: cover; }
 .wb-album__empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 16px; color: var(--muted); font-size: 13px; }
+.wb-album__count {
+  position: absolute;
+  z-index: 3;
+  top: 12px;
+  right: 12px;
+  padding: 5px 8px;
+  background: rgba(23,76,57,.86);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+.wb-album__progress {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@keyframes albumProgress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.wb-album__stage.is-cycling .wb-album__progress { animation: albumProgress var(--album-interval, 4000ms) linear; }
 
 /* =========================================================== party-info */
 .wb-party__date { margin-bottom: 28px; }
@@ -386,8 +413,12 @@
 .wb-spotmap__iframe {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
+  min-height: 300px;
   border: 0;
+}
+@media (min-width: 768px) {
+  .wb-spotmap__iframe { aspect-ratio: 16 / 10; min-height: 380px; }
 }
 .wb-spotmap__frame-wrap.is-empty .wb-spotmap__iframe {
   display: none;
@@ -401,10 +432,15 @@
   color: var(--muted);
   font-size: 13px;
 }
-.wb-spotmap__detail {
-  padding: 12px 16px 14px;
+.wb-spotmap__note {
+  margin: 0;
+  padding: 10px 16px 12px;
   background: var(--paper);
   border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: center;
 }
 .wb-spotmap__detail-name {
   font-size: 14px;
@@ -419,8 +455,41 @@
   margin: 0;
   white-space: pre-wrap;
 }
+.wb-spotmap__detail-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--coral);
+  border-radius: var(--radius-pill, 999px);
+  padding: 7px 16px;
+  text-decoration: none;
+}
+.wb-spotmap__detail-link:hover { filter: brightness(1.06); }
+.wb-spotmap__detail-link[hidden] { display: none; }
+
 .wb-spotmap__list { margin-top: 4px; }
-.wb-spotmap__genre-group { margin-bottom: 18px; }
+.wb-spotmap__genre-group { margin-bottom: 10px; }
+.wb-spotmap__genre-sum {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+  padding: 6px 2px;
+}
+.wb-spotmap__genre-sum::-webkit-details-marker { display: none; }
+.wb-spotmap__genre-sum::after {
+  content: '＋';
+  margin-left: auto;
+  font-size: 13px;
+  opacity: 0.5;
+}
+.wb-spotmap__genre-group[open] > .wb-spotmap__genre-sum::after { content: '−'; }
+.wb-spotmap__genre-count { font-size: 11px; opacity: 0.6; }
+.wb-spotmap__genre-sum:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
 .wb-spotmap__genre-tag {
   display: inline-block;
   font-size: 10px;
@@ -428,7 +497,6 @@
   letter-spacing: 0.1em;
   padding: 2px 10px;
   border-radius: 100px;
-  margin-bottom: 8px;
   color: #fff;
 }
 .wb-spotmap__genre-tag--pink  { background: var(--coral); }
@@ -436,27 +504,149 @@
 .wb-spotmap__genre-tag--green { background: #5a8a5a; }
 .wb-spotmap__genre-tag--navy  { background: #3a4a7a; }
 .wb-spotmap__genre-tag--teal  { background: #3a7a70; }
+.wb-spotmap__genre-tag--momiji{ background: #b8452c; }
+.wb-spotmap__genre-tag--plum  { background: #6b3f6b; }
+.wb-spotmap__genre-tag--amber { background: #a8722a; }
+.wb-spotmap__genre-tag--sky   { background: #2f6f92; }
+.wb-spotmap__genre-tag--sun   { background: #d29b18; }
+.wb-spotmap__genre-tag--wine  { background: #8a2f4a; }
+.wb-spotmap__genre-tag--slate { background: #5c6672; }
+.wb-spotmap__genre-tag--moss  { background: #77803b; }
+.wb-spotmap__genre-tag--pine  { background: #2f5d3f; }
+.wb-spotmap__genre-tag--indigo{ background: #4a5aa8; }
+.wb-spotmap__genre-tag--brown { background: #7a5c44; }
+.wb-spotmap__genre-tag--violet{ background: #8a63b8; }
+.wb-spotmap__genre-tag--rose  { background: #c2557a; }
+.wb-spotmap__genre-tag--vinyl { background: #3b3b42; }
+.wb-spotmap__genre-tag--denim { background: #4877a8; }
+.wb-spotmap__genre-tag--ceremony { background: #d1425f; }
+.wb-spotmap__genre-tag--banquet { background: #aa4d6d; }
 .wb-spotmap__item {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   border-radius: calc(var(--radius) - 2px);
   background: rgba(255,255,255,0.55);
   border: 1px solid var(--line);
-  cursor: pointer;
   font-size: 13px;
   color: var(--ink);
   transition: background 0.15s, border-color 0.15s;
+  overflow: hidden;
+}
+.wb-spotmap__item-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
   text-align: left;
 }
-.wb-spotmap__item::before {
-  content: '📍';
-  margin-right: 8px;
-  font-size: 14px;
-  flex-shrink: 0;
+.wb-spotmap__item-head:focus-visible { outline: 2px solid var(--coral); outline-offset: -2px; }
+.wb-spotmap__item-chev {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0.5;
+  transition: transform 0.2s;
 }
-.wb-spotmap__item:hover { background: rgba(255,255,255,0.85); border-color: var(--coral); }
+.wb-spotmap__item-chev::before { content: '▾'; display: inline-block; transform: rotate(-90deg); transition: transform 0.2s; }
+.wb-spotmap__item.is-open .wb-spotmap__item-chev::before { transform: rotate(0deg); }
+.wb-spotmap__item.is-open { background: #fff; border-color: var(--coral); }
+.wb-spotmap__item.is-open .wb-spotmap__item-desc {
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+  opacity: 0.9;
+}
+.wb-spotmap__item-detail { display: none; padding: 0 12px 12px; }
+.wb-spotmap__item.is-open .wb-spotmap__item-detail { display: block; }
+.wb-spotmap__mini-map {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+.wb-spotmap__mini-map iframe {
+  display: block;
+  width: 100%;
+  height: 210px;
+  border: 0;
+}
+.wb-spotmap__item-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.wb-spotmap__add-btn {
+  border: 0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: var(--coral);
+  border-radius: var(--radius-pill, 999px);
+  padding: 8px 16px;
+  transition: filter 0.15s, background 0.15s;
+}
+.wb-spotmap__add-btn:hover { filter: brightness(1.06); }
+.wb-spotmap__add-btn.is-added { background: #5a8a5a; }
+.wb-spotmap__gmaps-link {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.wb-spotmap__gmaps-link:hover { color: var(--ink); }
+.wb-spotmap__thumb {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.05);
+}
+.wb-spotmap__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wb-spotmap__thumb--ph { font-size: 24px; line-height: 1; }
+
+.wb-spotmap__item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  text-align: left;
+}
+.wb-spotmap__item-name { font-size: 14px; font-weight: 600; line-height: 1.35; }
+.wb-spotmap__item-desc {
+  font-size: 11.5px;
+  line-height: 1.5;
+  opacity: 0.75;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.wb-spotmap__item.is-active .wb-spotmap__item-desc { opacity: 0.92; }
+.wb-spotmap__item.is-active .wb-spotmap__thumb { background: rgba(255,255,255,0.25); }
+
+.wb-spotmap__detail-img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.wb-spotmap__detail-img[hidden] { display: none; }
+.wb-spotmap__item:hover { background: rgba(255,255,255,0.9); border-color: var(--coral); }
 .wb-spotmap__item.is-active {
   background: var(--coral);
   border-color: var(--coral);
@@ -464,8 +654,1505 @@
   font-weight: 600;
 }
 
+/* ---- 自前マップ（Leaflet） ---- */
+.wb-spotmap__search {
+  position: relative;
+  padding: 12px 12px 0;
+  background: var(--paper);
+}
+.wb-spotmap__search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill, 999px);
+  background: #fff;
+  padding: 10px 40px 10px 16px;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+}
+.wb-spotmap__search input:focus { border-color: var(--coral); }
+.wb-spotmap__search input::-webkit-search-cancel-button { display: none; }
+.wb-spotmap__search-clear {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(calc(-50% + 6px));
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+.wb-spotmap__result {
+  margin: 0;
+  padding: 0 16px 8px;
+  background: var(--paper);
+  font-size: 11px;
+  color: var(--muted);
+}
+.wb-spotmap__chip small {
+  font-size: 10px;
+  opacity: 0.65;
+  font-weight: 600;
+}
+.wb-spotmap__chip-sym {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+  flex: 0 0 auto;
+}
+.wb-spotmap__chip--plan.is-on { background: var(--coral); border-color: var(--coral); color: #fff; }
+.wb-spotmap__addr {
+  margin: 0 0 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+/* 家族メモ（この場所を選んだ理由・思い出） */
+.wb-spotmap__note {
+  margin: 0 0 10px;
+  padding: 8px 11px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--coral-deep);
+  background: var(--pinkSoft);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--coral);
+}
+.page--guide .wb-spotmap__note {
+  color: #f3d9c9;
+  background: rgba(236,119,91,0.12);
+  border-left-color: var(--coral);
+}
+.wb-spotmap__resv {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: #8a2f4a;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  vertical-align: 2px;
+}
+.wb-spotmap__mapjump-btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius-pill, 999px);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-spotmap__mapjump-btn:hover { border-color: var(--ink); }
+.wb-spotmap__chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  scrollbar-width: none;
+}
+.wb-spotmap__chips::-webkit-scrollbar { display: none; }
+.wb-spotmap__chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius-pill, 999px);
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wb-spotmap__chip.is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.wb-spotmap__chip-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.wb-spotmap__map-holder { position: relative; overflow: hidden; }
+.wb-spotmap__leaflet {
+  width: 100%;
+  height: 62vh;
+  min-height: 340px;
+  max-height: 520px;
+  z-index: 0;
+  background: #e8e4dc;
+}
+.wb-spotmap__leaflet .leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(255,255,255,0.7);
+}
+.wb-spotmap__pin { background: none; border: none; }
+.wb-spotmap__pin-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  font-size: 13px;
+  line-height: 1;
+}
+.wb-spotmap__map-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--coral);
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.35);
+}
+.wb-spotmap__loc-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 900;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius-pill, 999px);
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.wb-spotmap__loc-btn:disabled { opacity: 0.5; }
+.wb-spotmap__sheet {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 900;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  padding: 14px 14px 12px;
+  transform: translateY(calc(100% + 20px));
+  transition: transform 0.22s ease;
+  pointer-events: none;
+}
+.wb-spotmap__sheet.is-open { transform: none; pointer-events: auto; }
+.wb-spotmap__sheet-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: rgba(0,0,0,0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+}
+.wb-spotmap__sheet-name {
+  margin: 7px 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  padding-right: 30px;
+}
+.wb-spotmap__sheet-desc {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-height: 96px;
+  overflow-y: auto;
+}
+
+/* ---- マイプラン ---- */
+.wb-spotmap__plan {
+  scroll-margin-top: 76px;
+  margin: 26px 0 30px;
+  padding: 18px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.65);
+}
+.wb-spotmap__plan-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.wb-spotmap__plan-lead {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.wb-spotmap__plan-empty {
+  margin: 0;
+  padding: 14px 0 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+}
+.wb-spotmap__plan-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+}
+.wb-spotmap__plan-start {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 0 6px;
+}
+.wb-spotmap__plan-seg {
+  font-size: 10.5px;
+  color: var(--muted);
+  padding: 3px 0 3px 13px;
+  margin-left: 13px;
+  border-left: 2px dotted var(--line);
+}
+.wb-spotmap__plan-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+.wb-spotmap__plan-num {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--coral);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.wb-spotmap__plan-name {
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.wb-spotmap__plan-genre {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.wb-spotmap__plan-ctl {
+  margin-left: auto;
+  display: flex;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+.wb-spotmap__plan-ctl button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+}
+.wb-spotmap__plan-ctl button:disabled { opacity: 0.3; cursor: default; }
+.wb-spotmap__plan-actions { text-align: center; }
+.wb-spotmap__route-btn {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: var(--coral);
+  border-radius: var(--radius-pill, 999px);
+  padding: 10px 22px;
+  text-decoration: none;
+}
+.wb-spotmap__route-btn:hover { filter: brightness(1.06); }
+.wb-spotmap__plan-note {
+  margin: 8px 0 0;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.wb-spotmap__plan-subactions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.wb-spotmap__plan-mini {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius-pill, 999px);
+  padding: 6px 14px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.wb-spotmap__plan-mini:hover { color: var(--ink); border-color: var(--ink); }
+.wb-spotmap__plan-chip {
+  position: fixed;
+  left: 14px;
+  bottom: 92px;
+  z-index: 60;
+  border: 0;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--coral);
+  border-radius: var(--radius-pill, 999px);
+  padding: 10px 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+.wb-spotmap__toast {
+  position: fixed;
+  left: 50%;
+  bottom: 150px;
+  transform: translateX(-50%) translateY(8px);
+  z-index: 70;
+  background: rgba(24,23,23,0.92);
+  color: #fff;
+  font-size: 12px;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill, 999px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.wb-spotmap__toast.is-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ---- レスポンシブ ---- */
 @media (max-width: 600px) {
   .wb-block { padding-left: 18px; padding-right: 18px; }
   .wb-tilt--left .wb-block__inner, .wb-tilt--right .wb-block__inner { transform: none; }
+}
+
+/* ===========================================================================
+ * 京都・旅のしおり専用テーマ
+ * sample/S__95756294.jpg の紙面構成を、既存ブロックを保ったまま再構成。
+ * 招待状ページには影響しないよう .page--guide 以下に限定する。
+ * =========================================================================== */
+.page--guide {
+  --guide-red: #cf2529;
+  --guide-red-deep: #ad171d;
+  --guide-cream: #fffaf2;
+  --guide-pink: #f4c6d6;
+  --guide-orange: #ee7142;
+  --guide-blue: #a9d4e7;
+  --guide-ink: #181717;
+  --guide-line: rgba(24, 23, 23, .22);
+  background: var(--guide-red);
+  color: var(--guide-ink);
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+body.is-guide-page .site-topnav {
+  gap: 0;
+  padding: 9px;
+  background: rgba(255, 250, 242, .96);
+  border-bottom: 2px solid #181717;
+}
+
+body.is-guide-page .site-topnav__btn {
+  border-radius: 0;
+  color: #181717;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+body.is-guide-page .site-topnav__btn.is-active { background: #cf2529; color: #fffaf2; }
+
+body.is-guide-page .follow-banner {
+  border: 2px solid #181717;
+  border-radius: 0;
+  background: #fffaf2;
+  color: #181717;
+  box-shadow: 7px 7px 0 #f4c6d6;
+}
+
+body.is-guide-page .site-sidebar__inner {
+  background: #fffaf2;
+  border: 3px solid #181717;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #cf2529;
+}
+
+body.is-guide-page .sb-cta { background: #cf2529; border-radius: 0; }
+body.is-guide-page .sb-note { background: #f4c6d6; border-radius: 0; color: #181717; }
+
+.page--guide .wb-block {
+  padding: 76px 28px;
+  overflow: hidden;
+}
+
+.page--guide .wb-block__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 390px;
+}
+
+.page--guide .wb-heading {
+  font-family: var(--font-accent);
+  font-size: clamp(34px, 10vw, 54px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: .92;
+  text-transform: uppercase;
+}
+
+.page--guide .wb-subheading {
+  margin-top: 13px;
+  color: currentColor;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.page--guide .wb-head { margin-bottom: 34px; }
+
+/* 扉：生成りの紙と大きな花 */
+.page--guide [data-block-id="bk_g_msg"] {
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+  padding-top: 94px;
+  padding-bottom: 130px;
+  background: var(--guide-cream) !important;
+  color: var(--guide-ink);
+}
+
+.page--guide [data-block-id="bk_g_msg"]::before,
+.page--guide [data-block-id="bk_g_outro"]::before {
+  content: '';
+  position: absolute;
+  width: 360px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--guide-pink);
+  right: -160px;
+  bottom: -85px;
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+  transform: rotate(12deg);
+}
+
+.page--guide [data-block-id="bk_g_msg"]::after {
+  content: '28—29 NOV. 2026  •  KYOTO';
+  position: absolute;
+  left: 28px;
+  top: 28px;
+  color: var(--guide-red);
+  font: 700 11px/1 var(--font-accent);
+  letter-spacing: .13em;
+}
+
+.page--guide [data-block-id="bk_g_msg"] .wb-heading {
+  color: var(--guide-red);
+  white-space: pre-line;
+  font-size: clamp(48px, 14vw, 68px);
+}
+
+.page--guide [data-block-id="bk_g_msg"] .wb-subheading {
+  display: inline-block;
+  color: var(--guide-cream);
+  background: var(--guide-red);
+  padding: 7px 11px 8px;
+}
+
+.page--guide [data-block-id="bk_g_msg"] .wb-message__body {
+  max-width: 310px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2.05;
+}
+
+.page--guide [data-block-id="bk_g_msg"] .wb-message__sign {
+  margin-top: 24px;
+  color: var(--guide-red);
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+/* 波型の紙端 */
+.page--guide [data-block-id="bk_g_day1"]::before,
+.page--guide [data-block-id="bk_g_spots"]::before,
+.page--guide [data-block-id="bk_g_outro"]::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: -8px;
+  right: -8px;
+  height: 24px;
+  background: radial-gradient(circle at 12px -1px, transparent 12px, currentColor 13px) 0 0 / 24px 24px repeat-x;
+}
+
+/* 旅程：赤いポスター面 */
+.page--guide [data-block-id="bk_g_day1"] {
+  background: var(--guide-red) !important;
+  color: var(--guide-cream);
+  padding-top: 104px;
+}
+
+.page--guide [data-block-id="bk_g_day1"]::before { color: var(--guide-cream); }
+
+.page--guide [data-block-id="bk_g_day2"] {
+  background: var(--guide-orange) !important;
+  color: var(--guide-cream);
+}
+
+.page--guide [data-type="schedule"] .wb-head {
+  text-align: left;
+  padding-bottom: 24px;
+  border-bottom: 2px solid currentColor;
+}
+
+.page--guide [data-type="schedule"] .wb-heading {
+  font-size: clamp(52px, 16vw, 72px);
+}
+
+.page--guide .wb-schedule__list { max-width: none; }
+
+.page--guide .wb-schedule__row {
+  position: relative;
+  grid-template-columns: 76px 1fr;
+  gap: 14px;
+  min-height: 92px;
+  padding: 21px 0;
+  border-color: rgba(255,255,255,.48);
+}
+
+.page--guide .wb-schedule__time {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  font-family: var(--font-accent);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -.04em;
+}
+
+.page--guide .wb-schedule__time::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 72px;
+  height: 54px;
+  left: -10px;
+  top: -14px;
+  background: var(--guide-pink);
+  clip-path: polygon(50% 0, 62% 28%, 89% 11%, 72% 40%, 100% 52%, 69% 62%, 88% 91%, 60% 72%, 48% 100%, 38% 70%, 9% 88%, 28% 59%, 0 48%, 31% 38%, 12% 9%, 41% 29%);
+}
+
+.page--guide [data-block-id="bk_g_day2"] .wb-schedule__time::before { background: var(--guide-red); }
+
+.page--guide .wb-schedule__title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.page--guide .wb-schedule__text {
+  color: inherit;
+  opacity: .88;
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+/* おすすめスポット：生成り＋ピンクの花、地図は印刷物風 */
+.page--guide [data-block-id="bk_g_spots"] {
+  background: var(--guide-cream) !important;
+  color: var(--guide-ink);
+  padding-top: 108px;
+}
+
+.page--guide [data-block-id="bk_g_spots"]::before { color: var(--guide-orange); }
+
+.page--guide [data-block-id="bk_g_spots"]::after {
+  content: '';
+  position: absolute;
+  width: 310px;
+  aspect-ratio: 1;
+  right: -170px;
+  top: 85px;
+  border-radius: 50%;
+  background: var(--guide-pink);
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+  transform: rotate(26deg);
+}
+
+.page--guide [data-block-id="bk_g_spots"] .wb-heading { color: var(--guide-red); }
+
+.page--guide .wb-spotmap__frame-wrap {
+  border: 3px solid var(--guide-ink);
+  border-radius: 0;
+  box-shadow: 9px 9px 0 var(--guide-pink);
+  transform: rotate(-1deg);
+  margin-bottom: 40px;
+}
+
+.page--guide .wb-spotmap__detail { background: var(--guide-cream); border-color: var(--guide-ink); }
+.page--guide .wb-spotmap__detail-name { font-weight: 800; }
+.page--guide .wb-spotmap__detail-desc { color: var(--guide-ink); opacity: .7; }
+
+.page--guide .wb-spotmap__genre-group { margin-bottom: 26px; }
+.page--guide .wb-spotmap__genre-tag {
+  border-radius: 0;
+  background: var(--guide-ink) !important;
+  padding: 5px 9px;
+  font-family: var(--font-accent);
+  font-size: 10px;
+  letter-spacing: .1em;
+}
+
+.page--guide .wb-spotmap__item {
+  position: relative;
+  border: 0;
+  border-top: 1px solid var(--guide-line);
+  border-radius: 0;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+}
+.page--guide .wb-spotmap__item-head { padding: 13px 4px; }
+.page--guide .wb-spotmap__item:last-child { border-bottom: 1px solid var(--guide-line); }
+.page--guide .wb-spotmap__item:hover { background: var(--guide-pink); }
+.page--guide .wb-spotmap__item.is-open {
+  background: var(--guide-cream);
+  border-top: 1px solid var(--guide-ink);
+  box-shadow: inset 3px 0 0 var(--guide-red);
+}
+.page--guide .wb-spotmap__item-detail { padding: 0 10px 14px; }
+.page--guide .wb-spotmap__mini-map { border: 2px solid var(--guide-ink); border-radius: 0; }
+.page--guide .wb-spotmap__add-btn {
+  background: var(--guide-red);
+  border-radius: 0;
+  font-family: var(--font-accent);
+}
+.page--guide .wb-spotmap__add-btn.is-added { background: var(--guide-ink); }
+.page--guide .wb-spotmap__gmaps-link { color: var(--guide-ink); opacity: 0.65; }
+
+.page--guide .wb-spotmap__plan {
+  border: 3px solid var(--guide-ink);
+  border-radius: 0;
+  background: var(--guide-cream);
+  box-shadow: 9px 9px 0 var(--guide-pink);
+}
+.page--guide .wb-spotmap__plan-title {
+  color: var(--guide-red);
+  font-family: var(--font-accent);
+  letter-spacing: 0.12em;
+}
+.page--guide .wb-spotmap__plan-lead { color: var(--guide-ink); opacity: 0.65; }
+.page--guide .wb-spotmap__plan-num { background: var(--guide-red); border-radius: 50%; }
+.page--guide .wb-spotmap__plan-seg { border-left-color: var(--guide-line); color: var(--guide-ink); opacity: 0.6; }
+.page--guide .wb-spotmap__route-btn { background: var(--guide-red); border-radius: 0; font-family: var(--font-accent); }
+.page--guide .wb-spotmap__plan-ctl button { border-color: var(--guide-line); background: #fff; border-radius: 0; }
+.page--guide .wb-spotmap__plan-mini { border-radius: 0; border-color: var(--guide-line); background: transparent; }
+.page--guide .wb-spotmap__plan-chip { background: var(--guide-red); }
+
+/* 自前マップ（guideテーマ）: Leafletは回転した親の中だと座標がずれるので回転を外す */
+.page--guide .wb-spotmap__frame-wrap--own { transform: none; }
+.page--guide .wb-spotmap__chips { background: var(--guide-cream); border-bottom: 2px solid var(--guide-ink); }
+.page--guide .wb-spotmap__chip { border-radius: 0; border-color: var(--guide-line); background: #fff; }
+.page--guide .wb-spotmap__chip.is-on { background: var(--guide-ink); border-color: var(--guide-ink); }
+.page--guide .wb-spotmap__map-badge { background: var(--guide-red); }
+.page--guide .wb-spotmap__sheet { border-radius: 0; border: 2px solid var(--guide-ink); background: var(--guide-cream); }
+.page--guide .wb-spotmap__loc-btn { border-radius: 0; border: 1px solid var(--guide-ink); }
+.page--guide .wb-spotmap__search { background: var(--guide-cream); }
+.page--guide .wb-spotmap__search input { border-radius: 0; border: 2px solid var(--guide-ink); }
+.page--guide .wb-spotmap__search input:focus { border-color: var(--guide-red); }
+.page--guide .wb-spotmap__result { background: var(--guide-cream); color: var(--guide-ink); opacity: 0.7; }
+.page--guide .wb-spotmap__chip--plan.is-on { background: var(--guide-red); border-color: var(--guide-red); color: #fff; }
+.page--guide .wb-spotmap__mapjump-btn { border-radius: 0; border-color: var(--guide-line); background: transparent; }
+.page--guide .wb-spotmap__addr { color: var(--guide-ink); opacity: 0.6; }
+
+/* 結び：青空を思わせる軽い終面 */
+.page--guide [data-block-id="bk_g_outro"] {
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  background: var(--guide-blue) !important;
+  color: var(--guide-red);
+  padding-bottom: 118px;
+}
+
+.page--guide [data-block-id="bk_g_outro"]::before {
+  right: -120px;
+  bottom: -100px;
+  background: var(--guide-cream);
+  transform: rotate(-8deg);
+}
+
+.page--guide [data-block-id="bk_g_outro"]::after { color: var(--guide-cream); }
+.page--guide [data-block-id="bk_g_outro"] .wb-message__body {
+  color: var(--guide-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 2.05;
+}
+.page--guide [data-block-id="bk_g_outro"] .wb-message__sign { font-weight: 900; }
+
+@media (min-width: 920px) {
+  .site-card[data-page="guide"] { border: 6px solid var(--guide-cream, #fffaf2); }
+}
+
+@media (max-width: 600px) {
+  .page--guide .wb-block { padding-left: 24px; padding-right: 24px; }
+  .page--guide [data-block-id="bk_g_msg"] { min-height: 620px; }
+  .page--guide .wb-schedule__row { grid-template-columns: 70px 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--guide .wb-spotmap__frame-wrap { transform: none; }
+}
+
+/* ===========================================================================
+ * 招待状専用テーマ
+ * sample/S__95756293.jpg・S__95756295.jpg・S__95756290.jpg の
+ * 生成り紙、モノクロ写真、ピンク／オレンジの花型を組み合わせた紙面構成。
+ * =========================================================================== */
+body.is-invitation-page {
+  background-color: #174c39;
+  background-image:
+    radial-gradient(rgba(255,255,255,.10) .7px, transparent .8px),
+    radial-gradient(rgba(0,0,0,.14) .7px, transparent .8px);
+  background-position: 0 0, 3px 3px;
+  background-size: 6px 6px;
+}
+
+body.is-invitation-page .site-topnav {
+  gap: 0;
+  padding: 9px;
+  background: rgba(255, 250, 240, .96);
+  border-bottom: 2px solid #174c39;
+}
+
+body.is-invitation-page .site-topnav__btn {
+  border-radius: 0;
+  color: #174c39;
+  font-weight: 700;
+}
+
+body.is-invitation-page .site-topnav__btn.is-active { background: #ef7044; color: #fffaf0; }
+
+body.is-invitation-page .follow-banner {
+  border: 2px solid #174c39;
+  border-radius: 0;
+  background: #174c39;
+  color: #fffaf0;
+  box-shadow: 7px 7px 0 #ef7044;
+}
+
+.page--invitation {
+  --invite-cream: #f8edda;
+  --invite-pink: #ecd9d1;
+  --invite-orange: #e66f50;
+  --invite-green: #174c39;
+  --invite-ink: #174c39;
+  --invite-line: rgba(23,76,57,.26);
+  background: var(--invite-cream);
+  color: var(--invite-ink);
+  overflow: hidden;
+}
+
+.page--invitation .wb-block {
+  padding: 82px 28px;
+  overflow: hidden;
+}
+
+.page--invitation .wb-block__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 390px;
+}
+
+.page--invitation .wb-head { margin-bottom: 36px; }
+.page--invitation .wb-heading {
+  font-family: var(--font-accent);
+  font-size: clamp(38px, 11vw, 54px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: .94;
+  text-transform: uppercase;
+}
+.page--invitation .wb-subheading {
+  margin-top: 11px;
+  color: currentColor;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+/* カバー */
+.page--invitation [data-block-id="bk_cover"] {
+  min-height: 690px;
+  padding: 42px 22px 92px;
+  background: var(--invite-cream) !important;
+}
+
+.page--invitation [data-block-id="bk_cover"]::before,
+.page--invitation [data-block-id="bk_msg"]::after,
+.page--invitation [data-block-id="bk_req"]::before,
+.page--invitation [data-block-id="bk_rsvp"]::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--invite-pink);
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+  pointer-events: none;
+}
+
+.page--invitation [data-block-id="bk_cover"]::before {
+  right: -170px;
+  bottom: -50px;
+  transform: rotate(20deg);
+}
+
+.page--invitation [data-block-id="bk_cover"]::after {
+  content: 'WEDDING  •  29 NOVEMBER 2026';
+  position: absolute;
+  z-index: 3;
+  left: 23px;
+  top: 20px;
+  color: var(--invite-orange);
+  font: 800 10px/1 var(--font-accent);
+  letter-spacing: .12em;
+}
+
+.page--invitation .wb-cover { padding-top: 45px; }
+.page--invitation .wb-cover__lettering-img {
+  width: 108%;
+  max-width: none;
+  padding: 0;
+  transform: translateX(-4%) rotate(-1deg);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(22%) saturate(1115%) hue-rotate(106deg) brightness(83%) contrast(96%);
+}
+.page--invitation .wb-cover__lettering-wrap.is-img + .wb-cover__photo {
+  width: 79%;
+  aspect-ratio: 4 / 5;
+  margin: -18% 5px 0 auto;
+}
+.page--invitation .wb-cover__photo {
+  border: 8px solid var(--invite-cream);
+  border-radius: 0;
+  box-shadow: 8px 8px 0 var(--invite-orange);
+  transform: rotate(1.5deg);
+}
+.page--invitation .wb-cover__photo img { filter: grayscale(1) contrast(1.05); }
+.page--invitation .wb-cover__names {
+  display: table;
+  margin: -24px auto 0 0;
+  padding: 8px 12px;
+  background: var(--invite-ink);
+  color: var(--invite-cream);
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+  transform: rotate(-2deg);
+}
+.page--invitation .wb-cover__date {
+  position: relative;
+  z-index: 2;
+  margin-top: 27px;
+  padding: 0;
+  color: var(--invite-orange);
+  font-family: var(--font-accent);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  text-align: left;
+}
+
+/* カウントダウン：オレンジのポスター面 */
+.page--invitation [data-block-id="bk_cd"] {
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background: var(--invite-green) !important;
+  color: var(--invite-cream);
+}
+.page--invitation [data-block-id="bk_cd"]::before {
+  content: '';
+  position: absolute;
+  width: 410px;
+  aspect-ratio: 1;
+  left: -200px;
+  top: 40px;
+  background: var(--invite-pink);
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+  transform: rotate(-12deg);
+}
+.page--invitation .wb-countdown__ring {
+  z-index: 1;
+  width: 320px;
+  height: 320px;
+  border: 3px solid var(--invite-cream);
+  border-radius: 0;
+  background: rgba(23,76,57,.96);
+  box-shadow: 10px 10px 0 var(--invite-orange);
+  transform: rotate(-1deg);
+}
+.page--invitation .wb-countdown__arc,
+.page--invitation .wb-countdown__dayslabel,
+.page--invitation .wb-countdown__hms i { color: currentColor; }
+.page--invitation .wb-countdown__arc { font-weight: 700; }
+.page--invitation .wb-countdown__num {
+  font-family: var(--font-accent);
+  font-size: 76px;
+  font-weight: 800;
+  letter-spacing: -.06em;
+}
+.page--invitation .wb-countdown__hms b { font-family: var(--font-accent); font-weight: 700; }
+
+/* ご挨拶 */
+.page--invitation [data-block-id="bk_msg"] {
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+  background: var(--invite-pink) !important;
+}
+.page--invitation [data-block-id="bk_msg"]::after {
+  right: -205px;
+  top: 22px;
+  background: var(--invite-orange);
+  transform: rotate(-18deg);
+}
+.page--invitation [data-block-id="bk_msg"] .wb-message { text-align: left; }
+.page--invitation [data-block-id="bk_msg"] .wb-heading { font-size: clamp(52px, 15vw, 74px); }
+.page--invitation [data-block-id="bk_msg"] .wb-subheading {
+  display: inline-block;
+  background: var(--invite-green);
+  color: var(--invite-cream);
+  padding: 6px 10px;
+}
+.page--invitation [data-block-id="bk_msg"] .wb-message__body {
+  max-width: 305px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2.2;
+}
+.page--invitation [data-block-id="bk_msg"] .wb-message__sign { color: var(--invite-green); font-weight: 800; }
+.page--invitation [data-block-id="bk_msg"] .wb-message__photo {
+  width: 68%;
+  margin: 34px -8px -32px auto;
+  border: 7px solid var(--invite-cream);
+  border-radius: 46% 54% 44% 56% / 52% 42% 58% 48%;
+  box-shadow: 8px 8px 0 var(--invite-green);
+  transform: rotate(4deg);
+}
+.page--invitation [data-block-id="bk_msg"] .wb-message__photo img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* プロフィール：二枚の紙カード */
+.page--invitation [data-block-id="bk_prof"] {
+  background: var(--invite-orange) !important;
+  color: var(--invite-ink);
+}
+.page--invitation [data-block-id="bk_prof"] .wb-profile::before { display: none; }
+.page--invitation [data-block-id="bk_prof"] .wb-heading { color: var(--invite-green); }
+.page--invitation .wb-profile__list { gap: 34px; }
+.page--invitation .wb-profile__card {
+  padding: 13px 13px 24px;
+  border: 2px solid var(--invite-ink);
+  background: var(--invite-cream);
+  box-shadow: 8px 8px 0 var(--invite-orange);
+  text-align: left;
+}
+.page--invitation .wb-profile__card:first-child { transform: rotate(-1.5deg); }
+.page--invitation .wb-profile__card:nth-child(2) { transform: rotate(1.5deg); }
+.page--invitation .wb-profile__photo { border-radius: 0; background: var(--invite-green); }
+.page--invitation .wb-profile__photo img { filter: saturate(.92) contrast(1.03); }
+.page--invitation .wb-profile__ph {
+  position: relative;
+  color: var(--invite-cream);
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.page--invitation .wb-profile__ph::before {
+  content: '';
+  position: absolute;
+  width: 190px;
+  aspect-ratio: 1;
+  background: var(--invite-pink);
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+}
+.page--invitation .wb-profile__ph { isolation: isolate; }
+.page--invitation .wb-profile__ph::before { z-index: -1; }
+.page--invitation .wb-profile__role { color: var(--invite-orange); font-weight: 800; }
+.page--invitation .wb-profile__name { font-family: var(--font-body); font-weight: 900; }
+
+/* アルバム：旅の色を残した写真ページ */
+.page--invitation [data-block-id="bk_alb"] {
+  background: var(--invite-ink) !important;
+  color: var(--invite-cream);
+}
+.page--invitation [data-block-id="bk_alb"] .wb-heading { color: var(--invite-pink); }
+.page--invitation .wb-album__stage { border: 3px solid var(--invite-cream); border-radius: 0; box-shadow: 9px 9px 0 var(--invite-orange); }
+.page--invitation .wb-album__slides { aspect-ratio: 4 / 5; background: var(--invite-pink); }
+.page--invitation .wb-album__slide-bg { filter: blur(18px) saturate(.72) contrast(1.04); opacity: .54; }
+.page--invitation .wb-album__slide-main { filter: none; }
+.page--invitation .wb-album__thumb img { filter: saturate(.9) contrast(1.03); }
+.page--invitation .wb-album__thumb { border-radius: 0; }
+.page--invitation .wb-album__thumb.is-active { outline-color: var(--invite-orange); }
+.page--invitation .wb-album__progress { background: var(--invite-orange); }
+
+/* 思い出の写真を、雑誌から切り抜いたように散らすコラージュ */
+.page--invitation [data-block-id="bk_memories"] {
+  padding: 70px 24px 88px;
+  background: var(--invite-cream) !important;
+}
+.page--invitation [data-block-id="bk_memories"]::before {
+  content: 'A LITTLE MORE OF US';
+  position: absolute;
+  z-index: 3;
+  top: 29px;
+  left: 25px;
+  color: var(--invite-green);
+  font: 800 10px/1 var(--font-accent);
+  letter-spacing: .16em;
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px 14px;
+  align-items: start;
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item {
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(1) { transform: rotate(-4deg); }
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(2) { transform: translateY(34px) rotate(4deg); }
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(3) {
+  grid-column: 1 / -1;
+  width: 74%;
+  margin: -3px auto 0;
+  transform: rotate(-2deg);
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item img {
+  aspect-ratio: 3 / 4;
+  border: 6px solid var(--invite-pink);
+  box-shadow: 7px 7px 0 var(--invite-orange);
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(1) img {
+  border-radius: 48% 52% 43% 57% / 55% 44% 56% 45%;
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(2) img {
+  clip-path: polygon(5% 0, 100% 4%, 95% 100%, 0 96%);
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__item:nth-child(3) img {
+  aspect-ratio: 4 / 3;
+  border-radius: 55% 45% 52% 48% / 46% 54% 44% 56%;
+}
+.page--invitation [data-block-id="bk_memories"] .wb-photo__cap {
+  padding: 11px 4px 0;
+  color: var(--invite-green);
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+/* 開催情報：オレンジ面に白いタイポグラフィ */
+.page--invitation [data-block-id="bk_party"] {
+  background: var(--invite-pink) !important;
+  color: var(--invite-green);
+}
+.page--invitation [data-block-id="bk_party"]::before,
+.page--invitation [data-block-id="bk_rsvp"]::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: -8px;
+  right: -8px;
+  height: 24px;
+  color: var(--invite-ink);
+  background: radial-gradient(circle at 12px -1px, transparent 12px, currentColor 13px) 0 0 / 24px 24px repeat-x;
+}
+.page--invitation [data-block-id="bk_party"] .wb-heading { font-size: clamp(45px, 13vw, 64px); }
+.page--invitation .wb-party__datelabel,
+.page--invitation .wb-party__sub { color: currentColor; }
+.page--invitation .wb-party__datetext { font-family: var(--font-body); font-size: 21px; font-weight: 800; }
+.page--invitation .wb-party__card {
+  padding: 25px 8px;
+  border-top: 1px solid rgba(23,76,57,.42);
+  border-bottom: 1px solid rgba(23,76,57,.42);
+  border-radius: 0;
+  background: transparent;
+}
+.page--invitation .wb-party__name,
+.page--invitation .wb-party__start,
+.page--invitation .wb-party__venuename,
+.page--invitation .wb-party__venuelines { color: currentColor; }
+.page--invitation .wb-party__name { font-family: var(--font-body); font-weight: 800; }
+.page--invitation .wb-party__name .wb-rule { background: currentColor; }
+.page--invitation .wb-party__start b {
+  font-family: var(--font-accent);
+  font-size: 42px;
+  font-weight: 800;
+}
+.page--invitation .wb-party__venue {
+  margin-top: 42px;
+  padding: 28px 18px;
+  border: 2px solid var(--invite-ink);
+  background: var(--invite-cream);
+  color: var(--invite-ink);
+  box-shadow: 8px 8px 0 var(--invite-pink);
+  transform: rotate(1deg);
+}
+
+/* お願い */
+.page--invitation [data-block-id="bk_req"] {
+  min-height: 570px;
+  display: flex;
+  align-items: center;
+  background: var(--invite-cream) !important;
+}
+.page--invitation [data-block-id="bk_req"]::before {
+  width: 320px;
+  left: -165px;
+  top: -80px;
+  transform: rotate(8deg);
+}
+.page--invitation [data-block-id="bk_req"] .wb-heading { color: var(--invite-orange); font-size: clamp(50px, 14vw, 68px); }
+.page--invitation .wb-request__card {
+  padding: 30px 24px;
+  border: 2px solid var(--invite-ink);
+  border-radius: 0;
+  background: var(--invite-pink);
+  box-shadow: 8px 8px 0 var(--invite-orange);
+  transform: rotate(-1deg);
+}
+.page--invitation .wb-request__title { font-size: 18px; font-weight: 900; }
+.page--invitation .wb-request__body { font-size: 13px; font-weight: 500; }
+
+/* RSVP：参考画像の縦長フォーム */
+.page--invitation [data-block-id="bk_rsvp"] {
+  background: var(--invite-cream) !important;
+  color: var(--invite-ink);
+  padding-top: 108px;
+}
+.page--invitation [data-block-id="bk_rsvp"]::before { color: var(--invite-pink); }
+.page--invitation [data-block-id="bk_rsvp"]::after {
+  width: 300px;
+  right: -190px;
+  top: 70px;
+  transform: rotate(-12deg);
+}
+.page--invitation [data-block-id="bk_rsvp"] .wb-heading {
+  position: relative;
+  z-index: 1;
+  color: var(--invite-orange);
+  font-size: clamp(60px, 18vw, 86px);
+}
+.page--invitation .wb-rsvp__lead { font-family: var(--font-body); font-weight: 900; }
+.page--invitation .wb-rsvp__note,
+.page--invitation .wb-rsvp__companion-block {
+  border: 1px solid var(--invite-ink);
+  border-radius: 0;
+  background: var(--invite-pink);
+  color: var(--invite-ink);
+}
+.page--invitation .wb-attend__legend { font-family: var(--font-body); font-weight: 900; }
+.page--invitation .wb-attend__opt {
+  border: 1px solid var(--invite-ink);
+  border-radius: 0;
+  background: transparent;
+}
+.page--invitation .wb-attend__opt:hover,
+.page--invitation .wb-attend__opt:has(input:checked) { background: var(--invite-pink); }
+.page--invitation .wb-attend__en { font-family: var(--font-accent); font-size: 15px; font-weight: 700; }
+.page--invitation .wb-attend__opt input:checked ~ .wb-attend__en { color: var(--invite-orange); }
+.page--invitation .wb-rsvp__field { border-color: var(--invite-line); }
+.page--invitation .wb-rsvp__field input[type="text"],
+.page--invitation .wb-rsvp__field input[type="email"],
+.page--invitation .wb-rsvp__field textarea,
+.page--invitation .wb-rsvp__field select,
+.page--invitation .wb-rsvp__select {
+  border: 1px solid var(--invite-ink);
+  border-radius: 0;
+  background-color: #fff;
+}
+.page--invitation .wb-pickbtn { border: 1px solid var(--invite-ink); border-radius: 0; background: var(--invite-pink); }
+.page--invitation .wb-pickbtn:has(input:checked) { background: var(--invite-orange); }
+.page--invitation .wb-pill {
+  border: 2px solid var(--invite-ink);
+  border-radius: 0;
+  background: var(--invite-orange);
+  box-shadow: 6px 6px 0 var(--invite-pink);
+  font-weight: 800;
+}
+
+@media (min-width: 920px) {
+  body.is-invitation-page .site-card {
+    border: 6px solid #fffaf0;
+    border-radius: 0;
+    box-shadow: 14px 14px 0 #ecd9d1;
+  }
+  body.is-invitation-page .site-sidebar__inner {
+    border: 3px solid #174c39;
+    border-radius: 0;
+    background: #fffaf0;
+    box-shadow: 12px 12px 0 #ecd9d1;
+  }
+  body.is-invitation-page .sb-note { border-radius: 0; background: #ecd9d1; color: #174c39; }
+  body.is-invitation-page .sb-cta { border-radius: 0; background: #ef7044; }
+}
+
+@media (max-width: 600px) {
+  .page--invitation .wb-block { padding-left: 24px; padding-right: 24px; }
+  .page--invitation [data-block-id="bk_cover"] { min-height: 650px; }
+  .page--invitation .wb-countdown__ring { width: 300px; height: 300px; }
+  .page--invitation .wb-attend__row { gap: 5px; }
+  .page--invitation .wb-attend__opt { padding-left: 2px; padding-right: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--invitation .wb-cover__photo,
+  .page--invitation .wb-countdown__ring,
+  .page--invitation .wb-profile__card,
+  .page--invitation .wb-party__venue,
+  .page--invitation .wb-request__card { transform: none; }
+}
+
+/* ===========================================================================
+ * エディターから指定するブロック個別スタイル
+ * 専用テーマの後に置き、選択したブロックだけを確実に上書きする。
+ * =========================================================================== */
+.wb-block.wb-custom-bg {
+  background: var(--wb-custom-bg) !important;
+}
+
+.wb-block.wb-custom-text {
+  --ink: var(--wb-custom-text);
+  --muted: var(--wb-custom-text);
+  --invite-ink: var(--wb-custom-text);
+  --guide-ink: var(--wb-custom-text);
+  color: var(--wb-custom-text) !important;
+}
+
+.wb-block.wb-decoration-override::before,
+.wb-block.wb-decoration-override::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* あしらいを置いたブロックは、はみ出しをブロック内でクリップする。
+ * これが無いと大きいあしらいがブロックの外（＝カードの外）まで飛び出して
+ * 横スクロールや隣ブロックへの被りなど表示崩れが起きる。招待状ページと同じ挙動に統一。 */
+.wb-block.wb-has-decor {
+  overflow: hidden;
+}
+.wb-block.wb-has-decor .wb-block__inner {
+  position: relative;
+  z-index: 2;
+}
+
+.wb-decor {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 240px;
+  aspect-ratio: 1;
+  background: var(--wb-decoration-color, var(--coral));
+  pointer-events: none;
+}
+
+.page--invitation .wb-decor { background: var(--wb-decoration-color, var(--invite-pink)); }
+.page--guide .wb-decor { background: var(--wb-decoration-color, var(--guide-red)); }
+
+.wb-deco--starburst .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/soft-star.svg') center / contain no-repeat;
+  mask: url('../assets/soft-star.svg') center / contain no-repeat;
+}
+
+.wb-deco--flower .wb-decor {
+  clip-path: polygon(50% 0, 61% 30%, 86% 10%, 72% 39%, 100% 50%, 70% 61%, 90% 86%, 61% 72%, 50% 100%, 39% 71%, 13% 91%, 29% 61%, 0 50%, 30% 39%, 10% 13%, 39% 29%);
+  transform: rotate(10deg);
+}
+
+.wb-deco--circle .wb-decor { border-radius: 50%; }
+
+/* ---- あしらい図形ライブラリ（34 SHAPES風） ---- */
+.wb-deco--scallop .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/scallop.svg') center / contain no-repeat;
+  mask: url('../assets/deco/scallop.svg') center / contain no-repeat;
+}
+.wb-deco--daisy .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/daisy.svg') center / contain no-repeat;
+  mask: url('../assets/deco/daisy.svg') center / contain no-repeat;
+}
+.wb-deco--splat .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/splat.svg') center / contain no-repeat;
+  mask: url('../assets/deco/splat.svg') center / contain no-repeat;
+}
+.wb-deco--wreath .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/wreath.svg') center / contain no-repeat;
+  mask: url('../assets/deco/wreath.svg') center / contain no-repeat;
+}
+.wb-deco--seal .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/seal.svg') center / contain no-repeat;
+  mask: url('../assets/deco/seal.svg') center / contain no-repeat;
+}
+.wb-deco--spikeball .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/spikeball.svg') center / contain no-repeat;
+  mask: url('../assets/deco/spikeball.svg') center / contain no-repeat;
+}
+.wb-deco--star8 .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/star8.svg') center / contain no-repeat;
+  mask: url('../assets/deco/star8.svg') center / contain no-repeat;
+}
+.wb-deco--star7 .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/star7.svg') center / contain no-repeat;
+  mask: url('../assets/deco/star7.svg') center / contain no-repeat;
+}
+.wb-deco--blob .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/blob.svg') center / contain no-repeat;
+  mask: url('../assets/deco/blob.svg') center / contain no-repeat;
+}
+.wb-deco--sparkle .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/sparkle.svg') center / contain no-repeat;
+  mask: url('../assets/deco/sparkle.svg') center / contain no-repeat;
+}
+.wb-deco--star6 .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/star6.svg') center / contain no-repeat;
+  mask: url('../assets/deco/star6.svg') center / contain no-repeat;
+}
+.wb-deco--starfish .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/starfish.svg') center / contain no-repeat;
+  mask: url('../assets/deco/starfish.svg') center / contain no-repeat;
+}
+.wb-deco--clover .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/clover.svg') center / contain no-repeat;
+  mask: url('../assets/deco/clover.svg') center / contain no-repeat;
+}
+.wb-deco--wavybar .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/wavybar.svg') center / contain no-repeat;
+  mask: url('../assets/deco/wavybar.svg') center / contain no-repeat;
+}
+.wb-deco--squiggle .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/squiggle.svg') center / contain no-repeat;
+  mask: url('../assets/deco/squiggle.svg') center / contain no-repeat;
+}
+.wb-deco--arch .wb-decor {
+  clip-path: none;
+  -webkit-mask: url('../assets/deco/arch.svg') center / contain no-repeat;
+  mask: url('../assets/deco/arch.svg') center / contain no-repeat;
+}
+
+
+.wb-deco-size--small .wb-decor { width: 140px; }
+.wb-deco-size--medium .wb-decor { width: 240px; }
+.wb-deco-size--large .wb-decor { width: 360px; }
+
+.wb-deco-pos--top-left .wb-decor { top: -62px; left: -72px; }
+.wb-deco-pos--top-right .wb-decor { top: -62px; right: -72px; }
+.wb-deco-pos--bottom-left .wb-decor { bottom: -62px; left: -72px; }
+.wb-deco-pos--bottom-right .wb-decor { right: -72px; bottom: -62px; }
+
+/* 初期デザインの星も、エディターの星と同じ丸い輪郭に揃える */
+.page--invitation [data-block-id="bk_cover"]::before,
+.page--invitation [data-block-id="bk_cd"]::before,
+.page--invitation [data-block-id="bk_msg"]::after,
+.page--invitation [data-block-id="bk_req"]::before,
+.page--invitation [data-block-id="bk_rsvp"]::after,
+.page--invitation .wb-profile__ph::before {
+  clip-path: none;
+  -webkit-mask: url('../assets/soft-star.svg') center / contain no-repeat;
+  mask: url('../assets/soft-star.svg') center / contain no-repeat;
+}
+
+/* コラージュ表紙：四隅の手書き文字＋中央写真をフルブリード表示 */
+.page--invitation [data-block-id="bk_cover"]:has(.wb-cover--poster) {
+  min-height: 0;
+  padding: 0;
+  background: var(--invite-green) !important;
+  overflow: hidden;
+}
+.page--invitation [data-block-id="bk_cover"]:has(.wb-cover--poster)::before,
+.page--invitation [data-block-id="bk_cover"]:has(.wb-cover--poster)::after {
+  content: none !important;
+  display: none !important;
+}
+.page--invitation [data-block-id="bk_cover"]:has(.wb-cover--poster) .wb-block__inner {
+  max-width: none;
+}
+.page--invitation .wb-cover--poster { padding: 0; }
+.page--invitation .wb-cover__poster {
+  margin: 0;
+  overflow: hidden;
+  background: var(--invite-cream);
+  line-height: 0;
+}
+.page--invitation .wb-cover__poster img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+.page--invitation .wb-cover__poster-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px 14px;
+  border-top: 2px solid var(--invite-cream);
+  background: var(--invite-green);
+  color: var(--invite-cream);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
 }

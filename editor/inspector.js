@@ -1,7 +1,7 @@
 /* ===========================================================================
  * WEDI.inspector — fields 仕様からインスペクタフォームを自動生成
  * 値の書き戻しは WEDI.editor.updateBlockData / updateBlockStyle 経由。
- * style はプリセット拘束（セグメント/スウォッチ）で自由入力させない。
+ * style はプリセットに加え、色と装飾を安全なコントロールから指定できる。
  * 依存: schema, render(esc), i18n, theme（呼び出し時に editor も存在）
  * =========================================================================== */
 (function (global) {
@@ -286,6 +286,50 @@
     return row;
   }
 
+  /* 自由色：color input + テーマ標準へ戻す */
+  function buildColorPicker(labelKey, current, fallback, onPick) {
+    var row = document.createElement('div');
+    row.className = 'ed-style__row';
+    var lbl = document.createElement('label');
+    lbl.textContent = i18n.t(labelKey);
+    row.appendChild(lbl);
+
+    var host = document.createElement('div');
+    host.className = 'ed-color-picker';
+    var input = document.createElement('input');
+    input.type = 'color';
+    var safeCurrent = WEDI.render.safeColor(current);
+    input.value = safeCurrent || fallback;
+    input.setAttribute('aria-label', i18n.t(labelKey));
+
+    var value = document.createElement('code');
+    value.textContent = safeCurrent || 'テーマ標準';
+
+    var reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'ed-btn ed-btn--ghost ed-btn--sm';
+    reset.textContent = '標準に戻す';
+    reset.disabled = !safeCurrent;
+
+    input.addEventListener('input', function () {
+      value.textContent = input.value;
+      reset.disabled = false;
+      onPick(input.value);
+    });
+    reset.addEventListener('click', function () {
+      input.value = fallback;
+      value.textContent = 'テーマ標準';
+      reset.disabled = true;
+      onPick('');
+    });
+
+    host.appendChild(input);
+    host.appendChild(value);
+    host.appendChild(reset);
+    row.appendChild(host);
+    return row;
+  }
+
   /* ---- style セクション全体 ---- */
   function buildStyleSection(block) {
     var sec = document.createElement('div');
@@ -297,8 +341,19 @@
 
     var st = block.style || S.defaultStyle();
     var bid = block.id;
+    var page = ed().activePage();
+    var isGuide = page && /しおり|guide|旅/.test((page.name || '') + ' ' + (page.slug || ''));
+    var colorDefaults = isGuide
+      ? { bg: '#fffaf2', text: '#181717', decoration: '#cf2529' }
+      : { bg: '#f8edda', text: '#174c39', decoration: '#eda9c3' };
 
     sec.appendChild(buildBgSwatches(st.bg, function (v) { ed().updateBlockStyle(bid, 'bg', v); }));
+    sec.appendChild(buildColorPicker('styleCustomBg', st.customBg, colorDefaults.bg, function (v) {
+      ed().updateBlockStyle(bid, 'customBg', v);
+    }));
+    sec.appendChild(buildColorPicker('styleCustomText', st.customText, colorDefaults.text, function (v) {
+      ed().updateBlockStyle(bid, 'customText', v);
+    }));
     sec.appendChild(buildSegment('styleAlign', [
       { value: 'left', label: i18n.t('align.left') },
       { value: 'center', label: i18n.t('align.center') },
@@ -319,6 +374,82 @@
       { value: 'left', label: i18n.t('tilt.left') },
       { value: 'right', label: i18n.t('tilt.right') }
     ], st.tilt, function (v) { ed().updateBlockStyle(bid, 'tilt', v); }));
+
+    var decorationDetails = document.createElement('div');
+    decorationDetails.className = 'ed-decoration-details';
+    var decorationValue = st.decoration || 'default';
+
+    // あしらい図形ピッカー（形が見えるグリッド）
+    var decoWrap = document.createElement('div');
+    decoWrap.className = 'ed-field';
+    var decoLbl = document.createElement('label');
+    decoLbl.textContent = i18n.t('styleDecoration');
+    decoWrap.appendChild(decoLbl);
+    var decoGrid = document.createElement('div');
+    decoGrid.className = 'ed-deco-grid';
+    var decoOptions = [
+      { value: 'default', text: '標準' },
+      { value: 'none', text: 'なし' },
+      { value: 'starburst', label: 'やわらか星' },
+      { value: 'circle', label: '丸' },
+      { value: 'scallop', label: 'ぷくぷく丸' },
+      { value: 'blob', label: 'ぷっくり花' },
+      { value: 'daisy', label: '花びら' },
+      { value: 'splat', label: 'スプラッシュ' },
+      { value: 'wreath', label: '花リング' },
+      { value: 'seal', label: 'ギザギザ' },
+      { value: 'spikeball', label: 'トゲ丸' },
+      { value: 'flower', label: 'お花（クラシック）' },
+      { value: 'starfish', label: 'ヒトデ' },
+      { value: 'clover', label: 'クローバー' },
+      { value: 'sparkle', label: 'キラッ' },
+      { value: 'star6', label: '星6' },
+      { value: 'star7', label: '星7' },
+      { value: 'star8', label: '星8' },
+      { value: 'wavybar', label: 'なみなみ棒' },
+      { value: 'squiggle', label: 'うねうね線' },
+      { value: 'arch', label: 'アーチ' }
+    ];
+    decoOptions.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ed-deco-swatch' + (decorationValue === opt.value ? ' is-on' : '');
+      b.title = opt.label || opt.text;
+      if (opt.text) {
+        b.textContent = opt.text;
+      } else {
+        var sp = document.createElement('span');
+        sp.className = 'ed-deco-shape ed-deco-shape--' + opt.value;
+        b.appendChild(sp);
+      }
+      b.addEventListener('click', function () {
+        var cs = decoGrid.querySelectorAll('.ed-deco-swatch');
+        for (var i = 0; i < cs.length; i++) { cs[i].classList.remove('is-on'); }
+        b.classList.add('is-on');
+        decorationDetails.hidden = opt.value === 'default' || opt.value === 'none';
+        ed().updateBlockStyle(bid, 'decoration', opt.value);
+      });
+      decoGrid.appendChild(b);
+    });
+    decoWrap.appendChild(decoGrid);
+    sec.appendChild(decoWrap);
+
+    decorationDetails.hidden = decorationValue === 'default' || decorationValue === 'none';
+    decorationDetails.appendChild(buildSegment('styleDecorationPosition', [
+      { value: 'top-left', label: i18n.t('decorationPosition.topLeft') },
+      { value: 'top-right', label: i18n.t('decorationPosition.topRight') },
+      { value: 'bottom-left', label: i18n.t('decorationPosition.bottomLeft') },
+      { value: 'bottom-right', label: i18n.t('decorationPosition.bottomRight') }
+    ], st.decorationPosition || 'top-right', function (v) { ed().updateBlockStyle(bid, 'decorationPosition', v); }));
+    decorationDetails.appendChild(buildSegment('styleDecorationSize', [
+      { value: 'small', label: i18n.t('decorationSize.small') },
+      { value: 'medium', label: i18n.t('decorationSize.medium') },
+      { value: 'large', label: i18n.t('decorationSize.large') }
+    ], st.decorationSize || 'medium', function (v) { ed().updateBlockStyle(bid, 'decorationSize', v); }));
+    decorationDetails.appendChild(buildColorPicker('styleDecorationColor', st.decorationColor, colorDefaults.decoration, function (v) {
+      ed().updateBlockStyle(bid, 'decorationColor', v);
+    }));
+    sec.appendChild(decorationDetails);
 
     return sec;
   }

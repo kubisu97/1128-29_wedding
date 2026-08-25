@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Invitation</title>
+  <!-- 検索エンジンに載せない（合言葉は外したが、野良で検索ヒットはさせない） -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>拓郎と和美の結婚式｜京都の旅のしおり</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/vendor/maplibre/maplibre-gl.css">
   <link rel="stylesheet" href="css/blocks.css">
+  <script src="assets/vendor/leaflet/leaflet.js"></script>
+  <script src="assets/vendor/maplibre/maplibre-gl.js"></script>
+  <script src="assets/vendor/maplibre/leaflet-maplibre-gl.js"></script>
   <style>
-    body { background: var(--sage); }
+    body { background: var(--sage); transition: background-color .35s ease; }
+    body.is-guide-page { background: #1f1d1c; }
 
     /* ===== レイアウト：PC=左サイドバー＋右カード / SP=1カラム ===== */
     .site-wrap { min-height: 100vh; }
@@ -19,7 +32,7 @@
        （内部スクロールコンテナを作らない＝iOSのスクロール閉じ込めを回避） */
     .site-card {
       max-width: 480px; margin: 0 auto; background: var(--pink); min-height: 100vh;
-      position: relative; overflow: visible;
+      position: relative; overflow-x: hidden; overflow-y: visible;
     }
     .site-sidebar { display: none; }
 
@@ -115,13 +128,77 @@
       opacity: 1; transform: none; animation: none;
     }
 
-    /* ===== ページ切替スライドトランジション ===== */
-    @keyframes pageSlideIn {
-      from { opacity: 0; transform: translateX(32px) scale(0.97); }
-      to   { opacity: 1; transform: translateX(0) scale(1); }
+    /* ===== ページ切替：上品なフェードアップ（バウンドなし） ===== */
+    @keyframes pageFadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .wb-page.page-enter {
-      animation: pageSlideIn 0.42s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+      animation: pageFadeUp 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    /* ===== ページ切替ローディング演出（サイトのトンマナ：セージ緑 × コーラル赤） =====
+       高級感は狙わず、サイトの色でカジュアルに。
+       セージ色の面がふわっと現れ、ふたりの名前と赤い「&」が静かに立ち上がる。 */
+    .site-loader {
+      position: fixed; inset: 0; z-index: 150;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.5s cubic-bezier(0.22,0.61,0.36,1), visibility 0.5s;
+      /* サイト背景と同じセージ緑 */
+      background: radial-gradient(120% 85% at 50% 22%, #e6ebe7 0%, #d5ddd7 55%, #c6cec9 100%);
+    }
+    .site-loader::before {
+      /* ほんのりコーラルの明かりを重ねる */
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(55% 40% at 50% 42%, rgba(236,119,91,0.07), transparent 72%);
+    }
+    .site-loader.is-on { opacity: 1; visibility: visible; }
+
+    .site-loader__mono {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 0 24px; gap: 12px;
+    }
+
+    /* ふたりの名前 */
+    .site-loader__name {
+      font-family: var(--font-accent); font-weight: 500;
+      font-size: 17px; letter-spacing: 0.05em; white-space: nowrap;
+      color: var(--ink);
+      opacity: 0; transform: translateY(8px);
+    }
+    .site-loader.is-on .site-loader__name:first-child { animation: ldRise 0.6s cubic-bezier(0.22,0.61,0.36,1) 0.05s both; }
+    .site-loader.is-on .site-loader__name:last-child  { animation: ldRise 0.6s cubic-bezier(0.22,0.61,0.36,1) 0.30s both; }
+
+    /* 中央の「&」＋左右に伸びる細い緑の線 */
+    .site-loader__amp { display: flex; align-items: center; gap: 12px; }
+    .site-loader__amp i {
+      display: block; width: 26px; height: 1px; background: #a7b2ab;
+      transform: scaleX(0);
+    }
+    .site-loader__amp i:first-child { transform-origin: right; }
+    .site-loader__amp i:last-child  { transform-origin: left; }
+    .site-loader__amp b {
+      font-family: var(--font-display); font-style: normal; font-weight: 500;
+      font-size: 22px; line-height: 1; color: var(--coral);
+      opacity: 0; transform: scale(0.6);
+    }
+    .site-loader.is-on .site-loader__amp i { animation: ldGrow 0.5s cubic-bezier(0.22,0.61,0.36,1) 0.16s both; }
+    .site-loader.is-on .site-loader__amp b { animation: ldPop 0.45s cubic-bezier(0.34,1.5,0.64,1) 0.26s both; }
+
+    @keyframes ldRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ldGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes ldPop  { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .site-loader { transition: opacity 0.2s ease, visibility 0.2s; }
+      .site-loader.is-on .site-loader__name,
+      .site-loader.is-on .site-loader__amp i,
+      .site-loader.is-on .site-loader__amp b { animation: none; }
+      .site-loader .site-loader__name { opacity: 1; transform: none; }
+      .site-loader .site-loader__amp i { transform: scaleX(1); }
+      .site-loader .site-loader__amp b { opacity: 1; transform: none; }
     }
 
     /* ===== ボタン弾む ===== */
@@ -216,18 +293,8 @@
   </style>
 </head>
 <body>
-  <!-- パスワードゲート -->
-  <div id="siteGate" class="site-gate">
-    <div class="site-gate__card">
-      <p class="site-gate__title">Wedding Invitation</p>
-      <p class="site-gate__sub">合言葉を入力してください</p>
-      <input id="siteGateInput" class="site-gate__input" type="password" placeholder="合言葉">
-      <button id="siteGateBtn" class="site-gate__btn">開く</button>
-      <p id="siteGateErr" class="site-gate__err" hidden>合言葉が違います</p>
-    </div>
-  </div>
-
-  <div id="siteApp" style="display:none">
+  <!-- 公開ページは合言葉なし（エディター /admin のみ合言葉あり） -->
+  <div id="siteApp">
   <div class="site-wrap">
     <!-- PC: 左サイドバー -->
     <aside class="site-sidebar" id="sidebar"></aside>
@@ -238,6 +305,15 @@
       <main class="wb-page" id="site">
         <div class="site-loading">読み込み中…</div>
       </main>
+    </div>
+  </div>
+
+  <!-- ページ切替ローディング演出（サイトのトンマナ：セージ×コーラル） -->
+  <div class="site-loader" id="siteLoader" aria-hidden="true">
+    <div class="site-loader__mono">
+      <span class="site-loader__name">Kurisu Takuro</span>
+      <span class="site-loader__amp"><i></i><b>&amp;</b><i></i></span>
+      <span class="site-loader__name">Takahashi Kazumi</span>
     </div>
   </div>
 
@@ -259,28 +335,6 @@
   <script src="core/upload.js"></script>
   <script src="core/seed.js"></script>
   <script>
-    /* ===== フロント パスワードゲート ===== */
-    (function () {
-      var HASH = '910da0136c05b8f513f7222aa62affcb4c991add8c5dd1812311ae5870f6be31';
-      var KEY  = 'wedi-front-access';
-      var gate = document.getElementById('siteGate');
-      var app  = document.getElementById('siteApp');
-      function unlock() { gate.style.display = 'none'; app.style.display = ''; }
-      if (localStorage.getItem(KEY) === '1') { unlock(); return; }
-      var input = document.getElementById('siteGateInput');
-      var btn   = document.getElementById('siteGateBtn');
-      var err   = document.getElementById('siteGateErr');
-      function tryUnlock() {
-        var v = input.value;
-        crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function (buf) {
-          var hex = Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2,'0'); }).join('');
-          if (hex === HASH) { localStorage.setItem(KEY, '1'); err.hidden = true; unlock(); }
-          else { err.hidden = false; input.select(); }
-        });
-      }
-      btn.addEventListener('click', tryUnlock);
-      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { tryUnlock(); } });
-    })();
     (function () {
       'use strict';
       var WEDI = window.WEDI;
@@ -290,6 +344,8 @@
       var sidebar = document.getElementById('sidebar');
       var banner = document.getElementById('followBanner');
       var followText = document.getElementById('followText');
+      var loader = document.getElementById('siteLoader');
+      var isTransitioning = false;
 
       /* PC ではカード内スクロール、SP ではウィンドウスクロールを先頭に戻す */
       function scrollToTop() {
@@ -297,8 +353,60 @@
         window.scrollTo(0, 0);
       }
 
-      /* localStorage と seed.js の新しい方を表示（deploy 済み seed が古い localStorage に隠されないように） */
-      var doc = WEDI.storage.pickNewer(WEDI.storage.load(), WEDI.seed);
+      /* 古い編集データを残したまま、今回追加した写真だけを補完する。 */
+      function applyLatestWeddingPhotos(current) {
+        if (!current || !current.pages || !WEDI.seed || !WEDI.seed.pages) { return current; }
+        var page = current.pages.filter(function (item) { return item.id === 'pg_home'; })[0];
+        var seedPage = WEDI.seed.pages.filter(function (item) { return item.id === 'pg_home'; })[0];
+        if (!page || !seedPage) { return current; }
+
+        function blockById(list, id) {
+          return (list || []).filter(function (block) { return block.id === id; })[0];
+        }
+        function seedBlock(id) {
+          var block = blockById(seedPage.blocks, id);
+          return block ? WEDI.storage.clone(block) : null;
+        }
+
+        var message = blockById(page.blocks, 'bk_msg');
+        if (message && message.data && !message.data.image) {
+          message.data.image = 'assets/photos/shrine-night.jpg';
+        }
+
+        var profile = blockById(page.blocks, 'bk_prof');
+        var profileImages = ['assets/photos/profile-groom.jpg', 'assets/photos/profile-bride.jpg'];
+        if (profile && profile.data && profile.data.people) {
+          profile.data.people.forEach(function (person, i) {
+            if (!person.image && profileImages[i]) { person.image = profileImages[i]; }
+          });
+        }
+
+        var album = blockById(page.blocks, 'bk_alb');
+        if (album && album.data) {
+          var isPlaceholderAlbum = !(album.data.images || []).length || (album.data.images || []).every(function (image) {
+            return !image.src || /images\.unsplash\.com/.test(image.src);
+          });
+          if (isPlaceholderAlbum) {
+            var latestAlbum = seedBlock('bk_alb');
+            if (latestAlbum) { album.data = latestAlbum.data; }
+          } else {
+            album.data.autoplay = album.data.autoplay || 'on';
+            album.data.interval = album.data.interval || '4';
+          }
+        }
+
+        if (!blockById(page.blocks, 'bk_memories')) {
+          var memories = seedBlock('bk_memories');
+          if (memories) {
+            var partyIndex = page.blocks.findIndex(function (block) { return block.id === 'bk_party'; });
+            page.blocks.splice(partyIndex >= 0 ? partyIndex + 1 : page.blocks.length, 0, memories);
+          }
+        }
+        return current;
+      }
+
+      /* localStorage と seed.js の新しい方を表示し、保存済みの文章は維持する。 */
+      var doc = applyLatestWeddingPhotos(WEDI.storage.pickNewer(WEDI.storage.load(), WEDI.seed));
       if (!doc || !doc.pages || !doc.pages.length) {
         site.innerHTML = '<div class="site-loading">まだ内容がありません。エディターで作成してください。</div>';
         return;
@@ -318,6 +426,11 @@
 
       function renderPage(pageId) {
         var page = pageById(pageId);
+        var isGuidePage = /しおり|guide|旅/.test((page.name || '') + ' ' + (page.slug || ''));
+        document.body.classList.toggle('is-guide-page', isGuidePage);
+        document.body.classList.toggle('is-invitation-page', !isGuidePage);
+        site.className = 'wb-page page--' + (isGuidePage ? 'guide' : 'invitation');
+        card.dataset.page = isGuidePage ? 'guide' : 'invitation';
         site.innerHTML = '';
         site.classList.remove('page-enter');
         var frag = WEDI.render.renderPage(page, doc.theme, { editor: false });
@@ -348,13 +461,29 @@
         });
       }
 
+      function showLoader() { if (loader) { loader.classList.add('is-on'); } }
+      function hideLoader() { if (loader) { loader.classList.remove('is-on'); } }
+
       function goPage(id) {
+        // 同じページなら演出なしで軽く戻すだけ
+        if (id === activeId) {
+          renderPage(id);
+          updateBanner();
+          return;
+        }
+        if (isTransitioning) { return; }
+        isTransitioning = true;
         activeId = id;
         var page = pageById(id);
         if (page.slug) { history.replaceState(null, '', '#' + page.slug); }
-        renderTopnav();
-        renderPage(id);
-        updateBanner();
+        renderTopnav();            // タブのアクティブ表示は即切替
+        showLoader();              // ローディング演出を出す
+        setTimeout(function () {
+          renderPage(id);          // 演出の裏で新ページを描く
+          updateBanner();
+          hideLoader();            // 演出を消す＝新ページがフェードアップで登場
+          isTransitioning = false;
+        }, 780);
       }
 
       /* ---- 追従バナー: 今表示していない「別ページ」へ誘導 ---- */
@@ -424,11 +553,13 @@
         if (cta) {
           cta.addEventListener('click', function (ev) {
             ev.preventDefault();
-            if (activeId !== doc.pages[0].id) { goPage(doc.pages[0].id); }
+            // 別ページに居るなら遷移演出（約620ms）を待ってからスクロール
+            var wait = 60;
+            if (activeId !== doc.pages[0].id) { goPage(doc.pages[0].id); wait = 880; }
             setTimeout(function () {
               var rsvpEl = site.querySelector('[data-type="rsvp"]');
               if (rsvpEl) { rsvpEl.scrollIntoView({ behavior: 'smooth' }); }
-            }, 60);
+            }, wait);
           });
         }
       }
@@ -437,6 +568,45 @@
       renderTopnav();
       renderPage(activeId);
       updateBanner();
+
+      /* ---- 公開済みの内容を取りに行き、エディターの編集が新しければ即反映 ----
+       * 表示は上で先に済ませているので、これは裏で走る（遅くても画面は待たない）。
+       * 取得失敗時は seed.js のまま＝サイトは絶対に壊れない。 */
+      (function fetchPublishedDoc() {
+        function findEndpoint(d) {
+          var ep = '';
+          (d.pages || []).forEach(function (pg) {
+            (pg.blocks || []).forEach(function (bk) {
+              if (bk.type === 'rsvp' && bk.data && bk.data.endpoint) { ep = bk.data.endpoint; }
+            });
+          });
+          return ep;
+        }
+        var endpoint = findEndpoint(doc) || findEndpoint(WEDI.seed || {});
+        if (!endpoint || !window.fetch) { return; }
+        var url = endpoint + (endpoint.indexOf('?') >= 0 ? '&' : '?') + 'action=getDoc&t=' + Date.now();
+        var ctrl = ('AbortController' in window) ? new AbortController() : null;
+        var timer = setTimeout(function () { if (ctrl) { ctrl.abort(); } }, 6000);
+        fetch(url, ctrl ? { signal: ctrl.signal } : undefined)
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (res) {
+            clearTimeout(timer);
+            if (!res || !res.ok || !res.doc || !res.doc.pages) { return; }
+            var remote = res.doc;
+            var curUpdated = Number(doc.updatedAt) || 0;
+            var remoteUpdated = Number(remote.updatedAt) || 0;
+            if (remoteUpdated <= curUpdated) { return; } // 今表示中の方が新しければ何もしない
+            // 写真の補完だけ流用してから差し替え、現在のページを描き直す
+            doc = applyLatestWeddingPhotos(remote);
+            WEDI.theme.applyTheme(document.documentElement, doc.theme);
+            if (!pageById(activeId)) { activeId = doc.pages[0].id; }
+            renderSidebar();
+            renderTopnav();
+            renderPage(activeId);
+            updateBanner();
+          })
+          .catch(function () { clearTimeout(timer); /* 失敗時は無視（seedのまま） */ });
+      })();
 
       // ---- スクロールアニメーション（バウンス登場） ----
       function initScrollAnim() {

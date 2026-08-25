@@ -37,6 +37,12 @@
     styleSpacing: '余白',
     styleWidth: '幅',
     styleTilt: '傾き',
+    styleCustomBg: '背景色（自由指定）',
+    styleCustomText: '文字色（自由指定）',
+    styleDecoration: 'あしらい',
+    styleDecorationPosition: 'あしらいの位置',
+    styleDecorationSize: 'あしらいの大きさ',
+    styleDecorationColor: 'あしらいの色',
 
     theme: 'テーマ全体',
     themeColors: '配色',
@@ -71,7 +77,10 @@
     align: { left: '左', center: '中央', right: '右' },
     spacing: { tight: '狭い', normal: '標準', roomy: '広い' },
     width: { narrow: '狭い', normal: '標準', wide: '広い' },
-    tilt: { none: 'なし', left: '左に傾ける', right: '右に傾ける' }
+    tilt: { none: 'なし', left: '左に傾ける', right: '右に傾ける' },
+    decoration: { default: 'テーマ標準', none: 'なし', starburst: 'トゲトゲ', flower: 'お花', circle: '丸' },
+    decorationPosition: { topLeft: '左上', topRight: '右上', bottomLeft: '左下', bottomRight: '右下' },
+    decorationSize: { small: '小', medium: '中', large: '大' }
   };
 
   /* キー取得（"bg.sage" のようなドット記法対応） */

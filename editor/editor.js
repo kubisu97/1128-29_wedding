@@ -86,6 +86,48 @@
     toast('seed.js をダウンロードしました');
   }
 
+  /* ---- 本番に反映（公開） ----
+   * 現在の内容を Google Drive（GAS経由）に保存し、全ゲストの本番サイトに即反映する。
+   * GAS 側の PUBLISH_TOKEN と同じ値にすること。 */
+  var PUBLISH_TOKEN = 'tk1129-publish-8x24';
+  function findEndpoint(doc) {
+    var ep = '';
+    (doc.pages || []).forEach(function (pg) {
+      (pg.blocks || []).forEach(function (bk) {
+        if (bk.type === 'rsvp' && bk.data && bk.data.endpoint) { ep = bk.data.endpoint; }
+      });
+    });
+    return ep;
+  }
+  function doPublish() {
+    var doc = state.doc;
+    if (!doc) { toast('データがありません'); return; }
+    var endpoint = findEndpoint(doc);
+    if (!endpoint) { toast('送信先URL（RSVPブロックのGAS）が未設定です'); return; }
+    doc.updatedAt = Date.now();
+    WEDI.storage.save(doc); // ローカルにも保存しておく
+    var btn = document.getElementById('publishButton');
+    var orig = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = '反映中…'; }
+    toast('本番に反映しています…');
+    // text/plain で送るとプリフライト（CORS)が起きない
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'saveDoc', token: PUBLISH_TOKEN, doc: doc })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (btn) { btn.disabled = false; btn.textContent = orig; }
+        if (res && res.ok) { toast('本番に反映しました！ゲストの画面にも表示されます'); }
+        else { toast('反映に失敗: ' + ((res && res.error) || '不明')); }
+      })
+      .catch(function (err) {
+        if (btn) { btn.disabled = false; btn.textContent = orig; }
+        toast('反映に失敗しました（通信エラー）');
+      });
+  }
+
   /* ---- KML 書き出し（Google マイマップ用） ---- */
   function doExportKml() {
     var doc = state.doc;
@@ -205,6 +247,9 @@
   /* ---- キャンバス全体を描画（ページ切替・並べ替え・追加削除時） ---- */
   function renderCanvas() {
     var page = activePage();
+    var isGuidePage = page && /しおり|guide|旅/.test((page.name || '') + ' ' + (page.slug || ''));
+    canvas.classList.toggle('page--guide', !!isGuidePage);
+    canvas.classList.toggle('page--invitation', !!page && !isGuidePage);
     canvas.innerHTML = '';
     T.applyTheme(canvas, state.doc.theme);
 
@@ -532,6 +577,65 @@
   };
 
   /* ---- 初期化 ---- */
+  function migrateDoc(doc) {
+    var changed = false;
+    var seedHome = (WEDI.seed.pages || []).filter(function (page) { return page.id === 'pg_home'; })[0];
+    function seedBlock(id) {
+      var block = seedHome && (seedHome.blocks || []).filter(function (item) { return item.id === id; })[0];
+      return block ? WEDI.theme.clone(block) : null;
+    }
+    (doc.pages || []).forEach(function (page) {
+      (page.blocks || []).forEach(function (block) {
+        if (block.id === 'bk_cover' && block.type === 'cover' && block.data) {
+          if (!block.data.coverMode) {
+            block.data.coverMode = 'poster';
+            block.data.posterImage = block.data.posterImage || 'assets/cover-collage-v1.jpg';
+            changed = true;
+          }
+          if (Object.prototype.hasOwnProperty.call(block.data, 'walkEffect')) {
+            delete block.data.walkEffect;
+            changed = true;
+          }
+          if (Object.prototype.hasOwnProperty.call(block.data, 'walkImage')) {
+            delete block.data.walkImage;
+            changed = true;
+          }
+        }
+        if (block.id === 'bk_msg' && block.type === 'message' && block.data && !block.data.image) {
+          block.data.image = 'assets/photos/shrine-night.jpg';
+          changed = true;
+        }
+        if (block.id === 'bk_prof' && block.type === 'profile' && block.data && block.data.people) {
+          var profileImages = ['assets/photos/profile-groom.jpg', 'assets/photos/profile-bride.jpg'];
+          block.data.people.forEach(function (person, i) {
+            if (!person.image && profileImages[i]) { person.image = profileImages[i]; changed = true; }
+          });
+        }
+        if (block.id === 'bk_alb' && block.type === 'album' && block.data) {
+          var isPlaceholderAlbum = !(block.data.images || []).length || (block.data.images || []).every(function (image) {
+            return !image.src || /images\.unsplash\.com/.test(image.src);
+          });
+          if (isPlaceholderAlbum) {
+            var seededAlbum = seedBlock('bk_alb');
+            if (seededAlbum) { block.data = seededAlbum.data; changed = true; }
+          } else {
+            if (!block.data.autoplay) { block.data.autoplay = 'on'; changed = true; }
+            if (!block.data.interval) { block.data.interval = '4'; changed = true; }
+          }
+        }
+      });
+      if (page.id === 'pg_home' && !(page.blocks || []).some(function (block) { return block.id === 'bk_memories'; })) {
+        var memories = seedBlock('bk_memories');
+        if (memories) {
+          var partyIndex = page.blocks.findIndex(function (block) { return block.id === 'bk_party'; });
+          page.blocks.splice(partyIndex >= 0 ? partyIndex + 1 : page.blocks.length, 0, memories);
+          changed = true;
+        }
+      }
+    });
+    return changed;
+  }
+
   function init() {
     document.getElementById('appTitle').textContent = i18n.t('appTitle');
 
@@ -540,6 +644,7 @@
     // seed 側が採用された場合は複製してから編集対象にする
     state.doc = (picked && picked !== WEDI.seed) ? picked : WEDI.theme.clone(WEDI.seed);
     if (!state.doc.theme) { state.doc.theme = WEDI.theme.clone(WEDI.theme.DEFAULT); }
+    var migrated = migrateDoc(state.doc);
     state.activePageId = state.doc.pages[0].id;
 
     WEDI.palette.render(paletteEl, addBlock);
@@ -548,7 +653,7 @@
     WEDI.inspector.render(null);
     refreshUndoButton();
 
-    if (picked !== stored) { doSave(true); }  // 初回 or seed が新しかった場合は保存して同期
+    if (picked !== stored || migrated) { doSave(true); }  // 初回・seed更新・データ移行時に同期
 
     // ドラッグ初期化
     WEDI.drag.init(canvas, {
@@ -558,6 +663,7 @@
 
     // トップバー
     document.getElementById('saveButton').addEventListener('click', function () { doSave(false); });
+    document.getElementById('publishButton').addEventListener('click', doPublish);
     document.getElementById('exportButton').addEventListener('click', doExport);
     document.getElementById('kmlButton').addEventListener('click', doExportKml);
     document.getElementById('addPageButton').addEventListener('click', addPage);
