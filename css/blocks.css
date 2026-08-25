@@ -1159,6 +1159,7 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   padding-bottom: 130px;
   background: var(--guide-cream) !important;
   color: var(--guide-ink);
+  text-align: center;
 }
 
 .page--guide [data-block-id="bk_g_msg"]::before,
@@ -1200,6 +1201,8 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
 
 .page--guide [data-block-id="bk_g_msg"] .wb-message__body {
   max-width: 310px;
+  margin-left: auto;
+  margin-right: auto;
   font-size: 13px;
   font-weight: 500;
   line-height: 2.05;
