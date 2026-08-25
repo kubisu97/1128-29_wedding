@@ -344,8 +344,8 @@
       dateLabel: 'Date',
       dateText: '2026年11月29日 日曜日',
       sessions: [
-        { name: '挙式', start: '10:30', sub1Label: '受付', sub1: '10:00', sub2Label: '終了予定', sub2: '11:00' },
-        { name: '披露宴', start: '11:30', sub1Label: '受付', sub1: '11:00', sub2Label: 'お開き', sub2: '14:30' }
+        { name: '挙式', start: '10:30', sub1Label: '受付', sub1: '10:00', sub2Label: '終了予定', sub2: '11:00', note: '' },
+        { name: '披露宴', start: '11:30', sub1Label: '受付', sub1: '11:00', sub2Label: 'お開き', sub2: '14:30', note: '' }
       ],
       venueLabel: '会場情報',
       venueName: 'アトールテラス鴨川',
@@ -362,7 +362,8 @@
         { key: 'sub1Label', type: 'text', label: '補足1ラベル' },
         { key: 'sub1', type: 'text', label: '補足1' },
         { key: 'sub2Label', type: 'text', label: '補足2ラベル' },
-        { key: 'sub2', type: 'text', label: '補足2' }
+        { key: 'sub2', type: 'text', label: '補足2' },
+        { key: 'note', type: 'textarea', label: '注釈（小さく表示・省略可）' }
       ] },
       { key: 'venueLabel', type: 'text', label: '会場ラベル' },
       { key: 'venueName', type: 'text', label: '会場名' },
@@ -372,13 +373,13 @@
       var d = block.data || {};
       var root = el('div', 'wb-party');
       var sessions = (d.sessions || []).map(function (s) {
+        var sub = (s.sub1Label || s.sub1 ? esc(s.sub1Label || '') + ' ' + esc(s.sub1 || '') : '') +
+          (s.sub2Label || s.sub2 ? '　/　' + esc(s.sub2Label || '') + ' ' + esc(s.sub2 || '') : '');
         return '<div class="wb-party__card">' +
           '<p class="wb-party__name txt-serif"><span class="wb-rule"></span>' + esc(s.name || '') + '<span class="wb-rule"></span></p>' +
           '<p class="wb-party__start">開始時刻 <b class="txt-serif">' + esc(s.start || '') + '</b></p>' +
-          '<p class="wb-party__sub">' +
-            (s.sub1Label || s.sub1 ? esc(s.sub1Label || '') + ' ' + esc(s.sub1 || '') : '') +
-            (s.sub2Label || s.sub2 ? '　/　' + esc(s.sub2Label || '') + ' ' + esc(s.sub2 || '') : '') +
-          '</p>' +
+          (sub ? '<p class="wb-party__sub">' + sub + '</p>' : '') +
+          (s.note ? '<p class="wb-party__note">' + escM(s.note) + '</p>' : '') +
         '</div>';
       }).join('');
       root.innerHTML =

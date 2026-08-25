@@ -246,6 +246,7 @@
 .wb-party__start { margin-top: 14px; font-size: 14px; color: var(--ink); }
 .wb-party__start b { font-size: 28px; font-weight: 500; margin-left: 6px; }
 .wb-party__sub { margin-top: 6px; font-size: 13px; color: var(--muted); }
+.wb-party__note { margin-top: 10px; font-size: 11px; line-height: 1.7; color: var(--muted); }
 .wb-party__venue { margin-top: 36px; }
 .wb-party__venue .wb-party__name { color: var(--ink); }
 .wb-party__venuename { font-size: 20px; font-weight: 500; margin-top: 16px; }
@@ -1260,12 +1261,13 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   border-color: rgba(255,255,255,.48);
 }
 
+/* 時刻には星のあしらいを付けず、文字色を地色から抜けるベージュにする。
+   Day1(赤)は beige で 4.4:1 だが、Day2(橙)は明るいオレンジのため
+   beige でも 2.4:1 しか出ない → Day2 だけ ink にして 6.0:1 を確保。 */
 .page--guide .wb-schedule__time {
   position: relative;
   z-index: 1;
-  /* 背後のベージュの星の上に乗るため ink。ブロックから継承する
-     cream のままだとベージュ相手に 1.3:1 で判読できない。 */
-  color: var(--guide-ink);
+  color: var(--guide-beige);
   font-family: var(--font-accent);
   font-size: 19px;
   font-weight: 800;
@@ -1273,22 +1275,7 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   letter-spacing: -.04em;
 }
 
-/* 時刻を囲う星。Day1(赤)・Day2(オレンジ)どちらの地色からも
-   抜けるようベージュで統一する。 */
-.page--guide .wb-schedule__time::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  /* 「6:00頃」のように文字が長くなっても星から出ないよう、
-     テキスト幅に追従させる（固定幅だと末尾が赤地にはみ出して読めない）。 */
-  width: calc(100% + 34px);
-  min-width: 78px;
-  height: 58px;
-  left: -17px;
-  top: -16px;
-  background: var(--guide-beige);
-  clip-path: polygon(50% 0, 62% 28%, 89% 11%, 72% 40%, 100% 52%, 69% 62%, 88% 91%, 60% 72%, 48% 100%, 38% 70%, 9% 88%, 28% 59%, 0 48%, 31% 38%, 12% 9%, 41% 29%);
-}
+.page--guide [data-block-id="bk_g_day2"] .wb-schedule__time { color: var(--guide-ink); }
 
 .page--guide .wb-schedule__title {
   font-size: 14px;
@@ -1822,7 +1809,8 @@ body.is-invitation-page .follow-banner {
 }
 .page--invitation [data-block-id="bk_party"] .wb-heading { font-size: clamp(45px, 13vw, 64px); }
 .page--invitation .wb-party__datelabel,
-.page--invitation .wb-party__sub { color: currentColor; }
+.page--invitation .wb-party__sub,
+.page--invitation .wb-party__note { color: currentColor; }
 .page--invitation .wb-party__datetext { font-family: var(--font-body); font-size: 21px; font-weight: 800; }
 .page--invitation .wb-party__card {
   padding: 25px 8px;

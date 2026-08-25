@@ -64,8 +64,9 @@
             heading: 'Party Information', subheading: 'パーティーのご案内',
             dateLabel: 'Date', dateText: '2026年11月29日 日曜日',
             sessions: [
-              { name: '挙式', start: '10:30', sub1Label: '受付', sub1: '10:00', sub2Label: '終了予定', sub2: '11:00' },
-              { name: '披露宴', start: '11:30', sub1Label: '受付', sub1: '11:00', sub2Label: 'お開き', sub2: '14:30' }
+              { name: 'チャペルセレモニー', start: '10:30', sub1Label: '受付', sub1: '10:00', sub2Label: '終了予定', sub2: '11:00',
+                note: '※当日は挙式の執り行いはございません。\nチャペルでの写真撮影およびセレモニーを行う予定です。' },
+              { name: '披露宴', start: '11:30' }
             ],
             venueLabel: '会場情報', venueName: 'アトールテラス鴨川',
             venueLines: '〒600-8017\n京都府京都市下京区木屋町通五条上る下材木町448\nTEL : 075-354-0855' } },
