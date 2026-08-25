@@ -1070,6 +1070,9 @@
      以前は #f4c6d6 だったが、上に乗る cream(#fffaf2) との
      コントラストが 1.45:1 しかなく判読できなかったため赤へ。→ 5.12:1 */
   --guide-pink: var(--guide-red);
+  /* 旅程（Day1/Day2）の時刻を囲う星のあしらい。赤・オレンジの
+     濃い地色から抜けるベージュ。 */
+  --guide-beige: #f2e8d5;
   /* 地色（薄ピンク）は theme.css の :root で定義。
      ink(#181717) 15.9:1 / red(#cf2529) 4.7:1 でどちらも WCAG AA を満たす。 */
   --guide-orange: #ee7142;
@@ -1260,7 +1263,9 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
 .page--guide .wb-schedule__time {
   position: relative;
   z-index: 1;
-  color: inherit;
+  /* 背後のベージュの星の上に乗るため ink。ブロックから継承する
+     cream のままだとベージュ相手に 1.3:1 で判読できない。 */
+  color: var(--guide-ink);
   font-family: var(--font-accent);
   font-size: 19px;
   font-weight: 800;
@@ -1268,19 +1273,22 @@ body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radiu
   letter-spacing: -.04em;
 }
 
+/* 時刻を囲う星。Day1(赤)・Day2(オレンジ)どちらの地色からも
+   抜けるようベージュで統一する。 */
 .page--guide .wb-schedule__time::before {
   content: '';
   position: absolute;
   z-index: -1;
-  width: 72px;
-  height: 54px;
-  left: -10px;
-  top: -14px;
-  background: var(--guide-pink);
+  /* 「6:00頃」のように文字が長くなっても星から出ないよう、
+     テキスト幅に追従させる（固定幅だと末尾が赤地にはみ出して読めない）。 */
+  width: calc(100% + 34px);
+  min-width: 78px;
+  height: 58px;
+  left: -17px;
+  top: -16px;
+  background: var(--guide-beige);
   clip-path: polygon(50% 0, 62% 28%, 89% 11%, 72% 40%, 100% 52%, 69% 62%, 88% 91%, 60% 72%, 48% 100%, 38% 70%, 9% 88%, 28% 59%, 0 48%, 31% 38%, 12% 9%, 41% 29%);
 }
-
-.page--guide [data-block-id="bk_g_day2"] .wb-schedule__time::before { background: var(--guide-red); }
 
 .page--guide .wb-schedule__title {
   font-size: 14px;
