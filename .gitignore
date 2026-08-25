@@ -7,3 +7,6 @@ _*.js
 _shot-*.png
 _v-*.png
 .DS_Store
+
+# wrangler のローカル実行状態（miniflare の KV/キャッシュ等）
+.wrangler/

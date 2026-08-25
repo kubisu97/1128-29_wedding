@@ -1066,12 +1066,17 @@
   --guide-red: #cf2529;
   --guide-red-deep: #ad171d;
   --guide-cream: #fffaf2;
-  --guide-pink: #f4c6d6;
+  /* あしらい（装飾の円・星・ドロップシャドウ）は赤。
+     以前は #f4c6d6 だったが、上に乗る cream(#fffaf2) との
+     コントラストが 1.45:1 しかなく判読できなかったため赤へ。→ 5.12:1 */
+  --guide-pink: var(--guide-red);
+  /* 地色（薄ピンク）は theme.css の :root で定義。
+     ink(#181717) 15.9:1 / red(#cf2529) 4.7:1 でどちらも WCAG AA を満たす。 */
   --guide-orange: #ee7142;
   --guide-blue: #a9d4e7;
   --guide-ink: #181717;
   --guide-line: rgba(24, 23, 23, .22);
-  background: var(--guide-red);
+  background: var(--guide-bg);
   color: var(--guide-ink);
   overflow: hidden;
   font-family: var(--font-body);
@@ -1098,7 +1103,7 @@ body.is-guide-page .follow-banner {
   border-radius: 0;
   background: #fffaf2;
   color: #181717;
-  box-shadow: 7px 7px 0 #f4c6d6;
+  box-shadow: 7px 7px 0 var(--guide-red, #cf2529);
 }
 
 body.is-guide-page .site-sidebar__inner {
@@ -1109,7 +1114,7 @@ body.is-guide-page .site-sidebar__inner {
 }
 
 body.is-guide-page .sb-cta { background: #cf2529; border-radius: 0; }
-body.is-guide-page .sb-note { background: #f4c6d6; border-radius: 0; color: #181717; }
+body.is-guide-page .sb-note { background: var(--guide-bg, #fdeef2); border-radius: 0; color: #181717; }
 
 .page--guide .wb-block {
   padding: 76px 28px;

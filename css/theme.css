@@ -15,6 +15,10 @@
   --paper: #ffffff;
   --line: #d9d9d9;
 
+  /* 旅のしおり（.page--guide）の地色。サイドバー等
+     .page--guide の外側からも参照するため :root に置く。 */
+  --guide-bg: #fdeef2;
+
   --font-body: 'Noto Sans JP', sans-serif;
   --font-display: 'Noto Serif JP', serif;
   --font-accent: 'Poppins', sans-serif;

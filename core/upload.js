@@ -1,7 +1,7 @@
 /* ===========================================================================
- * WEDI.upload — 画像アップロード（Cloudflare R2 経由）
+ * WEDI.upload — 画像アップロード（Cloudflare KV 経由）
  * エディター/RSVP でファイルを選ぶ → /api/upload に POST → 公開URLを返す。
- * サーバー側は functions/api/upload.js（Pages Functions + R2 バインディング）。
+ * サーバー側は functions/api/upload.js（Pages Functions + KV バインディング）。
  * =========================================================================== */
 (function (global) {
   'use strict';
@@ -31,8 +31,20 @@
 
       fetch(ENDPOINT, { method: 'POST', body: fd })
         .then(function (res) {
-          return res.json().then(function (data) {
-            if (!res.ok) { throw new Error((data && data.error) || ('HTTP ' + res.status)); }
+          /* 本文を先にテキストで受ける。
+           * Functions が未デプロイだと Pages が 405 や HTML を返し、
+           * いきなり res.json() すると「Unexpected end of JSON input」に
+           * すり替わって原因が見えなくなるため。 */
+          return res.text().then(function (text) {
+            var data = null;
+            if (text) { try { data = JSON.parse(text); } catch (e) { /* JSON以外 */ } }
+
+            if (!res.ok) {
+              throw new Error((data && data.error) || ('HTTP ' + res.status + ' ' + (res.statusText || '')).trim());
+            }
+            if (!data) {
+              throw new Error('サーバーが想定外の応答を返しました（アップロード機能が配置されていない可能性があります）');
+            }
             return data;
           });
         })
