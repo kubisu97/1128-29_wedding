@@ -1229,7 +1229,7 @@
       }
 
       if (d.mapNote) {
-        var note = el('p', 'wb-spotmap__note', esc(d.mapNote));
+        var note = el('p', 'wb-spotmap__map-note', esc(d.mapNote));
         frameWrap.appendChild(note);
       }
       root.appendChild(frameWrap);

@@ -433,15 +433,25 @@
   color: var(--muted);
   font-size: 13px;
 }
-.wb-spotmap__note {
+/* 地図直下の案内文（mapNote）。個別スポットのメモ(.wb-spotmap__note)と
+   同じクラスを使い回していたため、後者のスタイル（コーラル文字/薄い
+   半透明背景）に上書きされてコントラスト 1.08:1 まで潰れていた事故が
+   あったので、別クラスとして分離した。 */
+.wb-spotmap__map-note {
   margin: 0;
   padding: 10px 16px 12px;
   background: var(--paper);
   border-top: 1px solid var(--line);
   font-size: 12px;
   line-height: 1.6;
-  color: var(--muted);
+  /* muted(#9c9c9c) は 2.75:1 で WCAG AA(4.5) 未達だったため ink に変更 */
+  color: var(--ink);
   text-align: center;
+}
+.page--guide .wb-spotmap__map-note {
+  background: var(--guide-cream);
+  color: var(--guide-ink);
+  border-top-color: var(--guide-line);
 }
 .wb-spotmap__detail-name {
   font-size: 14px;
