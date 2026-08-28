@@ -7,7 +7,7 @@
   var WEDI = global.WEDI = global.WEDI || {};
   WEDI.seed = {
   "version": 6,
-  "updatedAt": 1787842318000,
+  "updatedAt": 1787917458832,
   "theme": {
     "colors": {
       "pink": "#ecd9d1",
@@ -100,7 +100,7 @@
             "subheading": "ご挨拶",
             "body": "謹啓　晩夏の候\n皆様におかれましては一層ご清祥のことと\nお慶び申し上げます\nわたしたちはこのたび 11月29日(日)に\n披露宴を執り行うこととなりました\n日頃より温かく見守ってくださるたいせつな皆様と\n心温まる穏やかな時間を過ごしたいと思い\n親族のみの小宴を催すことといたしました\nご多用中恐縮ではございますが \nぜひご出席いただきたく存じます\n謹白",
             "sign": "",
-            "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787659382890-bz7so0cq.jpg"
+            "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787917284955-zb3trlg1.jpg"
           }
         },
         {
@@ -126,13 +126,13 @@
               {
                 "role": "新郎",
                 "name": "栗栖 拓郎",
-                "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787658440910-7e7yhp2i.jpg",
+                "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787917284954-kunhgh32.jpg",
                 "text": "1997年10月7日 広島生まれ\nお調子者でお酒を飲むことや音楽を聴くことラーメン お好み焼きを食べることが大好きです\n\n当日は日頃の感謝の気持ちをお伝えしつつ\n来てくれたみんなが楽しかった来てよかったと思ってもらえる一日にしたいです\nみんなで楽しく和やかに開催できたらと思いますので\n是非ともよろしくお願いいたします"
               },
               {
                 "role": "新婦",
                 "name": "高橋 和美",
-                "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787659550573-rf7ztaxy.jpg",
+                "image": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787917284956-ck55cox5.jpg",
                 "text": "1997年5月15日 滋賀生まれ\nすきなモノ♥BUMP OF CHICKEN ダイアンのラジオ\n温冷交代浴 だし巻き卵 からあげ\n\nみなさま いつも温かく見守ってくださり\nありがとうございます\n当日は楽しく食べたり飲んだりしながら\n親族同士の親睦が深まる会を開催できたらと\n思っておりますので\nよろしくお願いいたします！"
               }
             ]
@@ -276,7 +276,7 @@
             "layout": "gallery",
             "images": [
               {
-                "src": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787840930541-egl3kxs7.jpg",
+                "src": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787917284957-noy3s9qu.jpg",
                 "caption": "DAILY LIFE",
                 "alt": "桜の木の前で撮ったふたりの写真"
               },
@@ -286,7 +286,7 @@
                 "alt": "ロンドンのホームに立つふたり"
               },
               {
-                "src": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787840943311-enlsw2q9.jpg",
+                "src": "https://tk1129.pages.dev/img/kyoto-family-wedding-2026/1787917284958-wolvatb1.jpg",
                 "caption": "OUR BEGINNING",
                 "alt": "母校にて"
               }
