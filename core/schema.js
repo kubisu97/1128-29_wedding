@@ -523,7 +523,7 @@
       var companions = (d.askCompanions !== false)
         ? '<div class="wb-rsvp__field wb-rsvp__companions">' +
             '<label>同席者（ご家族など）</label>' +
-            '<p class="wb-rsvp__hintnote">同席される方がいる場合は人数を選び、お名前をご記入ください。</p>' +
+            '<p class="wb-rsvp__hintnote">同席される方がいる場合は人数を選びお名前をご記入ください</p>' +
             '<select name="companion_count" class="wb-rsvp__select">' + countOpts + '</select>' +
             '<div class="wb-rsvp__companion-list" data-companion-list></div>' +
           '</div>'
@@ -1238,7 +1238,7 @@
       var planWrap = el('div', 'wb-spotmap__plan');
       planWrap.innerHTML =
         '<h3 class="wb-spotmap__plan-title">マイプラン</h3>' +
-        '<p class="wb-spotmap__plan-lead">気になるスポットを「＋」で追加すると、ホテルから回りやすい順にここに並びます（このスマホにだけ保存されます）。</p>';
+        '<p class="wb-spotmap__plan-lead">気になるスポットを「＋」で追加するとホテルから回りやすい順にここに<br>並びます（このスマホにだけ保存されます）</p>';
       var planBody = el('div', 'wb-spotmap__plan-body');
       planWrap.appendChild(planBody);
       root.appendChild(planWrap);
