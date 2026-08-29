@@ -548,10 +548,10 @@
           twin('お名前（ローマ字）', 'name_roma', 'Sei', 'Mei', false) +
           f('間柄', 'relation', { ph: '例：兄 / 叔母 など' }) +
           f('郵便番号', 'zip', { ph: '100-0000' }) +
-          f('都道府県・市区町村', 'address1', { ph: '東京都新宿区新宿' }) +
-          f('丁目・番地', 'address2', { ph: '1-36-2' }) +
-          f('建物名・部屋番号など', 'address3', { ph: '新宿第七葉山ビル 301' }) +
-          f('電話番号（半角数字・ハイフン）', 'tel', { ph: '090-1234-5678' }) +
+          f('都道府県 市区町村', 'address1', { ph: '東京都新宿区新宿' }) +
+          f('丁目 番地', 'address2', { ph: '1-36-2' }) +
+          f('建物名 部屋番号など', 'address3', { ph: '新宿第七葉山ビル 301' }) +
+          f('電話番号（半角数字 ハイフン）', 'tel', { ph: '090-1234-5678' }) +
           f('メールアドレス', 'email', { type: 'email', ph: 'sample@example.com', required: true }) +
           '<div class="wb-rsvp__field"><label>アレルギーについて</label>' +
             '<label class="wb-radio"><input type="radio" name="allergy" value="なし" checked> アレルギーなし</label>' +
@@ -1039,12 +1039,12 @@
       overviewMap: '',
       mapNote: '地図のピンをタップすると、写真や口コミが見られます。',
       spots: [
-        { genre: 'ホテル・式場', name: 'RakutenStays 四条河原町', description: '宿泊先のホテルです。四条河原町駅から徒歩約3分。', mapEmbed: '', lat: '35.0036', lng: '135.7682' },
-        { genre: 'ホテル・式場', name: 'アトールテラス鴨川', description: '結婚式・宴会会場。鴨川沿いの素敵な会場です。', mapEmbed: '', lat: '35.0083', lng: '135.7722' },
+        { genre: 'ホテル 式場', name: 'RakutenStays 四条河原町', description: '宿泊先のホテルです。四条河原町駅から徒歩約3分。', mapEmbed: '', lat: '35.0036', lng: '135.7682' },
+        { genre: 'ホテル 式場', name: 'アトールテラス鴨川', description: '結婚式・宴会会場。鴨川沿いの素敵な会場です。', mapEmbed: '', lat: '35.0083', lng: '135.7722' },
         { genre: '飲食', name: 'さざんか亭', description: '前夜祭ディナーの会場です。みんなで乾杯しましょう！', mapEmbed: '', lat: '35.0050', lng: '135.7670' },
         { genre: '観光', name: '清水寺', description: '言わずと知れた京都の名所。紅葉の季節は特に絶景。', mapEmbed: '', lat: '34.9948', lng: '135.7851' },
         { genre: 'カフェ', name: '仮カフェ', description: 'スプレッドシートのデータに差し替えてください。', mapEmbed: '', lat: '', lng: '' },
-        { genre: 'バー・深夜', name: '仮バー', description: 'スプレッドシートのデータに差し替えてください。', mapEmbed: '', lat: '', lng: '' }
+        { genre: 'バー 深夜', name: '仮バー', description: 'スプレッドシートのデータに差し替えてください。', mapEmbed: '', lat: '', lng: '' }
       ]
     },
     fields: [
@@ -1062,21 +1062,21 @@
               { value: '紅葉スポット', label: '紅葉スポット' },
               { value: '朝ごはん', label: '朝ごはん' },
               { value: '昼食', label: '昼食' },
-              { value: 'カフェ・喫茶', label: 'カフェ・喫茶' },
-              { value: 'ラーメン・そば', label: 'ラーメン・そば' },
+              { value: 'カフェ 喫茶', label: 'カフェ 喫茶' },
+              { value: 'ラーメン そば', label: 'ラーメン そば' },
               { value: '夜ごはん', label: '夜ごはん' },
-              { value: '居酒屋・バー', label: '居酒屋・バー' },
+              { value: '居酒屋 バー', label: '居酒屋 バー' },
               { value: '立ち飲み', label: '立ち飲み' },
               { value: '銭湯', label: '銭湯' },
-              { value: '夜景・散歩', label: '夜景・散歩' },
+              { value: '夜景 散歩', label: '夜景 散歩' },
               { value: '観光地', label: '観光地' },
               { value: '美術館', label: '美術館' },
               { value: '穴場', label: '穴場' },
               { value: '本屋', label: '本屋' },
               { value: 'レコード屋', label: 'レコード屋' },
               { value: '古着屋', label: '古着屋' },
-              { value: '古道具・アンティーク', label: '古道具・アンティーク' },
-              { value: '雑貨・クラフト', label: '雑貨・クラフト' },
+              { value: '古道具 アンティーク', label: '古道具 アンティーク' },
+              { value: '雑貨 クラフト', label: '雑貨 クラフト' },
               { value: 'お土産', label: 'お土産' },
               { value: 'グルメ', label: 'グルメ（旧）' },
               { value: '雑貨', label: '雑貨（旧）' },
@@ -1103,18 +1103,18 @@
       // ジャンル別にグループ化
       var genreOrder = [
         'ホテル', '式場', '28日夜宴会会場', '紅葉スポット',
-        '朝ごはん', '昼食', 'カフェ・喫茶', 'ラーメン・そば', '夜ごはん', '居酒屋・バー', '立ち飲み',
-        '銭湯', '夜景・散歩', '観光地', '美術館', '穴場', 'こども・遊び',
-        '本屋', 'レコード屋', '古着屋', '古道具・アンティーク', '雑貨・クラフト', 'お土産',
-        'グルメ', '雑貨', '飲食', 'カフェ', 'バー・深夜', '観光'
+        '朝ごはん', '昼食', 'カフェ 喫茶', 'ラーメン そば', '夜ごはん', '居酒屋 バー', '立ち飲み',
+        '銭湯', '夜景 散歩', '観光地', '美術館', '穴場', 'こども 遊び',
+        '本屋', 'レコード屋', '古着屋', '古道具 アンティーク', '雑貨 クラフト', 'お土産',
+        'グルメ', '雑貨', '飲食', 'カフェ', 'バー 深夜', '観光'
       ];
       var genreColors = {
-        'ホテル': 'pink', '式場': 'ceremony', '28日夜宴会会場': 'banquet', '式場・会場': 'ceremony', 'ホテル・式場': 'pink', '紅葉スポット': 'momiji',
-        '朝ごはん': 'sun', '昼食': 'coral', 'カフェ・喫茶': 'green',
-        'ラーメン・そば': 'amber', '夜ごはん': 'wine', '居酒屋・バー': 'plum', '立ち飲み': 'slate',
-        '銭湯': 'sky', '夜景・散歩': 'navy', '観光地': 'teal', '美術館': 'moss', '穴場': 'pine', 'こども・遊び': 'sun',
-        '本屋': 'indigo', 'レコード屋': 'vinyl', '古着屋': 'denim', '古道具・アンティーク': 'brown', '雑貨・クラフト': 'violet', 'お土産': 'rose',
-        'グルメ': 'coral', '雑貨': 'green', '飲食': 'coral', 'カフェ': 'green', 'バー・深夜': 'navy', '観光': 'teal'
+        'ホテル': 'pink', '式場': 'ceremony', '28日夜宴会会場': 'banquet', '式場 会場': 'ceremony', 'ホテル 式場': 'pink', '紅葉スポット': 'momiji',
+        '朝ごはん': 'sun', '昼食': 'coral', 'カフェ 喫茶': 'green',
+        'ラーメン そば': 'amber', '夜ごはん': 'wine', '居酒屋 バー': 'plum', '立ち飲み': 'slate',
+        '銭湯': 'sky', '夜景 散歩': 'navy', '観光地': 'teal', '美術館': 'moss', '穴場': 'pine', 'こども 遊び': 'sun',
+        '本屋': 'indigo', 'レコード屋': 'vinyl', '古着屋': 'denim', '古道具 アンティーク': 'brown', '雑貨 クラフト': 'violet', 'お土産': 'rose',
+        'グルメ': 'coral', '雑貨': 'green', '飲食': 'coral', 'カフェ': 'green', 'バー 深夜': 'navy', '観光': 'teal'
       };
       var groups = {};
       spots.forEach(function (s) { var g = s.genre || '観光'; if (!groups[g]) { groups[g] = []; } groups[g].push(s); });
@@ -1200,7 +1200,7 @@
         frameWrap.classList.add('wb-spotmap__frame-wrap--own');
         var searchWrap = el('div', 'wb-spotmap__search');
         searchWrap.innerHTML =
-          '<input type="search" inputmode="search" autocomplete="off" placeholder="店名・ジャンル・キーワードで検索" aria-label="スポットを検索">' +
+          '<input type="search" inputmode="search" autocomplete="off" placeholder="店名 ジャンル キーワードで検索" aria-label="スポットを検索">' +
           '<button type="button" class="wb-spotmap__search-clear" aria-label="検索をクリア" hidden>✕</button>';
         searchInput = searchWrap.querySelector('input');
         searchClear = searchWrap.querySelector('button');
@@ -1262,7 +1262,7 @@
 
       function fmtSeg(km) {
         var mins = Math.round(km * 1000 / 80); // 徒歩80m/分
-        if (km >= 2.5) { return '約' + km.toFixed(1) + 'km ─ バス・電車がおすすめ'; }
+        if (km >= 2.5) { return '約' + km.toFixed(1) + 'km ─ バス 電車がおすすめ'; }
         var dist = km < 1 ? Math.round(km * 1000 / 10) * 10 + 'm' : km.toFixed(1) + 'km';
         return '徒歩 約' + mins + '分（' + dist + '）';
       }
@@ -1456,12 +1456,12 @@
         };
         function colorOf(s) { return genreHex[genreColors[s.genre || '観光']] || '#3a7a70'; }
         var genreEmoji = {
-          'ホテル': '🏨', '式場': '💒', '28日夜宴会会場': '🥂', 'ホテル・式場': '🏨', '式場・会場': '💒',
+          'ホテル': '🏨', '式場': '💒', '28日夜宴会会場': '🥂', 'ホテル 式場': '🏨', '式場 会場': '💒',
           '紅葉スポット': '🍁', '朝ごはん': '🍳', '昼食': '🍚',
-          'カフェ・喫茶': '☕', 'ラーメン・そば': '🍜', '夜ごはん': '🍽️', '居酒屋・バー': '🍶',
-          '立ち飲み': '🍺', '銭湯': '♨️', '夜景・散歩': '🌙', '観光地': '⛩️',
-          '美術館': '🖼️', '穴場': '🌿', 'こども・遊び': '🎡', '本屋': '📚', 'レコード屋': '💿',
-          '古着屋': '👕', '古道具・アンティーク': '🏺', '雑貨・クラフト': '🧺', 'お土産': '🛍️'
+          'カフェ 喫茶': '☕', 'ラーメン そば': '🍜', '夜ごはん': '🍽️', '居酒屋 バー': '🍶',
+          '立ち飲み': '🍺', '銭湯': '♨️', '夜景 散歩': '🌙', '観光地': '⛩️',
+          '美術館': '🖼️', '穴場': '🌿', 'こども 遊び': '🎡', '本屋': '📚', 'レコード屋': '💿',
+          '古着屋': '👕', '古道具 アンティーク': '🏺', '雑貨 クラフト': '🧺', 'お土産': '🛍️'
         };
 
         var map = L.map(mapDiv, { zoomControl: true, scrollWheelZoom: false });  // ページスクロール中の誤ズーム防止
