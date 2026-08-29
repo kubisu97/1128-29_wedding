@@ -331,8 +331,6 @@
   <script src="core/theme.js"></script>
   <script src="core/render.js"></script>
   <script src="core/schema.js"></script>
-  <script src="core/storage.js"></script>
-  <script src="core/upload.js"></script>
   <script src="core/seed.js"></script>
   <script>
     (function () {
@@ -353,62 +351,12 @@
         window.scrollTo(0, 0);
       }
 
-      /* 古い編集データを残したまま、今回追加した写真だけを補完する。 */
-      function applyLatestWeddingPhotos(current) {
-        if (!current || !current.pages || !WEDI.seed || !WEDI.seed.pages) { return current; }
-        var page = current.pages.filter(function (item) { return item.id === 'pg_home'; })[0];
-        var seedPage = WEDI.seed.pages.filter(function (item) { return item.id === 'pg_home'; })[0];
-        if (!page || !seedPage) { return current; }
-
-        function blockById(list, id) {
-          return (list || []).filter(function (block) { return block.id === id; })[0];
-        }
-        function seedBlock(id) {
-          var block = blockById(seedPage.blocks, id);
-          return block ? WEDI.storage.clone(block) : null;
-        }
-
-        var message = blockById(page.blocks, 'bk_msg');
-        if (message && message.data && !message.data.image) {
-          message.data.image = 'assets/photos/shrine-night.jpg';
-        }
-
-        var profile = blockById(page.blocks, 'bk_prof');
-        var profileImages = ['assets/photos/profile-groom.jpg', 'assets/photos/profile-bride.jpg'];
-        if (profile && profile.data && profile.data.people) {
-          profile.data.people.forEach(function (person, i) {
-            if (!person.image && profileImages[i]) { person.image = profileImages[i]; }
-          });
-        }
-
-        var album = blockById(page.blocks, 'bk_alb');
-        if (album && album.data) {
-          var isPlaceholderAlbum = !(album.data.images || []).length || (album.data.images || []).every(function (image) {
-            return !image.src || /images\.unsplash\.com/.test(image.src);
-          });
-          if (isPlaceholderAlbum) {
-            var latestAlbum = seedBlock('bk_alb');
-            if (latestAlbum) { album.data = latestAlbum.data; }
-          } else {
-            album.data.autoplay = album.data.autoplay || 'on';
-            album.data.interval = album.data.interval || '4';
-          }
-        }
-
-        if (!blockById(page.blocks, 'bk_memories')) {
-          var memories = seedBlock('bk_memories');
-          if (memories) {
-            var partyIndex = page.blocks.findIndex(function (block) { return block.id === 'bk_party'; });
-            page.blocks.splice(partyIndex >= 0 ? partyIndex + 1 : page.blocks.length, 0, memories);
-          }
-        }
-        return current;
-      }
-
-      /* localStorage と seed.js の新しい方を表示し、保存済みの文章は維持する。 */
-      var doc = applyLatestWeddingPhotos(WEDI.storage.pickNewer(WEDI.storage.load(), WEDI.seed));
+      /* 静的サイト：表示内容は常に core/seed.js（git 管理・本番配信内容）のみ。
+       * エディターや localStorage、GAS 経由の裏同期は使わない。
+       * 画像やテキストを直すときは core/seed.js を直接編集して push する。 */
+      var doc = WEDI.theme.clone(WEDI.seed);
       if (!doc || !doc.pages || !doc.pages.length) {
-        site.innerHTML = '<div class="site-loading">まだ内容がありません。エディターで作成してください。</div>';
+        site.innerHTML = '<div class="site-loading">まだ内容がありません。</div>';
         return;
       }
       WEDI.theme.applyTheme(document.documentElement, doc.theme);
@@ -568,45 +516,6 @@
       renderTopnav();
       renderPage(activeId);
       updateBanner();
-
-      /* ---- 公開済みの内容を取りに行き、エディターの編集が新しければ即反映 ----
-       * 表示は上で先に済ませているので、これは裏で走る（遅くても画面は待たない）。
-       * 取得失敗時は seed.js のまま＝サイトは絶対に壊れない。 */
-      (function fetchPublishedDoc() {
-        function findEndpoint(d) {
-          var ep = '';
-          (d.pages || []).forEach(function (pg) {
-            (pg.blocks || []).forEach(function (bk) {
-              if (bk.type === 'rsvp' && bk.data && bk.data.endpoint) { ep = bk.data.endpoint; }
-            });
-          });
-          return ep;
-        }
-        var endpoint = findEndpoint(doc) || findEndpoint(WEDI.seed || {});
-        if (!endpoint || !window.fetch) { return; }
-        var url = endpoint + (endpoint.indexOf('?') >= 0 ? '&' : '?') + 'action=getDoc&t=' + Date.now();
-        var ctrl = ('AbortController' in window) ? new AbortController() : null;
-        var timer = setTimeout(function () { if (ctrl) { ctrl.abort(); } }, 6000);
-        fetch(url, ctrl ? { signal: ctrl.signal } : undefined)
-          .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (res) {
-            clearTimeout(timer);
-            if (!res || !res.ok || !res.doc || !res.doc.pages) { return; }
-            var remote = res.doc;
-            var curUpdated = Number(doc.updatedAt) || 0;
-            var remoteUpdated = Number(remote.updatedAt) || 0;
-            if (remoteUpdated <= curUpdated) { return; } // 今表示中の方が新しければ何もしない
-            // 写真の補完だけ流用してから差し替え、現在のページを描き直す
-            doc = applyLatestWeddingPhotos(remote);
-            WEDI.theme.applyTheme(document.documentElement, doc.theme);
-            if (!pageById(activeId)) { activeId = doc.pages[0].id; }
-            renderSidebar();
-            renderTopnav();
-            renderPage(activeId);
-            updateBanner();
-          })
-          .catch(function () { clearTimeout(timer); /* 失敗時は無視（seedのまま） */ });
-      })();
 
       // ---- スクロールアニメーション（バウンス登場） ----
       function initScrollAnim() {
