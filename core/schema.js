@@ -1238,7 +1238,7 @@
       var planWrap = el('div', 'wb-spotmap__plan');
       planWrap.innerHTML =
         '<h3 class="wb-spotmap__plan-title">マイプラン</h3>' +
-        '<p class="wb-spotmap__plan-lead">気になるスポットを「＋」で追加するとホテルから回りやすい順にここに<br>並びます（このスマホにだけ保存されます）</p>';
+        '<p class="wb-spotmap__plan-lead">気になるスポットを「＋」で追加するとホテルから回りやすい順に<br>ここに並びます（このスマホにだけ保存されます）</p>';
       var planBody = el('div', 'wb-spotmap__plan-body');
       planWrap.appendChild(planBody);
       root.appendChild(planWrap);
@@ -1284,7 +1284,7 @@
         chip.style.display = items.length ? '' : 'none';
         chip.textContent = 'マイプラン ' + items.length + '件';
         if (!items.length) {
-          planBody.innerHTML = '<p class="wb-spotmap__plan-empty">まだ空っぽです。下のリストから気になる所を追加してね。</p>';
+          planBody.innerHTML = '<p class="wb-spotmap__plan-empty">まだ空っぽです<br>下のリストから気になる所を追加してね</p>';
           return;
         }
         var html = '<ol class="wb-spotmap__plan-list">';
