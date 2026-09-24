@@ -2169,3 +2169,161 @@ body.is-invitation-page .follow-banner {
   font-weight: 700;
   letter-spacing: .12em;
 }
+
+/* ===========================================================================
+ * RSVP 送信完了ポップアップ（.wb-done）
+ * 招待状ページ（.page--invitation）の作法に合わせる：
+ *   角丸ゼロ ／ 深緑の太枠 ／ ぼかしのない段差シャドウ ／ Poppins の大見出し。
+ * マークアップは core/schema.js の showRsvpDone() が body 直下に作る。
+ * =========================================================================== */
+.wb-done {
+  /* body 直下に出すため .page--invitation の変数が届かない。同じ値をここで持つ。 */
+  --invite-cream: #f8edda;
+  --invite-pink: #ecd9d1;
+  --invite-orange: #e66f50;
+  --invite-green: #174c39;
+
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .26s ease, visibility .26s;
+}
+/* 背景の幕はサイトの地色と同じ深緑 */
+.wb-done::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(23, 76, 57, 0.8);
+}
+.wb-done.is-on { opacity: 1; visibility: visible; }
+.wb-done:focus { outline: none; }
+
+.wb-done__card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  padding: 34px 26px 30px;
+  background: var(--invite-cream);
+  border: 2px solid var(--invite-green);
+  border-radius: 0;
+  color: var(--invite-green);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  box-shadow: 0 0 0 var(--invite-orange);
+  transition:
+    opacity .28s ease,
+    transform .36s cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow .36s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+/* 出るときに影がスッと伸びる（カバー写真と同じ段差シャドウ） */
+.wb-done.is-on .wb-done__card {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 9px 9px 0 var(--invite-orange);
+}
+
+/* オレンジの丸に深緑の枠、クリームのチェック */
+.wb-done__mark {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  border: 2px solid var(--invite-green);
+  border-radius: 50%;
+  background: var(--invite-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.55);
+}
+.wb-done.is-on .wb-done__mark { animation: doneMarkPop .46s cubic-bezier(0.34, 1.5, 0.64, 1) .14s both; }
+.wb-done__mark svg { display: block; width: 26px; height: 26px; }
+.wb-done__mark path {
+  fill: none;
+  stroke: var(--invite-cream);
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 34;
+  stroke-dashoffset: 34;
+}
+.wb-done.is-on .wb-done__mark path { animation: doneCheck .4s cubic-bezier(0.22, 0.61, 0.36, 1) .4s both; }
+
+/* 大見出し（.wb-heading と同じ組み） */
+.wb-done__en {
+  font-family: var(--font-accent);
+  font-size: clamp(30px, 9.5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: .94;
+  text-transform: uppercase;
+  color: var(--invite-orange);
+}
+/* 小見出し（.wb-subheading と同じ組み） */
+.wb-done__title {
+  margin-top: 11px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  color: var(--invite-green);
+}
+.wb-done__rule {
+  display: block;
+  width: 42px;
+  height: 1px;
+  margin: 18px auto 0;
+  background: var(--invite-green);
+}
+.wb-done__text {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 2;
+  color: var(--invite-green);
+  white-space: pre-line;
+}
+
+/* 送信ボタン（.wb-pill）と同じ作り */
+.wb-done__btn {
+  margin-top: 24px;
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid var(--invite-green);
+  border-radius: 0;
+  background: var(--invite-orange);
+  box-shadow: 6px 6px 0 var(--invite-pink);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+/* 押すと影に沈む */
+.wb-done__btn:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--invite-pink); }
+.wb-done__btn:active { transform: translate(6px, 6px); box-shadow: 0 0 0 var(--invite-pink); }
+.wb-done__btn:focus-visible { outline: 2px solid var(--invite-green); outline-offset: 3px; }
+
+@keyframes doneMarkPop { from { opacity: 0; transform: scale(0.55); } to { opacity: 1; transform: scale(1); } }
+@keyframes doneCheck   { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .wb-done,
+  .wb-done__card { transition-duration: .01ms; }
+  .wb-done.is-on .wb-done__mark,
+  .wb-done.is-on .wb-done__mark path { animation: none; }
+  .wb-done__mark { opacity: 1; transform: none; }
+  .wb-done__mark path { stroke-dashoffset: 0; }
+  .wb-done__card { transform: none; }
+  .wb-done.is-on .wb-done__card { transform: none; }
+  .wb-done__btn:hover,
+  .wb-done__btn:active { transform: none; }
+}
