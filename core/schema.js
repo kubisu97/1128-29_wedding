@@ -427,6 +427,49 @@
     }
   };
 
+  /* -------------------------------------------------- 送信完了ポップアップ */
+  /* RSVP の送信が終わったときに出す確認ダイアログ。
+   * body 直下に1つだけ作って、2回目以降は使い回す。 */
+  function showRsvpDone() {
+    var el = document.getElementById('wediDone');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'wediDone';
+      el.className = 'wb-done';
+      el.setAttribute('role', 'dialog');
+      el.setAttribute('aria-modal', 'true');
+      el.setAttribute('aria-labelledby', 'wediDoneTitle');
+      el.setAttribute('tabindex', '-1');
+      el.innerHTML =
+        '<div class="wb-done__card">' +
+          '<div class="wb-done__mark" aria-hidden="true">' +
+            '<svg viewBox="0 0 32 32"><path d="M7 16.6 L13.4 23 L25 10.4"></path></svg>' +
+          '</div>' +
+          '<p class="wb-done__en">Thank you</p>' +
+          '<p class="wb-done__title" id="wediDoneTitle">送信が完了しました</p>' +
+          '<span class="wb-done__rule" aria-hidden="true"></span>' +
+          '<p class="wb-done__text">ご回答ありがとうございました。\n当日お会いできるのを楽しみにしています。</p>' +
+          '<button type="button" class="wb-done__btn">閉じる</button>' +
+        '</div>';
+      document.body.appendChild(el);
+      el.__onKey = function (ev) { if (ev.key === 'Escape') { el.__close(); } };
+      el.__close = function () {
+        el.classList.remove('is-on');
+        document.removeEventListener('keydown', el.__onKey);
+      };
+      el.querySelector('.wb-done__btn').addEventListener('click', function () { el.__close(); });
+      el.addEventListener('click', function (ev) { if (ev.target === el) { el.__close(); } });
+    }
+    /* 2回目以降もアニメーションを頭から流す */
+    el.classList.remove('is-on');
+    void el.offsetWidth;
+    el.classList.add('is-on');
+    document.addEventListener('keydown', el.__onKey);
+    /* ダイアログ自体にフォーカスを移す。読み上げは拾えて、
+     * マウス操作のときにボタンへリングが出てしまうのは避けられる。 */
+    setTimeout(function () { try { el.focus(); } catch (e) {} }, 60);
+  }
+
   /* ------------------------------------------------------------------ rsvp */
   /* ご出欠ブロック（挙式/披露宴 × Attend/Decline/Hold）＋ 詳細フォーム */
   function attendGroup(name, label) {
@@ -750,6 +793,7 @@
           document.body.appendChild(poster);
           iframe.addEventListener('load', function () {
             if (status) { status.textContent = 'ご回答ありがとうございました。'; }
+            showRsvpDone();
             form.reset();
             if (photoPreview) { photoPreview.innerHTML = ''; }
             setTimeout(function () { poster.remove(); iframe.remove(); }, 0);
