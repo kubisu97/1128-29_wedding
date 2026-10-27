@@ -336,6 +336,27 @@
     </span>
     <span class="follow-banner__arrow" aria-hidden="true">›</span>
   </a>
+
+  <!-- 写真アプリ（Memory Camera）への誘導ポップアップ。見た目は送信完了ポップアップ（.wb-done）と共通 -->
+  <div class="wb-done wb-done--camera" id="cameraPrompt" role="dialog" aria-modal="true" aria-labelledby="cameraPromptTitle" tabindex="-1">
+    <div class="wb-done__card">
+      <div class="wb-done__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M5 11.5h5.2l2.2-3.2h7.2l2.2 3.2H27v13H5z"></path><circle cx="16" cy="17.6" r="4.4"></circle></svg>
+      </div>
+      <p class="wb-done__en">Memory Camera</p>
+      <p class="wb-done__title" id="cameraPromptTitle">写真共有アプリのご案内</p>
+      <span class="wb-done__rule" aria-hidden="true"></span>
+      <p class="wb-done__text">撮った写真がその場で
+みんなのアルバムに届く
+カメラアプリをご用意しました
+
+お名前を入れるだけで使えます
+ホーム画面に追加しておくと
+当日すぐに開けて便利です</p>
+      <a class="wb-done__btn" href="https://memory-camera-psi.vercel.app/?event=wedding" target="_blank" rel="noopener">カメラアプリを開く</a>
+      <button type="button" class="wb-done__later">あとで</button>
+    </div>
+  </div>
   </div><!-- /#siteApp -->
 
   <script src="core/theme.js"></script>
@@ -467,7 +488,9 @@
         var rsvp = home.blocks.filter(function (b) { return b.type === 'rsvp'; })[0];
         var names = cover ? (cover.data.names || '') : '';
         var date = cover ? (cover.data.date || '') : '';
-        var deadline = rsvp ? (rsvp.data.deadline || '') : '';
+        // 回答を締め切ったら、期限の案内と回答ボタンは出さない
+        var rsvpOpen = rsvp && !rsvp.data.closed;
+        var deadline = rsvpOpen ? (rsvp.data.deadline || '') : '';
         var esc = WEDI.render.esc;
 
         sidebar.innerHTML =
@@ -482,7 +505,7 @@
               '<div><b data-u="seconds">―</b><i>sec</i></div>' +
             '</div>' +
             (deadline ? '<div class="sb-note">お手数ではございますが<br><u>' + esc(deadline) + '</u> までに<br>ご一報くださいますようお願いします</div>' : '') +
-            '<a class="sb-cta" id="sbCta" href="#">招待状に回答</a>' +
+            (rsvpOpen ? '<a class="sb-cta" id="sbCta" href="#">招待状に回答</a>' : '') +
           '</div>';
 
         // カウントダウン駆動
@@ -526,6 +549,40 @@
       renderTopnav();
       renderPage(activeId);
       updateBanner();
+      initCameraPrompt();
+
+      /* ---- 写真アプリ（Memory Camera）への誘導ポップアップ ----
+       * サイトを開いたときに出す。閉じたら同じ日のうちは出さない（翌日以降はまた出す）。
+       * 招待状ページからは「結婚式」、しおりからは「京都観光」のアルバムで開く。 */
+      function initCameraPrompt() {
+        var CAMERA_URL = 'https://memory-camera-psi.vercel.app/';
+        var SEEN_KEY = 'tk1129-camera-prompt';
+        var dialog = document.getElementById('cameraPrompt');
+        if (!dialog) { return; }
+        var openBtn = dialog.querySelector('.wb-done__btn');
+        var today = new Date().toDateString();
+
+        // 保存できない環境（プライベートブラウズ等）では毎回出るだけ
+        try { if (localStorage.getItem(SEEN_KEY) === today) { return; } } catch (e) {}
+
+        function onKey(ev) { if (ev.key === 'Escape') { hide(); } }
+        function hide() {
+          dialog.classList.remove('is-on');
+          document.removeEventListener('keydown', onKey);
+          try { localStorage.setItem(SEEN_KEY, today); } catch (e) {}
+        }
+        openBtn.addEventListener('click', hide);   // リンク先は別タブで開く。こちらは閉じるだけ
+        dialog.querySelector('.wb-done__later').addEventListener('click', hide);
+        dialog.addEventListener('click', function (ev) { if (ev.target === dialog) { hide(); } });
+
+        // カバーの文字が出そろうのを待ってから出す
+        setTimeout(function () {
+          openBtn.href = CAMERA_URL + '?event=' + (card.dataset.page === 'guide' ? 'kyoto' : 'wedding');
+          dialog.classList.add('is-on');
+          document.addEventListener('keydown', onKey);
+          setTimeout(function () { try { dialog.focus(); } catch (e) {} }, 60);
+        }, 1600);
+      }
 
       // ---- スクロールアニメーション（バウンス登場） ----
       function initScrollAnim() {

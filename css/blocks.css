@@ -265,6 +265,7 @@
 
 /* =========================================================== rsvp */
 .wb-rsvp__intro { margin-bottom: 30px; }
+.wb-rsvp__intro--closed { margin-bottom: 0; }
 .wb-rsvp__lead { font-size: 18px; letter-spacing: 0.1em; margin-bottom: 14px; }
 .wb-rsvp__deadline { font-size: 14px; line-height: 2; }
 .wb-rsvp__deadline u { text-underline-offset: 4px; }
@@ -2311,6 +2312,42 @@ body.is-invitation-page .follow-banner {
 .wb-done__btn:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--invite-pink); }
 .wb-done__btn:active { transform: translate(6px, 6px); box-shadow: 0 0 0 var(--invite-pink); }
 .wb-done__btn:focus-visible { outline: 2px solid var(--invite-green); outline-offset: 3px; }
+
+/* ---------------------------------------------------------------------------
+ * 写真アプリ（Memory Camera）への誘導ポップアップ（.wb-done--camera）
+ * 見た目は .wb-done をそのまま使い、アイコンとボタンだけ差し替える。
+ * マークアップは index.html の #cameraPrompt。
+ * ------------------------------------------------------------------------- */
+/* チェックの線を引く演出は使わず、カメラの線画をそのまま出す */
+.wb-done--camera .wb-done__mark path,
+.wb-done--camera .wb-done__mark circle {
+  fill: none;
+  stroke: var(--invite-cream);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+}
+.wb-done.is-on.wb-done--camera .wb-done__mark path { animation: none; }
+.wb-done--camera .wb-done__mark svg { width: 32px; height: 32px; }
+.wb-done--camera .wb-done__en { font-size: clamp(28px, 8.6vw, 36px); }
+
+/* 開くボタンはリンクなので、ボタンと同じ箱にする */
+a.wb-done__btn { display: block; text-decoration: none; }
+
+.wb-done__later {
+  margin-top: 14px;
+  padding: 6px 12px;
+  border: 0;
+  background: none;
+  color: var(--invite-green);
+  font-family: var(--font-body);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.wb-done__later:focus-visible { outline: 2px solid var(--invite-green); outline-offset: 3px; }
 
 @keyframes doneMarkPop { from { opacity: 0; transform: scale(0.55); } to { opacity: 1; transform: scale(1); } }
 @keyframes doneCheck   { to { stroke-dashoffset: 0; } }

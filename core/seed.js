@@ -344,7 +344,9 @@
             "maxCompanions": 5,
             "busInfo": "京都駅からタクシーを手配いたします\nタクシーチケットをお渡ししますので\nご利用を希望される方は「利用する」にチェックをお願いいたします",
             "submitLabel": "確認画面へ",
-            "endpoint": "https://script.google.com/macros/s/AKfycbwUcE-26H3WF9cKc_I3hEa5g78F3r3whallqCtazMnkcLFyGmELwo82nl9FBUVyXqVj/exec"
+            "endpoint": "https://script.google.com/macros/s/AKfycbwUcE-26H3WF9cKc_I3hEa5g78F3r3whallqCtazMnkcLFyGmELwo82nl9FBUVyXqVj/exec",
+            "closed": true,
+            "closedMessage": "ご回答の受付は終了いたしました\nたくさんのご回答をいただき\nありがとうございました\n\nご予定に変更があった場合は\n直接ご連絡ください"
           }
         }
       ]

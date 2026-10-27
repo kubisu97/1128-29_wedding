@@ -506,7 +506,9 @@
       askCompanions: true,
       maxCompanions: 5,
       submitLabel: '確認画面へ',
-      endpoint: ''
+      endpoint: '',
+      closed: false,
+      closedMessage: 'ご回答の受付は終了いたしました\nたくさんのご回答をいただき\nありがとうございました\n\nご予定に変更があった場合は\n直接ご連絡ください'
     },
     fields: [
       { key: 'heading', type: 'text', label: '英字見出し' },
@@ -525,11 +527,26 @@
         { value: 8, label: '8名まで' }, { value: 10, label: '10名まで' } ] },
       { key: 'busInfo', type: 'textarea', label: 'タクシー案内（空なら非表示）' },
       { key: 'submitLabel', type: 'text', label: '送信ボタン文言' },
-      { key: 'endpoint', type: 'text', label: '送信先URL（GAS）' }
+      { key: 'endpoint', type: 'text', label: '送信先URL（GAS）' },
+      { key: 'closed', type: 'select', label: '回答の受付', options: [
+        { value: false, label: '受け付ける' }, { value: true, label: '締め切る' } ] },
+      { key: 'closedMessage', type: 'textarea', label: '締め切り後の案内' }
     ],
     render: function (block) {
       var d = block.data || {};
       var root = el('div', 'wb-rsvp');
+
+      // 締め切り後はフォームを出さず、案内文だけにする（hydrate はフォームが無ければ何もしない）
+      if (d.closed) {
+        root.innerHTML =
+          headHtml({ heading: d.heading, subheading: d.subheading }) +
+          '<div class="wb-rsvp__intro wb-rsvp__intro--closed">' +
+            (d.lead ? '<p class="wb-rsvp__lead txt-serif">' + esc(d.lead) + '</p>' : '') +
+            (d.closedMessage ? '<div class="wb-rsvp__note">' + escM(d.closedMessage) + '</div>' : '') +
+          '</div>';
+        return root;
+      }
+
       function f(label, name, opts) {
         opts = opts || {};
         var req = opts.required ? ' <i class="wb-req">*</i>' : '';
