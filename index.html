@@ -3,6 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* 11/29 14:00（日本時間）を過ぎたら、招待状もしおりも閉じて思い出アルバム（memories.html）へ切り替える。
+     * ページを開いたまま 14:00 をまたいだ場合も、その時刻になったら切り替える。
+     * Direct Upload でその時刻にデプロイし直せないため、ページ側で時刻を見て切り替えている。 */
+    (function () {
+      var SWITCH_AT = Date.parse('2026-11-29T14:00:00+09:00');
+      function go() { location.replace('/memories'); }
+      if (Date.now() >= SWITCH_AT) { go(); return; }
+      function check() { if (Date.now() >= SWITCH_AT) { go(); } }
+      var wait = SWITCH_AT - Date.now();
+      if (wait < 864e5) { setTimeout(check, wait + 500); }
+      // スリープ復帰やタブを戻したときはタイマーが遅れるので、見えたときにも確かめる
+      document.addEventListener('visibilitychange', check);
+      setInterval(check, 60000);
+    })();
+  </script>
   <!-- 検索エンジンに載せない（合言葉は外したが、野良で検索ヒットはさせない） -->
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">

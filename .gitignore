@@ -10,3 +10,6 @@ _v-*.png
 
 # wrangler のローカル実行状態（miniflare の KV/キャッシュ等）
 .wrangler/
+
+# Playwright で表示確認したときのスクショ・ログ
+.playwright-mcp/

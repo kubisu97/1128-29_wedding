@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f7efeb">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Our Memories</title>
+  <meta name="description" content="2026年11月28日 29日 京都で撮った写真のアルバムです。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500&family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/memories.css">
+  <link rel="stylesheet" href="css/memories-intro.css">
+</head>
+<body>
+  <!-- オープニング演出（お礼のメッセージ）。中身の文字は memories-intro.js が1文字ずつに分けて動かす -->
+  <!-- 見た目は招待状ページ（緑のポスター調）に合わせている。スタイルは css/memories-intro.css -->
+  <div class="mem-intro" id="intro" hidden>
+    <!-- 下からせり上がる色の面（オレンジ → ピンク → 緑）。最後の緑が地になる -->
+    <div class="mem-intro__panel mem-intro__panel--accent" aria-hidden="true"></div>
+    <div class="mem-intro__panel mem-intro__panel--soft" aria-hidden="true"></div>
+    <div class="mem-intro__panel mem-intro__panel--ground" aria-hidden="true"></div>
+    <div class="mem-intro__star mem-intro__star--soft" aria-hidden="true"><i></i></div>
+    <div class="mem-intro__star mem-intro__star--accent" aria-hidden="true"><i></i></div>
+    <div class="mem-intro__pols" id="introPols" aria-hidden="true"></div>
+    <div class="mem-intro__body">
+      <div class="mem-intro__card">
+        <p class="mem-intro__caps mem-intro__caps--top">2026.11.29 Kyoto</p>
+        <p class="mem-intro__thanks" id="introThanks">Thank you!</p>
+        <p class="mem-intro__msg" id="introMsg"></p>
+        <p class="mem-intro__caps mem-intro__caps--bottom">Takuro and Kazumi</p>
+        <div class="mem-intro__next">
+          <p class="mem-intro__sub" id="introSub">みんなで撮った写真をご覧ください</p>
+          <button class="mem-intro__go" id="introGo" type="button">写真を見る</button>
+        </div>
+      </div>
+    </div>
+    <!-- 紙吹雪。カードより後ろ・写真より前を通る（文字に被らないように） -->
+    <canvas class="mem-intro__canvas" id="introCanvas" aria-hidden="true"></canvas>
+    <div class="mem-intro__band" aria-hidden="true"><div class="mem-intro__band-track" id="introBand"></div></div>
+    <div class="mem-intro__out" aria-hidden="true"></div>
+    <button class="mem-intro__skip" id="introSkip" type="button">スキップ</button>
+  </div>
+
+  <!-- 合言葉の入力 -->
+  <section class="mem-gate" id="gate" hidden>
+    <form class="mem-gate__card" id="gateForm" autocomplete="off">
+      <p class="mem-gate__en">Our Memories</p>
+      <h1 class="mem-gate__title">思い出のアルバム</h1>
+      <span class="mem-gate__rule" aria-hidden="true"></span>
+      <p class="mem-gate__text">みんなで撮った写真を<br>ご覧いただけます</p>
+      <label class="mem-gate__label" for="gatePass">合言葉</label>
+      <input class="mem-gate__input" id="gatePass" type="password" inputmode="text" autocapitalize="off" spellcheck="false" required>
+      <button class="mem-btn mem-btn--primary" id="gateBtn" type="submit">ひらく</button>
+      <p class="mem-gate__err" id="gateErr" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- 写真の一覧 -->
+  <div class="mem-album" id="album" hidden>
+    <header class="mem-top">
+      <p class="mem-top__en">Our Memories</p>
+      <h1 class="mem-top__title">思い出のアルバム</h1>
+      <p class="mem-top__date" id="topDate">2026.11.28 – 29 Kyoto</p>
+    </header>
+
+    <nav class="mem-tabs" id="tabs" role="tablist" aria-label="アルバム" hidden></nav>
+
+    <main class="mem-main">
+      <div id="gallery"></div>
+      <p class="mem-status" id="status" hidden></p>
+    </main>
+
+    <footer class="mem-foot">
+      <p class="mem-foot__count" id="total"></p>
+      <button class="mem-foot__link" id="relock" type="button">合言葉を入れなおす</button>
+    </footer>
+  </div>
+
+  <!-- 拡大表示 -->
+  <div class="mem-lb" id="lb" role="dialog" aria-modal="true" aria-label="写真の拡大表示" hidden>
+    <div class="mem-lb__stage" id="lbStage">
+      <img class="mem-lb__img" id="lbImg" alt="">
+    </div>
+    <div class="mem-lb__top">
+      <span class="mem-lb__count" id="lbCount"></span>
+      <button class="mem-icon" id="lbClose" type="button" aria-label="閉じる">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <button class="mem-icon mem-lb__nav mem-lb__nav--prev" id="lbPrev" type="button" aria-label="前の写真">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="mem-icon mem-lb__nav mem-lb__nav--next" id="lbNext" type="button" aria-label="次の写真">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div class="mem-lb__cap">
+      <span class="mem-lb__album" id="lbAlbum"></span>
+      <span class="mem-lb__meta"><span id="lbAuthor"></span><span class="mem-lb__time" id="lbTime"></span></span>
+      <span class="mem-lb__comment" id="lbComment"></span>
+    </div>
+  </div>
+
+  <script src="core/memories-sealed.js"></script>
+  <script src="core/memories-intro.js"></script>
+  <script src="core/memories.js"></script>
+</body>
+</html>

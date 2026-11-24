@@ -1,0 +1,269 @@
+/* ===========================================================================
+ * memories-intro.css — 思い出アルバムのオープニング演出（お礼のメッセージ）
+ *
+ * 見た目と動きは招待状ページ（blocks.css の「招待状専用テーマ」）に合わせている。
+ *   緑の地・生成り・ピンク・オレンジのベタ塗り / 極太の英字見出し / 丸い星形（soft-star.svg）
+ *   波型の紙端 / オレンジの影が付いた生成り枠のカード（カウントダウンの枠と同じ）/ 少し傾けた写真
+ *   動きは index.html の blockBounceIn・charPop と同じ「弾んで出てくる」調子
+ *
+ * 時間の流れ（秒）:
+ *   0.1 色の面が3枚せり上がる → 1.0 星 → 1.25 カード → 1.65 上の英字 → 1.75 THANK YOU! が1文字ずつ
+ *   → 2.45 紙吹雪 → 2.65 お礼の文 → 3.0 写真 → 3.1 下の英字 → 3.3 下の帯 → 3.6 添え書き → 3.85 ボタン
+ *   文字・ラベル・写真・添え書き・ボタンの遅れは memories-intro.js が style で入れる
+ * =========================================================================== */
+.mem-intro {
+  /* 招待状ページの --invite-* と同じ値。役割で名前を付けている */
+  --iv-ground: #174c39;   /* 地の緑 */
+  --iv-paper: #f8edda;    /* 生成り。緑の上で 8.6:1 */
+  --iv-soft: #ecd9d1;     /* ピンク。緑の文字を載せて 7.2:1 */
+  --iv-accent: #e66f50;   /* オレンジ。影・星などの面にだけ使う（小さい文字には使わない） */
+  --iv-bounce: cubic-bezier(0.34, 1.4, 0.64, 1);   /* index.html の blockBounceIn と同じ */
+  --iv-wipe: cubic-bezier(0.77, 0, 0.18, 1);
+
+  position: fixed; inset: 0; z-index: 30; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--iv-paper); color: var(--iv-paper);
+}
+.mem-intro :focus-visible { outline-color: var(--iv-paper); outline-offset: 4px; }
+
+/* ---- 色の面と波型の紙端 ---- */
+.mem-intro__panel, .mem-intro__out, .mem-intro__band { transform: translateY(calc(100% + 14px)); }
+.mem-intro__panel, .mem-intro__out { position: absolute; inset: 0; }
+.mem-intro__panel { animation: inWipe .55s var(--iv-wipe) both; }
+.mem-intro__panel::before, .mem-intro__out::before, .mem-intro__band::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%;
+  height: 12px; margin-bottom: -1px;
+  background: radial-gradient(circle at 12px 12px, currentColor 11.5px, transparent 12px) 0 0 / 24px 12px repeat-x;
+}
+.mem-intro__panel--accent { background: var(--iv-accent); color: var(--iv-accent); animation-delay: .1s; }
+.mem-intro__panel--soft { background: var(--iv-soft); color: var(--iv-soft); animation-delay: .36s; }
+.mem-intro__panel--ground {
+  /* 招待状ページの body と同じ、細かい点の紙目 */
+  background-color: var(--iv-ground); color: var(--iv-ground);
+  background-image:
+    radial-gradient(rgba(255, 255, 255, .10) .7px, transparent .8px),
+    radial-gradient(rgba(0, 0, 0, .14) .7px, transparent .8px);
+  background-position: 0 0, 3px 3px; background-size: 6px 6px;
+  animation-delay: .62s;
+}
+.mem-intro__out { z-index: 10; background: var(--iv-accent); color: var(--iv-accent); }
+
+/* ---- 丸い星形（招待状ページのあしらいと同じ画像） ---- */
+.mem-intro__star {
+  position: absolute; z-index: 1; aspect-ratio: 1;
+  transform: scale(0) rotate(-120deg);
+  animation: inStar .75s var(--iv-bounce) both;
+}
+.mem-intro__star i {
+  display: block; width: 100%; height: 100%;
+  -webkit-mask: url('../assets/soft-star.svg') center / contain no-repeat;
+  mask: url('../assets/soft-star.svg') center / contain no-repeat;
+  animation: inSpin 70s linear infinite;
+}
+.mem-intro__star--soft { --rot: -12deg; width: min(410px, 105vw); left: -200px; top: 6%; animation-delay: 1s; }
+.mem-intro__star--soft i { background: var(--iv-soft); }
+.mem-intro__star--accent { --rot: 20deg; width: min(300px, 78vw); right: -130px; bottom: 4%; animation-delay: 1.15s; }
+.mem-intro__star--accent i { background: var(--iv-accent); animation-direction: reverse; }
+
+/* ---- 中央のカード（カウントダウンの枠と同じ作り） ---- */
+.mem-intro__body {
+  position: relative; z-index: 4;
+  width: 100%; max-width: 504px; padding: 0 22px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.mem-intro__card {
+  width: 100%; padding: 30px 16px 28px; text-align: center;
+  border: 3px solid var(--iv-paper); background: var(--iv-ground);
+  box-shadow: 10px 10px 0 var(--iv-accent);
+  transform: rotate(-1deg); opacity: 0;
+  animation: inCard .75s var(--iv-bounce) 1.25s both;
+}
+.mem-intro__caps {
+  font: 800 11px/1 var(--font-accent); letter-spacing: .2em; text-transform: uppercase;
+  opacity: 0; animation: inRise .5s var(--iv-bounce) both;
+}
+.mem-intro__caps--top { animation-delay: 1.65s; }
+.mem-intro__caps--bottom { margin-top: 20px; animation-delay: 3.1s; }
+
+.mem-intro__thanks {
+  margin-top: 14px;
+  font-family: var(--font-accent); font-weight: 800;
+  font-size: clamp(4rem, 21vw, 6.25rem); line-height: .94; letter-spacing: -.055em;
+  text-transform: uppercase;
+}
+.mem-intro__thanks .ln { display: block; white-space: nowrap; }
+.mem-intro__thanks .ch {
+  display: inline-block; opacity: 0;
+  /* 1つめ: ポンと出る（index.html の charPop と同じ調子） / 2つめ: 出そろったあと順番に小さく跳ねる */
+  animation: inChar .5s cubic-bezier(0.34, 1.5, 0.64, 1) both, inHop 3.6s ease-in-out infinite;
+}
+
+.mem-intro__msg { margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.mem-intro__msg .lb {
+  display: inline-block; padding: 7px 12px 8px; white-space: nowrap;
+  background: var(--iv-paper); color: var(--iv-ground);
+  font-weight: 700; font-size: clamp(.95rem, 4.1vw, 1.15rem); line-height: 1.4; letter-spacing: .08em;
+  clip-path: inset(0 100% 0 0);
+  animation: inLabelL .45s var(--iv-wipe) both;
+}
+.mem-intro__msg .lb:nth-child(even) { clip-path: inset(0 0 0 100%); animation-name: inLabelR; }
+
+/* 添え書きとボタン。細い線で区切ってカードの下側に置く */
+.mem-intro__next {
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px solid rgba(248, 237, 218, .32);
+}
+.mem-intro__sub {
+  font-size: .82rem; font-weight: 700; line-height: 1.7; letter-spacing: .08em;
+  opacity: 0; animation: inRise .5s var(--iv-bounce) both;
+}
+.mem-intro__go {
+  margin-top: 12px; min-height: 52px; min-width: 220px; padding: 0 28px;
+  font: inherit; font-size: 1rem; font-weight: 700; letter-spacing: .12em;
+  color: var(--iv-ground); background: var(--iv-paper);
+  border: 2px solid var(--iv-paper); border-radius: 0;
+  box-shadow: 7px 7px 0 var(--iv-accent);
+  cursor: pointer; opacity: 0;
+  animation: inBtn .7s var(--iv-bounce) both, inNudge 1.8s steps(1) infinite;
+}
+.mem-intro__go:hover { background: var(--iv-soft); border-color: var(--iv-soft); }
+
+.mem-intro__skip {
+  position: absolute; z-index: 12;
+  top: calc(12px + var(--safe-t)); right: 12px;
+  min-height: 44px; padding: 0 14px;
+  font: inherit; font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+  color: var(--iv-paper); background: var(--iv-ground);
+  border: 2px solid var(--iv-paper); border-radius: 0;
+  cursor: pointer; opacity: 0; animation: inRise .4s ease 1.2s both;
+}
+.mem-intro__skip:hover { background: var(--iv-paper); color: var(--iv-ground); }
+
+/* ---- まわりの写真（生成りのふち＋オレンジの影。カードの後ろから少しのぞく） ---- */
+.mem-intro__pols { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.mem-pol {
+  position: absolute; width: clamp(88px, 23vw, 180px); opacity: 0;
+  animation: inSlap .5s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+.mem-pol__in {
+  padding: 5px; background: var(--iv-paper);
+  box-shadow: 6px 6px 0 var(--iv-accent);
+  animation: inJitter 1.6s steps(1) infinite;   /* コマ撮りのように小さく揺れる */
+}
+.mem-pol img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: var(--iv-soft); }
+.mem-pol:nth-child(even) .mem-pol__in { animation-delay: -.8s; }
+.mem-pol--1 { left: -3%;  top: calc(48px + var(--safe-t)); --r: -9deg; }
+.mem-pol--2 { right: -3%; top: calc(68px + var(--safe-t)); --r: 8deg; }   /* 上はスキップボタンを避ける */
+.mem-pol--3 { left: -4%;  bottom: calc(70px + var(--safe-b)); --r: 7deg; }
+.mem-pol--4 { right: -3%; bottom: calc(78px + var(--safe-b)); --r: -6deg; }
+/* 右下の写真はオレンジの星の上に乗るので、影をピンクにして見えるようにする */
+.mem-pol--4 .mem-pol__in { box-shadow: 6px 6px 0 var(--iv-soft); }
+.mem-pol--5 { left: 3%;   top: 40%; --r: 5deg;  display: none; }
+.mem-pol--6 { right: 3%;  top: 43%; --r: -7deg; display: none; }
+
+/* ---- 下の帯（流れる英字） ---- */
+.mem-intro__band {
+  position: absolute; z-index: 7; left: 0; right: 0; bottom: 0;
+  padding-bottom: var(--safe-b);
+  background: var(--iv-soft); color: var(--iv-soft);
+  animation: inWipe .5s var(--iv-wipe) 3.3s both;
+}
+.mem-intro__band-track {
+  display: flex; width: max-content; white-space: nowrap;
+  color: var(--iv-ground);
+  font: 800 12px/44px var(--font-accent); letter-spacing: .14em; text-transform: uppercase;
+  animation: inMarquee 26s linear infinite;
+}
+.mem-intro__band-track span { padding-right: 1.4em; }
+
+/* 紙吹雪はカード（z-index 4）より後ろ・写真より前。文字に被らせない */
+.mem-intro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+
+/* ---- 終わり方: オレンジの面がせり上がって覆い、全体が上へ抜ける ---- */
+.mem-intro.is-leaving, .mem-intro.is-skipping { pointer-events: none; }
+.mem-intro.is-leaving .mem-intro__out { animation: inWipe .45s var(--iv-wipe) both; }
+.mem-intro.is-leaving { animation: inExit .5s var(--iv-wipe) .45s forwards; }
+.mem-intro.is-skipping { animation: inExit .4s var(--iv-wipe) forwards; }
+
+@media (min-width: 820px) {
+  .mem-intro__star--soft { left: -120px; top: 4%; }
+  .mem-intro__star--accent { right: -70px; bottom: 6%; }
+  .mem-pol--1 { left: 7%; top: 9%; }
+  .mem-pol--2 { right: 7%; top: 12%; }
+  .mem-pol--3 { left: 9%; bottom: 13%; }
+  .mem-pol--4 { right: 8%; bottom: 15%; }
+  .mem-pol--5, .mem-pol--6 { display: block; }
+}
+/* 背の低い画面（iPhone SE など）では詰める */
+@media (max-height: 720px) {
+  .mem-intro__thanks { font-size: clamp(3.4rem, 17.5vw, 5.4rem); margin-top: 10px; }
+  .mem-intro__card { padding: 22px 16px 20px; }
+  .mem-intro__msg { margin-top: 12px; }
+  .mem-intro__caps--bottom { margin-top: 14px; }
+  .mem-intro__next { margin-top: 14px; padding-top: 12px; }
+  .mem-intro__go { min-height: 48px; margin-top: 8px; }
+  .mem-pol { width: clamp(70px, 19vw, 150px); }
+  .mem-pol--1 { top: calc(40px + var(--safe-t)); }
+  .mem-pol--2 { top: calc(62px + var(--safe-t)); }
+  .mem-pol--3 { bottom: calc(58px + var(--safe-b)); }
+  .mem-pol--4 { bottom: calc(62px + var(--safe-b)); }
+}
+
+@keyframes inWipe { to { transform: translateY(0); } }
+@keyframes inStar { to { transform: scale(1) rotate(var(--rot)); } }
+@keyframes inSpin { to { transform: rotate(360deg); } }
+/* index.html の blockBounceIn に、傾きと影が落ちる動きを足したもの */
+@keyframes inCard {
+  0%   { opacity: 0; transform: translateY(46px) scale(0.92) rotate(-1deg); box-shadow: 0 0 0 var(--iv-accent); }
+  55%  { opacity: 1; transform: translateY(-8px) scale(1.02) rotate(-1deg); }
+  75%  { transform: translateY(4px) scale(0.99) rotate(-1deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(-1deg); }
+}
+@keyframes inBtn {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.9); }
+  55%  { opacity: 1; transform: translateY(-6px) scale(1.03); }
+  75%  { transform: translateY(3px) scale(0.99); }
+  100% { opacity: 1; transform: none; }
+}
+/* index.html の charPop を見出しの大きさに合わせたもの */
+@keyframes inChar {
+  0%   { opacity: 0; transform: translateY(42%) scale(0.5) rotate(-8deg); }
+  65%  { opacity: 1; transform: translateY(-7%) scale(1.08) rotate(2deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes inHop {
+  0%, 12%, 100% { transform: none; }
+  6% { transform: translateY(-11%) rotate(-3deg); }
+}
+@keyframes inLabelL { to { clip-path: inset(0 0 0 0); } }
+@keyframes inLabelR { to { clip-path: inset(0 0 0 0); } }
+@keyframes inRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes inNudge {
+  0%, 100% { box-shadow: 7px 7px 0 var(--iv-accent); }
+  50% { box-shadow: 10px 10px 0 var(--iv-accent); }
+}
+@keyframes inSlap {
+  0%   { opacity: 0; transform: scale(2) rotate(calc(var(--r) * 3)); }
+  45%  { opacity: 1; }
+  100% { opacity: 1; transform: rotate(var(--r)); }
+}
+@keyframes inJitter {
+  0%, 100% { transform: none; }
+  50% { transform: rotate(1.6deg) translateY(-2px); }
+}
+@keyframes inMarquee { to { transform: translateX(-50%); } }
+@keyframes inExit { to { transform: translateY(-100%); } }
+@keyframes inFadeOut { to { opacity: 0; } }
+
+/* 動きを減らす設定の端末では、出そろった状態を止めて見せる */
+@media (prefers-reduced-motion: reduce) {
+  .mem-intro *, .mem-intro *::before { animation: none !important; }
+  .mem-intro__panel, .mem-intro__band { transform: none; }
+  .mem-intro__star { transform: rotate(var(--rot)); }
+  .mem-intro__msg .lb, .mem-intro__msg .lb:nth-child(even) { clip-path: none; }
+  .mem-intro__card, .mem-intro__caps, .mem-intro__thanks .ch, .mem-intro__sub,
+  .mem-intro__go, .mem-intro__skip, .mem-pol { opacity: 1; }
+  .mem-pol { transform: rotate(var(--r)); }
+  .mem-intro__canvas { display: none; }
+  .mem-intro.is-leaving, .mem-intro.is-skipping { animation: inFadeOut .2s ease forwards; }
+}
