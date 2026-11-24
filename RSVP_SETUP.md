@@ -33,7 +33,7 @@ RSVPフォームの回答を、自分のGoogleスプレッドシートに自動�
 
 1. `core/seed.js` を開く
 2. `"type": "rsvp"` のブロックの中にある `"endpoint"` の値を、さっきコピーしたURLに書き換える
-3. 保存して `git push`（Cloudflare Pages が自動でデプロイします）
+3. 保存して `git push` したあと、`npx wrangler pages deploy . --project-name=tk1129 --branch=main` でデプロイする（tk1129 は Direct Upload のプロジェクトなので、push しただけでは自動デプロイされません）
 
 これで完了！フロントのフォームから送信すると、スプレッドシートに1行ずつ追記されます。
 
