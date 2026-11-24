@@ -19,8 +19,8 @@
   var REFRESH = 90 * 1000;
   // 並び順＝表示順（日付順）
   var ALBUMS = [
-    { id: 'kyoto', name: '京都観光', date: '11.28' },
-    { id: 'wedding', name: '結婚式', date: '11.29' }
+    { id: 'kyoto', name: '京都観光', en: 'Kyoto', date: '11.28' },
+    { id: 'wedding', name: '結婚式', en: 'Wedding', date: '11.29' }
   ];
 
   var $ = function (id) { return document.getElementById(id); };
@@ -41,7 +41,7 @@
   var filter = 'all';
   var visible = [];             // いま一覧に出ている写真（表示順）。拡大表示の前後送りもこの順
   var lbIndex = -1;
-  var lastSig = '';
+  var lastSig = null;           // 前回描いた一覧の中身。null は「まだ一度も描いていない」（0枚でも最初は必ず描く）
   var pendingRender = false;
 
   /* ---------- 合言葉と復号 ---------- */
@@ -88,8 +88,10 @@
     gate.hidden = false;
     album.hidden = true;
     if (message) { gateErr.textContent = message; gateErr.hidden = false; }
-    // 演出の最中に入力欄へ移ると、スマホでキーボードが出てしまうので演出のあとにする
+    // カードは演出が終わってから弾んで出す（memories.css の .is-in）。
+    // 入力欄へ移るのも演出のあと。最中に移ると、スマホでキーボードが出てしまう
     introDone.then(function () {
+      gate.classList.add('is-in');
       setTimeout(function () { try { gatePass.focus(); } catch (e) {} }, 50);
     });
   }
@@ -245,10 +247,12 @@
       sec.className = 'mem-sec';
       var head = document.createElement('div');
       head.className = 'mem-sec__head';
-      head.innerHTML = '<span class="mem-sec__date"></span><h2 class="mem-sec__title"></h2><span class="mem-sec__count"></span>';
-      head.children[0].textContent = a.date;
-      head.children[1].textContent = a.name;
-      head.children[2].textContent = photos.length + '枚';
+      // 招待状ページの見出しと同じ組み：大きな英字 ＋ 緑のラベル（日付と日本語名）
+      head.innerHTML = '<h2 class="mem-display mem-sec__title"></h2>' +
+        '<p class="mem-sec__sub"><span class="mem-label"></span><span class="mem-sec__count"></span></p>';
+      head.children[0].textContent = a.en;
+      head.children[1].children[0].textContent = a.date + ' ' + a.name;
+      head.children[1].children[1].textContent = photos.length + '枚';
       sec.appendChild(head);
       if (!photos.length) {
         var empty = document.createElement('p');

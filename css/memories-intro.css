@@ -11,15 +11,8 @@
  *   → 2.45 紙吹雪 → 2.65 お礼の文 → 3.0 写真 → 3.1 下の英字 → 3.3 下の帯 → 3.6 添え書き → 3.85 ボタン
  *   文字・ラベル・写真・添え書き・ボタンの遅れは memories-intro.js が style で入れる
  * =========================================================================== */
+/* 色（--iv-*）と動きの調子（--iv-bounce / --iv-wipe）は memories.css の :root で決めている */
 .mem-intro {
-  /* 招待状ページの --invite-* と同じ値。役割で名前を付けている */
-  --iv-ground: #174c39;   /* 地の緑 */
-  --iv-paper: #f8edda;    /* 生成り。緑の上で 8.6:1 */
-  --iv-soft: #ecd9d1;     /* ピンク。緑の文字を載せて 7.2:1 */
-  --iv-accent: #e66f50;   /* オレンジ。影・星などの面にだけ使う（小さい文字には使わない） */
-  --iv-bounce: cubic-bezier(0.34, 1.4, 0.64, 1);   /* index.html の blockBounceIn と同じ */
-  --iv-wipe: cubic-bezier(0.77, 0, 0.18, 1);
-
   position: fixed; inset: 0; z-index: 30; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   background: var(--iv-paper); color: var(--iv-paper);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#f7efeb">
+  <meta name="theme-color" content="#174c39">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -50,10 +50,14 @@
 
   <!-- 合言葉の入力 -->
   <section class="mem-gate" id="gate" hidden>
+    <div class="mem-gate__deco" aria-hidden="true">
+      <span class="mem-star mem-gate__star--soft"></span>
+      <span class="mem-star mem-gate__star--accent"></span>
+    </div>
     <form class="mem-gate__card" id="gateForm" autocomplete="off">
-      <p class="mem-gate__en">Our Memories</p>
-      <h1 class="mem-gate__title">思い出のアルバム</h1>
-      <span class="mem-gate__rule" aria-hidden="true"></span>
+      <p class="mem-caps">Photo Album</p>
+      <h1 class="mem-display mem-gate__title">Our<br>Memories</h1>
+      <p class="mem-label">思い出のアルバム</p>
       <p class="mem-gate__text">みんなで撮った写真を<br>ご覧いただけます</p>
       <label class="mem-gate__label" for="gatePass">合言葉</label>
       <input class="mem-gate__input" id="gatePass" type="password" inputmode="text" autocapitalize="off" spellcheck="false" required>
@@ -65,9 +69,10 @@
   <!-- 写真の一覧 -->
   <div class="mem-album" id="album" hidden>
     <header class="mem-top">
-      <p class="mem-top__en">Our Memories</p>
-      <h1 class="mem-top__title">思い出のアルバム</h1>
-      <p class="mem-top__date" id="topDate">2026.11.28 – 29 Kyoto</p>
+      <span class="mem-star mem-top__star" aria-hidden="true"></span>
+      <p class="mem-caps" id="topDate">2026.11.28 – 29 Kyoto</p>
+      <h1 class="mem-display mem-top__title">Our<br>Memories</h1>
+      <p class="mem-label mem-label--paper">思い出のアルバム</p>
     </header>
 
     <nav class="mem-tabs" id="tabs" role="tablist" aria-label="アルバム" hidden></nav>
@@ -101,7 +106,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
     </button>
     <div class="mem-lb__cap">
-      <span class="mem-lb__album" id="lbAlbum"></span>
+      <span class="mem-label mem-label--paper" id="lbAlbum"></span>
       <span class="mem-lb__meta"><span id="lbAuthor"></span><span class="mem-lb__time" id="lbTime"></span></span>
       <span class="mem-lb__comment" id="lbComment"></span>
     </div>
