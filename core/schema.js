@@ -892,17 +892,21 @@
       { key: 'items', type: 'list', label: '予定', itemLabel: '予定', max: 12, itemFields: [
         { key: 'time', type: 'text', label: '時間', placeholder: '10:30' },
         { key: 'title', type: 'text', label: 'タイトル' },
-        { key: 'text', type: 'textarea', label: '内容' }
+        { key: 'text', type: 'textarea', label: '内容' },
+        { key: 'map', type: 'text', label: 'GoogleマップURL（任意）', placeholder: 'https://www.google.com/maps/search/?api=1&query=...' }
       ] }
     ],
     render: function (block) {
       var d = block.data || {};
       var root = el('div', 'wb-schedule');
       var rows = (d.items || []).map(function (it) {
+        var mapUrl = safeUrl(it.map);
         return '<li class="wb-schedule__row">' +
           '<span class="wb-schedule__time txt-serif">' + esc(it.time || '') + '</span>' +
           '<div class="wb-schedule__body"><h3 class="wb-schedule__title">' + esc(it.title || '') + '</h3>' +
-          (it.text ? '<p class="wb-schedule__text">' + escM(it.text) + '</p>' : '') + '</div></li>';
+          (it.text ? '<p class="wb-schedule__text">' + escM(it.text) + '</p>' : '') +
+          (mapUrl ? '<a class="wb-schedule__map" href="' + esc(mapUrl) + '" target="_blank" rel="noopener noreferrer">📍 Googleマップで開く ↗</a>' : '') +
+          '</div></li>';
       }).join('');
       root.innerHTML = headHtml(d) + '<ul class="wb-schedule__list">' + rows + '</ul>';
       return root;
