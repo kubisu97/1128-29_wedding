@@ -893,7 +893,8 @@
         { key: 'time', type: 'text', label: '時間', placeholder: '10:30' },
         { key: 'title', type: 'text', label: 'タイトル' },
         { key: 'text', type: 'textarea', label: '内容' },
-        { key: 'map', type: 'text', label: 'GoogleマップURL（任意）', placeholder: 'https://www.google.com/maps/search/?api=1&query=...' }
+        { key: 'map', type: 'text', label: 'GoogleマップURL（任意）', placeholder: 'https://www.google.com/maps/search/?api=1&query=...' },
+        { key: 'mapLabel', type: 'text', label: '地図ボタンの文言（任意）', placeholder: '📍 Googleマップで開く ↗' }
       ] }
     ],
     render: function (block) {
@@ -905,7 +906,7 @@
           '<span class="wb-schedule__time txt-serif">' + esc(it.time || '') + '</span>' +
           '<div class="wb-schedule__body"><h3 class="wb-schedule__title">' + esc(it.title || '') + '</h3>' +
           (it.text ? '<p class="wb-schedule__text">' + escM(it.text) + '</p>' : '') +
-          (mapUrl ? '<a class="wb-schedule__map" href="' + esc(mapUrl) + '" target="_blank" rel="noopener noreferrer">📍 Googleマップで開く ↗</a>' : '') +
+          (mapUrl ? '<a class="wb-schedule__map" href="' + esc(mapUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(it.mapLabel || '📍 Googleマップで開く ↗') + '</a>' : '') +
           '</div></li>';
       }).join('');
       root.innerHTML = headHtml(d) + '<ul class="wb-schedule__list">' + rows + '</ul>';

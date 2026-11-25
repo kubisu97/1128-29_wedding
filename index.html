@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    /* 11/29 14:00（日本時間）を過ぎたら、招待状もしおりも閉じて思い出アルバム（memories.html）へ切り替える。
-     * ページを開いたまま 14:00 をまたいだ場合も、その時刻になったら切り替える。
+    /* 11/29 15:00（日本時間）を過ぎたら、招待状もしおりも閉じて思い出アルバム（memories.html）へ切り替える。
+     * 14:20頃のバス乗車まではしおり（乗車場所への道順）を見られるよう、15:00 にしている。
+     * ページを開いたまま 15:00 をまたいだ場合も、その時刻になったら切り替える。
      * Direct Upload でその時刻にデプロイし直せないため、ページ側で時刻を見て切り替えている。 */
     (function () {
-      var SWITCH_AT = Date.parse('2026-11-29T14:00:00+09:00');
+      var SWITCH_AT = Date.parse('2026-11-29T15:00:00+09:00');
       function go() { location.replace('/memories'); }
       if (Date.now() >= SWITCH_AT) { go(); return; }
       function check() { if (Date.now() >= SWITCH_AT) { go(); } }

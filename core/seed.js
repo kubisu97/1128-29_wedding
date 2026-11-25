@@ -488,7 +488,9 @@
               {
                 "time": "14:20頃",
                 "title": "バス乗車（京都出発）",
-                "text": "親族全員と荷物を乗せて出発\n乗車場所は未定です 決まり次第ご連絡します\n集合は拓郎 和美がご案内します"
+                "text": "親族全員と荷物を乗せて出発\n乗車場所はホテル（Rakuten STAY）の手前です\n28日にホテルで降りる前に ドライバーさんが場所を案内してくれます\n集合は拓郎 和美がご案内します",
+                "map": "https://www.google.com/maps/dir/?api=1&origin=%E3%82%A2%E3%83%88%E3%83%BC%E3%83%AB%E3%83%86%E3%83%A9%E3%82%B9%E9%B4%A8%E5%B7%9D%20%E4%BA%AC%E9%83%BD%E5%BA%9C%E4%BA%AC%E9%83%BD%E5%B8%82%E4%B8%8B%E4%BA%AC%E5%8C%BA%E6%9C%A8%E5%B1%8B%E7%94%BA%E9%80%9A%E4%BA%94%E6%9D%A1%E4%B8%8A%E3%82%8B%E4%B8%8B%E6%9D%90%E6%9C%A8%E7%94%BA448&destination=Rakuten%20STAY%20URBAN%20%E5%9B%9B%E6%9D%A1%E6%B2%B3%E5%8E%9F%E7%94%BA%20%E4%BA%AC%E9%83%BD%E5%BA%9C%E4%BA%AC%E9%83%BD%E5%B8%82%E4%B8%8B%E4%BA%AC%E5%8C%BA%E6%B2%B3%E5%8E%9F%E7%94%BA%E9%80%9A%E6%9D%BE%E5%8E%9F%E4%B8%8A%E3%82%8B%E4%BA%8C%E4%B8%81%E7%9B%AE%E5%AF%8C%E6%B0%B8%E7%94%BA354-2&travelmode=walking",
+                "mapLabel": "🚶 式場からホテルまでの道順を開く ↗"
               },
               {
                 "time": "20:00頃〜",
