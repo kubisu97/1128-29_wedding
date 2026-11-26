@@ -197,6 +197,14 @@ body.is-locked { overflow: hidden; }   /* 拡大表示・演出の最中は後�
 .mem-thumb img.is-loaded { opacity: 1; }
 .mem-thumb:focus-visible { outline-offset: -4px; outline-color: var(--iv-paper); }
 /* コメントがある写真には小さな印 */
+/* 動画には ▶ の印。サムネイルが出る前でも動画と分かるよう下地を緑にする */
+.mem-thumb.is-video { background: var(--iv-ground); }
+.mem-thumb.is-video::before {
+  content: '▶'; position: absolute; left: 50%; top: 50%; z-index: 1;
+  display: grid; place-items: center; width: 40px; height: 40px; padding-left: 3px;
+  border-radius: 50%; background: rgba(16, 32, 26, .6); color: var(--iv-paper);
+  font-size: 14px; line-height: 1; transform: translate(-50%, -50%); pointer-events: none;
+}
 .mem-thumb.has-comment::after {
   content: ''; position: absolute; right: 6px; bottom: 6px;
   width: 9px; height: 9px; border-radius: 50%;
@@ -244,6 +252,12 @@ body.is-locked { overflow: hidden; }   /* 拡大表示・演出の最中は後�
   max-width: 100%; max-height: 100%; object-fit: contain;
   -webkit-user-select: none; user-select: none;
 }
+.mem-lb__img[hidden], .mem-lb__video[hidden] { display: none; }
+/* 動画は Google ドライブの再生画面。上下の帯と前後ボタンに重ならない大きさにする */
+.mem-lb__video {
+  width: min(100%, 900px); height: calc(100% - 180px - var(--safe-t) - var(--safe-b));
+  border: 0; background: #000;
+}
 .mem-lb__top {
   position: absolute; top: 0; left: 0; right: 0;
   display: flex; align-items: center; justify-content: space-between;
@@ -269,6 +283,8 @@ body.is-locked { overflow: hidden; }   /* 拡大表示・演出の最中は後�
 /* SP は左右の矢印を出さずスワイプで送る（写真に被るため） */
 @media (max-width: 819px) {
   .mem-lb__nav { display: none; }
+  /* 動画の再生画面の上ではスワイプが効かないので、動画のときだけ矢印を出す */
+  .mem-lb.is-video .mem-lb__nav:not([hidden]) { display: inline-flex; }
 }
 
 @keyframes memFade { from { opacity: 0; } to { opacity: 1; } }

@@ -27,7 +27,7 @@
   var gate = $('gate'), gateForm = $('gateForm'), gatePass = $('gatePass'), gateBtn = $('gateBtn'), gateErr = $('gateErr');
   var album = $('album'), tabsEl = $('tabs'), gallery = $('gallery'), statusEl = $('status'), totalEl = $('total');
   var topDate = $('topDate'), relock = $('relock');
-  var lb = $('lb'), lbStage = $('lbStage'), lbImg = $('lbImg'), lbCount = $('lbCount');
+  var lb = $('lb'), lbStage = $('lbStage'), lbImg = $('lbImg'), lbVideo = $('lbVideo'), lbCount = $('lbCount');
   var lbAlbum = $('lbAlbum'), lbAuthor = $('lbAuthor'), lbTime = $('lbTime'), lbComment = $('lbComment');
   var lbClose = $('lbClose'), lbPrev = $('lbPrev'), lbNext = $('lbNext');
 
@@ -150,7 +150,9 @@
             createdAt: p.createdAt || '',
             comment: p.comment || '',
             thumb: p.image,
-            full: p.fullImage || p.image
+            full: p.fullImage || p.image,
+            // 動画は Google ドライブの再生画面を埋め込む。それ以外の URL は使わない
+            video: p.type === 'video' && /^https:\/\/drive\.google\.com\/file\/d\/[\w-]+\/preview$/.test(p.videoUrl || '') ? p.videoUrl : ''
           };
         });
       });
@@ -165,7 +167,9 @@
       return {
         id: 'demo:' + n, album: id, author: ['たくろう', 'かずみ', '栗栖家'][i % 3],
         createdAt: new Date(Date.UTC(2026, 10, i < 5 ? 28 : 29, 1 + i, 7 * i)).toISOString(),
-        comment: i % 3 ? '' : 'デモ表示のコメントです', thumb: src, full: src
+        comment: i % 3 ? '' : 'デモ表示のコメントです', thumb: src, full: src,
+        // 最後の1枚は動画の見た目の確認用（再生画面は存在しない動画なので Drive のエラーになる）
+        video: n === 'cinema-day' ? 'https://drive.google.com/file/d/demo/preview' : ''
       };
     }).filter(function (p) { return config.eventCodes[p.album]; }));
   }
@@ -275,14 +279,17 @@
   function thumb(p, index) {
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'mem-thumb' + (p.comment ? ' has-comment' : '');
-    b.setAttribute('aria-label', (p.author ? p.author + 'さんの写真' : '写真') + ' ' + formatTime(p.createdAt));
+    b.className = 'mem-thumb' + (p.comment ? ' has-comment' : '') + (p.video ? ' is-video' : '');
+    var kind = p.video ? '動画' : '写真';
+    b.setAttribute('aria-label', (p.author ? p.author + 'さんの' + kind : kind) + ' ' + formatTime(p.createdAt));
     var img = document.createElement('img');
     img.alt = '';
     img.loading = 'lazy';
     img.decoding = 'async';
     img.onload = function () { img.classList.add('is-loaded'); };
     img.onerror = function () {
+      // 動画のサムネイルは Drive の処理が終わるまで出ないことがある。一覧からは外さず、下地と ▶ だけ見せる
+      if (p.video) { return; }
       // Drive から消えた写真などは一覧から外す
       broken[p.id] = true;
       all = all.filter(function (x) { return x.id !== p.id; });
@@ -315,9 +322,19 @@
     lbIndex = i;
     var p = visible[i];
     var token = ++lbToken;
+    // 動画は再生画面を埋め込む。写真に移ったら空にして、音が残らないようにする
+    lbImg.hidden = !!p.video;
+    lbVideo.hidden = !p.video;
+    lb.classList.toggle('is-video', !!p.video);
+    if (p.video) {
+      lbImg.removeAttribute('src');
+      if (lbVideo.getAttribute('src') !== p.video) { lbVideo.src = p.video; }
+    } else if (lbVideo.getAttribute('src') !== 'about:blank') {
+      lbVideo.src = 'about:blank';
+    }
     // まず一覧で読み込み済みの小さい画像を出し、大きい画像が届いたら差し替える
-    lbImg.src = p.thumb;
-    if (p.full && p.full !== p.thumb) {
+    if (!p.video) { lbImg.src = p.thumb; }
+    if (!p.video && p.full && p.full !== p.thumb) {
       var big = new Image();
       big.onload = function () { if (token === lbToken) { lbImg.src = p.full; } };
       big.src = p.full;
@@ -335,7 +352,7 @@
     lbNext.hidden = single;
     // 次の写真を先に読んでおく
     var next = visible[(i + 1) % visible.length];
-    if (next) { new Image().src = next.full; }
+    if (next && !next.video) { new Image().src = next.full; }
   }
 
   function openLightbox(i) {
@@ -355,6 +372,8 @@
     lbToken++;
     lb.hidden = true;
     lbImg.removeAttribute('src');
+    lbVideo.src = 'about:blank';
+    lbVideo.hidden = true;
     document.body.classList.remove('is-locked');
     if (!fromPop) { try { if (history.state && history.state.memLb) { history.back(); } } catch (e) {} }
     if (pendingRender) { render(); }
